@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <head>
+        <title>Hello</title>
+    </head>
+
+    <body>
+
+        <b><h:outputText id="message" value="#{greeter.greet()}" rendered="#{not empty greeter.greeting and not empty greeter.name}"/></b>
+        <br />
+        <h:form>
+            <label for="greeting">Greeting</label><br />
+            <h:inputText value="#{greeter.greeting}" id="greeting"></h:inputText>
+            <br />
+            <label for="greeting">Name</label><br />
+            <h:inputText value="#{greeter.name}" id="name"></h:inputText>
+            <br />
+            <h:commandButton id="submit" value="Submit"></h:commandButton>
+        </h:form>
+    </body>
+
+</html>
