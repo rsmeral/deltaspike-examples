@@ -1,4 +1,4 @@
-package org.jboss.wfk.test.deltaspike.beanmanagerprovider;
+package org.jboss.examples.deltaspike.template.test;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
