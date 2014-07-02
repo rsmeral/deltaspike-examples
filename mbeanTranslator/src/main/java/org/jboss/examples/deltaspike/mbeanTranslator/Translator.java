@@ -15,6 +15,8 @@ import org.jboss.examples.deltaspike.mbeanTranslator.messages.InternationalMessa
 @RequestScoped
 public class Translator {
 
+    private final String MESSAGE_SOURCE = "org.jboss.examples.deltaspike.mbeanTranslator.messages.InternationalMessages";
+
     @Inject
     MessageContext messageContext;
 
@@ -31,7 +33,7 @@ public class Translator {
 
     public String translate(String messageText) {
 
-        Message message = messageContext.messageSource("org.jboss.examples.deltaspike.mbeanTranslator.messages.InternationalMessages")
+        Message message = messageContext.messageSource(MESSAGE_SOURCE)
                 .messageInterpolator(interpolator)
                 .localeResolver(localeResolver).message();
 

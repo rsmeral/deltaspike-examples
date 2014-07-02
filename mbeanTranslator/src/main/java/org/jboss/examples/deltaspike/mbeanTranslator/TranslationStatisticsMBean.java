@@ -49,7 +49,7 @@ public class TranslationStatisticsMBean {
         return Math.round(percentage);
     }
 
-    @JmxManaged(description = "Percentage of German translations.")
+    @JmxManaged(description = "Percentage of French translations.")
     public double getFrenchTranslationsPercentage() {
         double percentage = 0;
         if (translations > 0) {

@@ -1,31 +1,40 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:h="http://xmlns.jcp.org/jsf/html"
-   xmlns:f="http://xmlns.jcp.org/jsf/core"
-   >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="WEB-INF/template.xhtml">
 
-   <body>
-   <h:form>
-       <h:outputLabel value="Translate from English to " for="language"/>
-       <h:selectOneMenu id="language" value="#{viewController.language}" >
-           <f:selectItems value="#{viewController.languages}" var="lang" itemValue="#{lang}" itemLabel="#{lang.value}"/>
-       </h:selectOneMenu><br/>
+    <ui:define name="content">
 
-       <h:inputTextarea id="text" rows="10" cols="35" value="#{viewController.inputText}"/><br/>
-       <h:commandButton id="translate" action="#{viewController.translate()}" value="Translate"/><br/>
-   </h:form>
+        <h:form>
+            <h:outputLabel value="Translate from English to " for="language"/>
+            <h:selectOneMenu id="language" value="#{viewController.language}">
+                <f:selectItems value="#{viewController.languages}" var="lang" itemValue="#{lang}" itemLabel="#{lang.value}"/>
+            </h:selectOneMenu>
+            <br/>
 
-    <h:outputLabel value="Translation: " for="translation"/>
-    <h:outputText id="translation" value="#{viewController.translatedText}"/><br/><br/>
+            <h:inputTextarea id="text" rows="10" cols="35" value="#{viewController.inputText}"/>
+            <br/>
+            <h:commandButton id="translate" action="#{viewController.translate()}" value="Translate"/>
+            <br/>
+        </h:form>
+        <p>
+            <h:outputLabel value="Translation: " for="translation"/>
+            <h:outputText id="translation" value="#{viewController.translatedText}"/>
+        </p>
+        <br/>
 
-    <h3>Translation statistics</h3>
+        <h3>Translation statistics</h3>
 
-   <h:form>
-        <h:outputText value="Number of all translations is #{viewController.getAllTranslations()}"/><br/>
-        <h:outputText value="Percentage of German translations is #{viewController.getGermanTranslationsPercentage()} %"/><br/>
-        <h:outputText value="Percentage of French translations is #{viewController.getFrenchTranslationsPercentage()} %"/><br/>
-        <h:commandButton id="reset" value="Reset statistics" action="#{viewController.reset()}"/>
-   </h:form>
-   </body>
-</html>
+        <h:form>
+            <h:outputText value="Number of all translations is #{viewController.getAllTranslations()}"/>
+            <br/>
+            <h:outputText value="Percentage of German translations is #{viewController.getGermanTranslationsPercentage()} %"/>
+            <br/>
+            <h:outputText value="Percentage of French translations is #{viewController.getFrenchTranslationsPercentage()} %"/>
+            <br/>
+            <h:commandButton id="reset" value="Reset statistics" action="#{viewController.reset()}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
