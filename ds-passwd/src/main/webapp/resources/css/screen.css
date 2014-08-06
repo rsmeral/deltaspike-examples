@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #EAECEE;
+    font-family: Verdana, sans-serif;
+    font-size: 0.9em;
+}
+
+#container {
+    margin: 0 auto;
+    border: 1px solid #666666;
+    width: 865px; /* subtract 40px from banner width for padding */
+}
+
+#sidebar {
+    font-size: 0.9em;
+    width: 225px;
+    float: right;
+    border: 1px solid #666666;
+    background: #EAECEE;
+    padding: 0 15px 5px 15px;
+}
+#content {
+   padding: 10px 15px 10px 15px;
+   background: #e1f5ff;
+}
+
+#sidebar ul {
+    padding-left: 30px;
+}
+
+#header {
+    clear: both;
+    text-align: center;
+    padding-bottom: 10px;
+    background: #ffffff;
+    font-size: 0.85em;
+    border-bottom: 1px solid #666666;
+}
+
+code {
+    font-size: 1.1em;
+}
+
+span.invalid {
+    padding-left: 3px;
+    color: red;
+}
