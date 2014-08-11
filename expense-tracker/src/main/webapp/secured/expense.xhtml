@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xml:lang="en" lang="en">
+
+<h:head>
+    <title>Payment</title>
+</h:head>
+<h:body>
+    <ui:composition template="/resources/templates/common/commonTemplate.xhtml">
+        <ui:define name="content">
+            <ui:insert name="title"/>
+            <h:form id="form" styleClass="form-horizontal">
+                <h:messages id="error-messages" />
+                <h:inputHidden value="#{payment.report}" converter="#{expenseReportConverter}"/>
+
+                <div class="control-group">
+                    <h:outputLabel value="Date:" for="date" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <rich:calendar value="#{payment.date}" id="date" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <h:outputLabel value="Purpose:" for="purposes" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:selectOneMenu id="purposes" label="Purpose" value="#{payment.purpose}" converter="#{purposeConverter}">
+                            <f:selectItem itemValue="#{null}" itemLabel="" />
+                            <f:selectItems value="#{purposes}" var="p" itemLabel="#{p.name}" itemValue="#{p}"/>
+                        </h:selectOneMenu>
+
+                        <h:commandButton id="newPurpose" action="#{purposeController.createPurpose('/secured/createPayment')}"
+                                         value="Create new" styleClass="btn btn-mini" style="margin-left: 20px;" immediate="true">
+                        </h:commandButton>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h:outputLabel value="Receipt:" for="receipt" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:selectOneMenu id="receipt" label="Receipt" value="#{payment.receipt}" converter="#{receiptConverter}">
+                            <f:selectItem itemValue="#{null}" itemLabel="" />
+                            <f:selectItems value="#{currentUserReceipts}" var="r" itemLabel="#{r.documentName}"
+                                           itemValue="#{r}"/>
+                        </h:selectOneMenu>
+                        <h:commandButton id="newReceipt" action="#{receiptController.createReceipt('/secured/createPayment')}"
+                                         value="Create new" styleClass="btn btn-mini" style="margin-left: 20px;" immediate="true">
+                        </h:commandButton>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <h:outputLabel value="Value:" for="value" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:inputText id="value" value="#{payment.value}" label="Value"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <h:outputLabel value="Currency:" for="currency" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:selectOneMenu id="currency" label="Currency" value="#{payment.currency}">
+                            <f:selectItems value="#{currencies}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <h:commandButton action="#{paymentController.savePayment()}" value="Save"
+                                         styleClass="btn btn-primary"/>
+                        <h:commandButton action="/secured/report" immediate="true" value="Cancel" styleClass="btn btn"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

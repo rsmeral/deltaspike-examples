@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xml:lang="en" lang="en">
+
+<h:head>
+    <title>Report</title>
+</h:head>
+<h:body>
+
+    <ui:composition template="/resources/templates/common/commonTemplate.xhtml">
+        <ui:define name="content">
+            <ui:insert name="title"/>
+            <h:form styleClass="form-horizontal">
+                <h:messages id="error-messages" />
+                <div class="control-group">
+                    <h:outputLabel value="Name:" for="name" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:inputText id="name" value="#{expenseReport.name}" size="25" label="Name"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <h:outputLabel value="Description:" for="description" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:inputTextarea id="description" value="#{expenseReport.description}" rows="8" cols="50" label="Description"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <h:commandButton action="#{expenseController.saveReport()}" value="Save" styleClass="btn btn-primary"/>
+                        <h:link outcome="${cancelAction}" value="Cancel" styleClass="btn"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

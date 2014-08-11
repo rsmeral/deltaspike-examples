@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xml:lang="en" lang="en">
+<head>
+    <title>New reports with no verifier</title>
+</head>
+<body>
+
+
+    <ui:composition template="../resources/templates/reportsTemplate.xhtml">
+        <ui:param name="showReports" value="#{expenseController.allWithNoVerifierAssigned}"/>
+        <ui:param name="fromUrl" value="/secured/reportsUnclaimed"/>
+        <ui:define name="title">
+            <h3>All unassigned reports</h3>
+        </ui:define>
+    </ui:composition>
+
+</body>
+</html>

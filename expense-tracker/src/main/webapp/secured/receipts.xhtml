@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+        >
+
+<head>
+    <title>Expense Receipts</title>
+</head>
+<body>
+
+<ui:composition template="../resources/templates/common/commonTemplate.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <h2>Receipts</h2>
+
+
+            <c:choose>
+                <c:when test="#{identityHelper.hasRole('ADMIN')}">
+                    <c:set var="receipts" value="#{allReceipts}"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="receipts" value="#{currentUserReceipts}"/>
+                </c:otherwise>
+            </c:choose>
+
+            <h:dataTable value="#{receipts}" var="r" styleClass="table table-bordered table-striped table-hover">
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:commandLink action="#{receiptController.showFile(r.id)}">
+                        #{r.documentName}
+                    </h:commandLink>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Imported by</f:facet>
+                    #{r.importedBy.firstName} #{r.importedBy.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Imported on</f:facet>
+                    <h:outputText value="#{r.importDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandLink action="#{receiptController.editReceipt(r.id, '/secured/receipts')}" styleClass="btn btn-mini">
+                        <i class="icon-pencil"></i>
+                    </h:commandLink>
+                    <h:commandLink action="#{receiptController.removeReceipt(r.id)}" styleClass="btn btn-mini">
+                        <i class="icon-trash"></i>
+                    </h:commandLink>
+
+                </h:column>
+            </h:dataTable>
+
+            <div class="row">
+                <div class="span2">
+                    <h:commandLink action="#{receiptController.createReceipt('/secured/receipts')}" styleClass="btn"
+                                   value="Add receipt"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</body>
+</html>

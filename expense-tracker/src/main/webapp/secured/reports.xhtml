@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<head>
+    <title>Expense Reports</title>
+</head>
+<body>
+
+
+<ui:composition template="/resources/template/layout.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <h2>My Expense reports</h2>
+
+            <!--Show applicant expense reports-->
+            <c:choose>
+                <c:when test="#{idm.hasRole(ADMIN_ROLE)}">
+                    <ui:param name="showReports" value="#{expenseController.allReports}"/>
+                </c:when>
+
+                <c:when test="#{identityHelper.hasRole('APPLICANT')}">
+                    <ui:param name="showReports" value="#{expenseController.allForSubmitter}"/>
+                </c:when>
+            </c:choose>
+
+            <h:dataTable value="#{showReports}" var="report" rendered="#{not empty showReports}"
+                         styleClass="table table-bordered table-striped table-hover">
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:commandLink action="#{expenseController.showSingleReport(report.id, '/secured/reports')}"
+                                   value="#{report.name}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Short description</f:facet>
+                    #{report.description}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Last submitted</f:facet>
+                    <h:outputText value="#{report.lastSubmittedDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                    #{report.status}
+                </h:column>
+
+                <!-- IF ROLE IS VERIFIER SHOW THIS -->
+
+                <h:column>
+                    <!--<h:column rendered="#{identityHelper.hasAnyRole('VERIFIER,ADMIN')}">-->
+                    <f:facet name="header">Submitter</f:facet>
+                    #{report.submitter.firstName} #{report.submitter.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Last changed</f:facet>
+                    <h:outputText value="#{report.lastChangeDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Verifier</f:facet>
+                    #{report.verifier.firstName} #{report.verifier.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Approved</f:facet>
+                    <h:outputText value="#{report.approvedDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column rendered="#{identityHelper.hasRole('ADMIN')}">
+                    <f:facet name="header">ID</f:facet>
+                    #{report.id}
+                </h:column>
+            </h:dataTable>
+
+            <div class="row">
+                <div class="span2 btn-group">
+                    <h:commandLink action="#{expenseController.createReport()}" styleClass="btn" value="Create report"/>
+                </div>
+            </div>
+        </h:form>
+        <!-- END OF MY EXPENSE REPORTS-->
+
+
+
+        <!--MY VERIFY EXPENSE REPORTS -->
+        <h:form rendered="#{identityHelper.hasAnyRole('ADMIN,VERIFIER')}">
+            <h2>Reports to verify</h2>
+            <h:dataTable value="#{expenseController.allOpenForVerifier()}" var="report"
+                         rendered="#{not empty expenseController.allOpenForVerifier()}"
+                         styleClass="table table-bordered table-striped table-hover">
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:commandLink action="#{expenseController.showSingleReport(report.id, '/secured/reports')}"
+                                   value="#{report.name}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Short description</f:facet>
+                    #{report.description}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Last submitted</f:facet>
+                    <h:outputText value="#{report.lastSubmittedDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                    #{report.status}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Submitter</f:facet>
+                    #{report.submitter.firstName} #{report.submitter.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Last changed</f:facet>
+                    <h:outputText value="#{report.lastChangeDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Verifier</f:facet>
+                    #{report.verifier.firstName} #{report.verifier.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Approved</f:facet>
+                    <h:outputText value="#{report.approvedDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
+
+                <h:column rendered="#{identityHelper.hasRole('ADMIN')}">
+                    <f:facet name="header">ID</f:facet>
+                    #{report.id}
+                </h:column>
+            </h:dataTable>
+            <h:commandLink action="/secured/reportsUnclaimed" styleClass="btn" value="Unassigned reports"/>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>
+
+</body>
+        </html>

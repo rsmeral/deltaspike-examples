@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xml:lang="en" lang="en">
+
+<h:head>
+    <title>Report</title>
+</h:head>
+<h:body>
+
+    <ui:composition template="/resources/template/layout.xhtml">
+        <ui:define name="content">
+            <ui:insert name="title"/>
+            <h:form styleClass="form-horizontal">
+                <h:dataTable value="#{showReports}" var="report" rendered="#{not empty showReports}"
+                             styleClass="table table-bordered table-striped table-hover">
+                    <h:column rendered="#{fromUrl eq '/secured/reportsUnclaimed'}">
+                        <h:selectBooleanCheckbox value="#{expenseController.checked[report.id]}" disabled="#{report.submitter eq currentPerson.person}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:commandLink action="#{expenseController.showSingleReport(report.id, fromUrl)}"
+                                       value="#{report.name}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Short description</f:facet>
+                        #{report.description}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Last submitted</f:facet>
+                        <h:outputText value="#{report.lastSubmittedDate}">
+                            <f:convertDateTime/>
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+                        #{report.status}
+                    </h:column>
+
+                    <h:column >
+                        <f:facet name="header">Submitter</f:facet>
+                        #{report.submitter.firstName} #{report.submitter.lastName}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Last changed</f:facet>
+                        <h:outputText value="#{report.lastChangeDate}">
+                            <f:convertDateTime/>
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Verifier</f:facet>
+                        #{report.verifier.firstName} #{report.verifier.lastName}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Approved</f:facet>
+                        <h:outputText value="#{report.approvedDate}">
+                            <f:convertDateTime/>
+                        </h:outputText>
+                    </h:column>
+
+                    <!--TODO hide eventually -->
+                    <h:column rendered="#{identityHelper.hasRole('ADMIN')}">
+                        <f:facet name="header">ID</f:facet>
+                        #{report.id}
+                    </h:column>
+                </h:dataTable>
+
+
+                <!-- COMING FROM reportsUnclaimed -->
+                <h:panelGroup rendered="#{fromUrl eq '/secured/reportsUnclaimed'}">
+                    <h:outputText rendered="#{empty showReports}" value="No unassigned reports"/>
+
+                    <div class="row">
+                        <div class="span2 btn-group">
+                            <h:commandButton action="#{expenseController.claimReports()}" value="Claim"
+                                             styleClass="btn btn-primary"/>
+                            <h:commandButton action="/secured/reports" immediate="true" value="Cancel"
+                                             styleClass="btn btn"/>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+                <!-- COMING FROM reports -->
+                <h:panelGroup rendered="#{fromUrl eq '/secured/reports'}">
+                    <div class="row">
+                        <div class="span2 btn-group">
+                            <h:commandLink action="#{expenseController.createReport()}" styleClass="btn" value="Create report"/>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Login Form</title>
+</h:head>
+<h:body>
+    <ui:composition template="/resources/template/layout.xhtml">
+        <ui:define name="header"/>
+        <ui:define name="content">
+            <div style="margin-left: 180px; margin-bottom: 80px;">
+            <h2>Login</h2>
+            <h:messages id="error-messages"  styleClass="error"/>
+            <h:form id="login" styleClass="form-horizontal">
+                <div class="control-group">
+                    <h:outputLabel value="Username:" for="username" styleClass="control-label"/>
+                    <div class="controls">
+                        <h:inputText value="#{loginCredentials.userId}" id="username"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <h:outputLabel value="Password:" for="password" styleClass="control-label"/>
+                    <div class="controls">
+                        <h:inputSecret value="#{loginCredentials.password}" id="password"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <h:commandButton value="Login"
+                                     action="#{identity.login()}"
+                                     styleClass="btn btn-primary" id="btn-login"/>
+                        <br/><br/>
+                        <p>
+                            First access? Please
+                            <h:link outcome="signup" value="Sign Up" id="btn-signup"/>
+                            now.
+                        </p>
+                    </div>
+                </div>
+            </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

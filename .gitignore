@@ -1,5 +1,6 @@
 *.class
 target
+faces-config.NavData
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

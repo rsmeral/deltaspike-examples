@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+</head>
+
+<body>
+<ui:composition>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <h:form>
+                    <ul class="nav" id="navbar">
+                        <li>
+                            <h:link outcome="/secured/index" id="nav-home"><i class="icon-white icon-home"></i> Home</h:link>
+                        </li>
+                        <li>
+                            <h:link outcome="/secured/reports" id="nav-reports">Reports</h:link>
+                        </li>
+                        <li>
+                            <h:link outcome="/secured/purposes"
+                                    rendered="#{idm.hasRole(VERIFIER_ROLE)}" id="nav-purposes">Purposes</h:link>
+                        </li>
+                        <li>
+                            <h:link outcome="/secured/receipts" id="nav-receipts">Receipts</h:link>
+                        </li>
+                        <li>
+                            <h:link outcome="/secured/employees"
+                                    rendered="#{idm.hasRole(ADMIN_ROLE)}" id="nav-users">Users</h:link>
+                        </li>
+
+                    </ul>
+                    <ul class="nav pull-right" >
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="nav-identity">
+                                <i class="icon-user icon-white"></i> #{currentEmployee.firstName} #{currentEmployee.lastName}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <h:commandLink action="#{personController.editPerson(identity.user.loginName)}" id="nav-drop-edit">
+                                        <i class="icon-book"></i> Edit profile
+                                    </h:commandLink>
+                                </li>
+                                <li>
+                                    <h:commandLink action="#{personController.changePassword(identity.user.loginName)}" id="nav-drop-change-password">
+                                        <i class="icon-lock"></i> Change password
+                                    </h:commandLink>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <h:commandLink action="#{identity.logout()}" id="nav-drop-logout">
+                                        <i class="icon-off"></i> Logout
+                                    </h:commandLink>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </h:form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="jumbotron subhead" id="overview">
+            <div class="row">
+                <div class="span6">
+                    <h1>Expense tracking</h1>
+
+                    <p class="lead">Mišo-Ron-Dušan</p>
+                </div>
+                <div class="span4 offset2">
+                    <div class="well" style="text-align: center;">
+                        LogoLogoLogoLogoLogoLogoLogoLogo
+                        <br/>
+                        LogoLogoLogoLogoLogoLogoLogoLogo
+                        <br/>
+                        LogoLogoLogoLogoLogoLogoLogoLogo
+                        <br/>
+                        LogoLogoLogoLogoLogoLogoLogoLogo
+                        <br/>
+                        LogoLogoLogoLogoLogoLogoLogoLogo
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+</ui:composition>
+</body>
+
+</html>

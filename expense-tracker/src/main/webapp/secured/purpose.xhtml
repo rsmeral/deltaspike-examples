@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xml:lang="en" lang="en">
+
+<h:head>
+    <title>Purpose</title>
+</h:head>
+<h:body>
+
+    <ui:composition template="/resources/templates/common/commonTemplate.xhtml">
+        <ui:define name="content">
+            <ui:insert name="title"/>
+            <h:messages id="error-messages" />
+            <h:form id="form" styleClass="form-horizontal">
+                <div class="control-group">
+                    <h:outputLabel value="Name:" for="name" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:inputText id="name" value="#{purpose.name}" size="20" label="Name"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <h:outputLabel value="Description:" for="description" styleClass="control-label"/>
+
+                    <div class="controls">
+                        <h:inputTextarea id="description" value="#{purpose.description}" rows="5" cols="30" label="Description"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <h:commandButton action="#{purposeController.savePurpose()}" value="Save" styleClass="btn btn-primary"/>
+                        <h:commandButton action="#{purposeController.cancel}" immediate="true"  value="Cancel" styleClass="btn btn"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

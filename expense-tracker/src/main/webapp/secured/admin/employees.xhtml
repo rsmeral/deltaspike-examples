@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+
+<head>
+    <title>People</title>
+</head>
+<body>
+
+<ui:composition template="../resources/templates/common/commonTemplate.xhtml">
+    <ui:define name="content">
+        <h:form rendered="#{identityHelper.hasRole('ADMIN')}">
+            <h2>People</h2>
+            <h:dataTable value="#{allPersons}" var="p" styleClass="table table-bordered table-striped table-hover">
+                <h:column>
+                    <f:facet name="header">Username</f:facet>
+                    #{p.userName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    #{p.firstName} #{p.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    #{p.email}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandLink action="#{personController.editPerson(p.userName)}" styleClass="btn btn-mini" title="Edit person">
+                        <i class="icon-pencil"></i>
+                    </h:commandLink>
+                    <h:commandLink action="#{personController.changePassword(p.userName)}" styleClass="btn btn-mini" title="Change password">
+                        <i class="icon-lock"></i>
+                    </h:commandLink>
+                    <h:commandLink action="#{personController.changeRoles(p.userName)}" styleClass="btn btn-mini" title="Change roles">
+                        <i class="icon-th-list"></i>
+                    </h:commandLink>
+                    <!--<h:commandLink action="#{personController.removePerson(p.userName)}" styleClass="btn btn-mini" title="Remove person">-->
+                        <!--<i class="icon-trash"></i>-->
+                    <!--</h:commandLink>-->
+
+                </h:column>
+            </h:dataTable>
+
+            <div class="row">
+                <div class="span2">
+                    <h:commandLink action="#{personController.createPerson()}" styleClass="btn" value="Add person"/>
+                </div>
+            </div>
+        </h:form>
+        <h:form rendered="#{!identityHelper.hasRole('ADMIN')}">
+            <p>
+                Your name: <strong>#{currentPerson.person.firstName} #{currentPerson.person.lastName}</strong><br/>
+                Your roles are: <strong>#{identity.userContext.roleNames}</strong><br/>
+                Click here to <h:commandLink value="Logout" action="#{logoutBean.logout()}"/>
+            </p>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</body>
+</html>
