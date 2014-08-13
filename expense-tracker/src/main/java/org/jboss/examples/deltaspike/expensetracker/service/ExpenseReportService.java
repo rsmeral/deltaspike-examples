@@ -18,7 +18,7 @@ public class ExpenseReportService {
     @Inject
     private ExpenseReportRepository repo;
 
-    @RolesAllowed(ACCOUNTANT_ROLE)
+    @RolesAllowed(ACCOUNTANT)
     public void assign(ExpenseReport report, Employee assignee) {
         if (report == null || assignee == null) {
             throw new IllegalArgumentException();
@@ -43,7 +43,7 @@ public class ExpenseReportService {
         repo.save(report);
     }
 
-    @RolesAllowed(EMPLOYEE_ROLE)
+    @RolesAllowed(EMPLOYEE)
     public void submit(ExpenseReport report) {
         if (report == null) {
             throw new IllegalArgumentException();
@@ -64,7 +64,7 @@ public class ExpenseReportService {
         repo.save(report);
     }
 
-    @RolesAllowed({ACCOUNTANT_ROLE, ADMIN_ROLE})
+    @RolesAllowed({ACCOUNTANT, ADMIN})
     public void reject(ExpenseReport report) {
         if (report == null) {
             throw new IllegalArgumentException("null");
@@ -77,7 +77,7 @@ public class ExpenseReportService {
         repo.save(report);
     }
 
-    @RolesAllowed({ACCOUNTANT_ROLE, ADMIN_ROLE})
+    @RolesAllowed({ACCOUNTANT, ADMIN})
     public void reimburse(ExpenseReport report) {
         if (report == null) {
             throw new IllegalArgumentException("null");
@@ -90,7 +90,7 @@ public class ExpenseReportService {
         repo.save(report);
     }
 
-    @RolesAllowed({ACCOUNTANT_ROLE, ADMIN_ROLE})
+    @RolesAllowed({ACCOUNTANT, ADMIN})
     public void approve(ExpenseReport report) {
         if (report == null) {
             throw new IllegalArgumentException("null");

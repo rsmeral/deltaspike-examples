@@ -25,14 +25,16 @@
                         </li>
                         <li>
                             <h:link outcome="/secured/purposes"
-                                    rendered="#{idm.hasRole(VERIFIER_ROLE)}" id="nav-purposes">Purposes</h:link>
+                                    rendered="#{idm.hasRole(ADMIN)}" 
+                                    id="nav-purposes">Purposes</h:link>
                         </li>
                         <li>
                             <h:link outcome="/secured/receipts" id="nav-receipts">Receipts</h:link>
                         </li>
                         <li>
                             <h:link outcome="/secured/employees"
-                                    rendered="#{idm.hasRole(ADMIN_ROLE)}" id="nav-users">Users</h:link>
+                                    rendered="#{idm.hasRole(ADMIN)}"
+                                    id="nav-users">Users</h:link>
                         </li>
 
                     </ul>

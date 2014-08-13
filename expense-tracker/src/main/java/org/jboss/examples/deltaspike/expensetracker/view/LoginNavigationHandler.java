@@ -1,5 +1,7 @@
 package org.jboss.examples.deltaspike.expensetracker.view;
 
+import org.jboss.examples.deltaspike.expensetracker.view.config.SecuredPages;
+import org.jboss.examples.deltaspike.expensetracker.view.config.Login;
 import javax.enterprise.event.Observes;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -8,7 +10,7 @@ import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandl
 import org.picketlink.authentication.event.LoggedInEvent;
 import org.picketlink.authentication.event.LoginFailedEvent;
 
-public class SecurityNavigationHandler {
+public class LoginNavigationHandler {
 
     @Inject
     private ViewNavigationHandler view;

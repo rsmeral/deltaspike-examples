@@ -105,10 +105,12 @@
             <scope>compile</scope>
         </dependency>
         
+        <!-- This implementation module is compile instead of runtime-scoped 
+             because the AuditEntityListener class is referenced in code -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-impl</artifactId>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
         
         <dependency>

@@ -20,7 +20,7 @@ import org.picketlink.idm.query.IdentityQuery;
  * Application layer service for registering Employees as system users
  */
 @ApplicationScoped
-@RolesAllowed(ADMIN_ROLE)
+@RolesAllowed(ADMIN)
 public class EmployeeRegistration {
 
     public static final String EMPLOYEE_ID_ATTRIBUTE = "employeeId";

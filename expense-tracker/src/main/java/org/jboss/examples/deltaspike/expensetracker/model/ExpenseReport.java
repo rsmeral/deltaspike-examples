@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -16,8 +17,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.apache.deltaspike.data.api.audit.ModifiedBy;
 import org.apache.deltaspike.data.api.audit.ModifiedOn;
+import org.apache.deltaspike.data.impl.audit.AuditEntityListener;
 
 @Entity
+@EntityListeners(AuditEntityListener.class)
 public class ExpenseReport implements Serializable {
 
     @Id
