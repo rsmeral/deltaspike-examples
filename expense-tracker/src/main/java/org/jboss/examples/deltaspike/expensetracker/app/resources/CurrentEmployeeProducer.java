@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
-import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeService;
+import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 import org.picketlink.Identity;

@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.app.security.view;
+package org.jboss.examples.deltaspike.expensetracker.app.security;
 
 import static java.lang.annotation.ElementType.*;
 import java.lang.annotation.Inherited;
@@ -15,6 +15,7 @@ import org.apache.deltaspike.security.api.authorization.AccessDecisionVoter;
 import org.apache.deltaspike.security.api.authorization.AccessDecisionVoterContext;
 import org.apache.deltaspike.security.api.authorization.Secured;
 import org.apache.deltaspike.security.api.authorization.SecurityViolation;
+import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.picketlink.Identity;
 
 @Target({TYPE, METHOD, FIELD})
@@ -30,6 +31,9 @@ public @interface LoggedIn {
 
         @Inject
         private Identity identity;
+        
+        @Inject 
+        private AppMessages msg;
 
         @Override
         public Set<SecurityViolation> checkPermission(AccessDecisionVoterContext accessDecisionVoterContext) {
@@ -37,7 +41,7 @@ public @interface LoggedIn {
                 return Collections.<SecurityViolation>singleton(new SecurityViolation() {
                     @Override
                     public String getReason() {
-                        return "No user is logged in.";
+                        return msg.noUserIsLoggedIn();
                     }
                 });
             } else {

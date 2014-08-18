@@ -9,6 +9,7 @@ import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandl
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
+import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseRepository;
 import org.jboss.examples.deltaspike.expensetracker.model.Expense;
 import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
@@ -28,6 +29,9 @@ public class ExpenseController implements Serializable {
     
     @Inject
     private ViewStack viewStack;
+    
+    @Inject
+    private AppMessages msg;
 
     private Expense selected;
 
@@ -44,13 +48,13 @@ public class ExpenseController implements Serializable {
     
     public void delete(Expense expense) {
         repo.remove(expense);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
+        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.itemDeleted(), null));
     }
     
     @End
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
+        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
         return viewStack.pop();
     }
 

@@ -10,7 +10,8 @@ import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandl
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
-import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeService;
+import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.view.Pages;
@@ -32,6 +33,9 @@ public class EmployeeController implements Serializable {
 
     @Inject
     private ViewStack viewStack;
+    
+    @Inject
+    private AppMessages msg;
 
     private Employee selected;
 
@@ -58,10 +62,10 @@ public class EmployeeController implements Serializable {
     public Class<? extends ViewConfig> save() {
         if (isNewEmployee()) {
             svc.registerEmployee(repo.save(selected), username, password, (String[]) roles.toArray());
-            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee created.", null));
+            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.employeeCreated(selected.getFirstName(), selected.getLastName()), null));
         } else {
             repo.save(selected);
-            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
+            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
         }
         return viewStack.pop();
     }

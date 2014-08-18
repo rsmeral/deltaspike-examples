@@ -12,7 +12,8 @@ import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
-import org.jboss.examples.deltaspike.expensetracker.app.security.view.AuthorizationChecker;
+import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
@@ -39,7 +40,10 @@ public class ExpenseReportController implements Serializable {
     private ViewStack viewStack;
 
     @Inject
-    private AuthorizationChecker idm;
+    private Authorizations idm;
+    
+    @Inject
+    private AppMessages msg;
 
     @Inject
     @CurrentUser
@@ -62,31 +66,35 @@ public class ExpenseReportController implements Serializable {
     @End
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
+        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
         return viewStack.pop();
     }
 
+    @End
     public Class<? extends ViewConfig> submit() {
         svc.submit(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report submitted.", null));
+        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSubmitted(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
     
+    @End
     public Class<? extends ViewConfig> reject() {
         svc.reject(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report rejected.", null));
+        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportRejected(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
     
+    @End
     public Class<? extends ViewConfig> approve() {
         svc.approve(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report approved.", null));
+        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportApproved(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
     
+    @End
     public Class<? extends ViewConfig> settle() {
         svc.settle(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report settled.", null));
+        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSettled(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
     

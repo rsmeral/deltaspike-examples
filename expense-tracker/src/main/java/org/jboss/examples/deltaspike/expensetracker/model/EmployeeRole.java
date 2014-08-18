@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.app.security;
+package org.jboss.examples.deltaspike.expensetracker.model;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

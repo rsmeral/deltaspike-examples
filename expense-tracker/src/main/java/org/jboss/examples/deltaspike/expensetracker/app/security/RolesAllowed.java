@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.app.security.view;
+package org.jboss.examples.deltaspike.expensetracker.app.security;
 
 import static java.lang.annotation.ElementType.*;
 import java.lang.annotation.Inherited;
@@ -15,6 +15,7 @@ import org.apache.deltaspike.security.api.authorization.AccessDecisionVoter;
 import org.apache.deltaspike.security.api.authorization.AccessDecisionVoterContext;
 import org.apache.deltaspike.security.api.authorization.Secured;
 import org.apache.deltaspike.security.api.authorization.SecurityViolation;
+import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.picketlink.Identity;
 import org.picketlink.authorization.util.AuthorizationUtil;
 import org.picketlink.idm.IdentityManager;
@@ -45,6 +46,9 @@ public @interface RolesAllowed {
 
         @Inject
         private RelationshipManager relationshipManager;
+        
+        @Inject 
+        private AppMessages msg;
 
         @Override
         public Set<SecurityViolation> checkPermission(AccessDecisionVoterContext accessDecisionVoterContext) {
@@ -57,7 +61,7 @@ public @interface RolesAllowed {
             return Collections.<SecurityViolation>singleton(new SecurityViolation() {
                 @Override
                 public String getReason() {
-                    return "No user's role is authorized to access this resource.";
+                    return msg.noRolesAuthorized();
                 }
             });
         }

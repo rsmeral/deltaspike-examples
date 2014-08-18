@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.examples.deltaspike.expensetracker.app.security.view;
+package org.jboss.examples.deltaspike.expensetracker.app.security;
 
+import org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
-import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole;
-import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.ACCOUNTANT;
-import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.ADMIN;
-import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.EMPLOYEE;
+import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.ACCOUNTANT;
+import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.ADMIN;
+import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.EMPLOYEE;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
 import static org.jboss.examples.deltaspike.expensetracker.model.ReportStatus.OPEN;
@@ -43,7 +43,7 @@ import org.picketlink.idm.model.basic.Role;
  */
 @Named("idm")
 @RequestScoped
-public class AuthorizationChecker {
+public class Authorizations {
 
     @Inject
     private Identity identity;
