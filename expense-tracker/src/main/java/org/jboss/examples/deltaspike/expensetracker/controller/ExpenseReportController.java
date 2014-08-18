@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
+import org.jboss.examples.deltaspike.expensetracker.app.exception.ApplicationException;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
@@ -71,28 +72,28 @@ public class ExpenseReportController implements Serializable {
     }
 
     @End
-    public Class<? extends ViewConfig> submit() {
+    public Class<? extends ViewConfig> submit() throws ApplicationException {
         svc.submit(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSubmitted(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
     
     @End
-    public Class<? extends ViewConfig> reject() {
+    public Class<? extends ViewConfig> reject() throws ApplicationException  {
         svc.reject(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportRejected(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
     
     @End
-    public Class<? extends ViewConfig> approve() {
+    public Class<? extends ViewConfig> approve() throws ApplicationException  {
         svc.approve(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportApproved(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
     
     @End
-    public Class<? extends ViewConfig> settle() {
+    public Class<? extends ViewConfig> settle() throws ApplicationException {
         svc.settle(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSettled(selected.getName()), null));
         return Pages.Secured.Report.class;
