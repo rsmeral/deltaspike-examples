@@ -1,18 +1,18 @@
 package org.jboss.examples.deltaspike.expensetracker.app.resources;
 
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
-import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRegistration;
+import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeService;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 import org.picketlink.Identity;
 import org.picketlink.idm.model.basic.User;
 
-@SessionScoped
+@WindowScoped
 public class CurrentEmployeeProducer implements Serializable {
 
     private Employee cached;
@@ -24,11 +24,12 @@ public class CurrentEmployeeProducer implements Serializable {
     private EmployeeRepository repo;
 
     @Produces
+    @WindowScoped
     @CurrentUser
     @Named
     public Employee getCurrentEmployee() {
         if (cached == null) {
-            Long employeeId = identity.getAccount().<Long>getAttribute(EmployeeRegistration.EMPLOYEE_ID_ATTRIBUTE).getValue();
+            Long employeeId = identity.getAccount().<Long>getAttribute(EmployeeService.EMPLOYEE_ID_ATTRIBUTE).getValue();
             Employee found = repo.findBy(employeeId);
             cached = found;
         }
@@ -37,6 +38,7 @@ public class CurrentEmployeeProducer implements Serializable {
     }
     
     @Produces
+    @WindowScoped
     @Named
     @CurrentUser
     public User getCurrentUser() {

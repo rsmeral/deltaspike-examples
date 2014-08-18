@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
+
+        <ui:composition template="/resources/template/layout.xhtml">
+            <ui:define name="content">
+
+                <!--UNSETTLED REPORTS FOR EMPLOYEE -->
+                <h:form rendered="#{idm.hasRole(EMPLOYEE)}">
+                    <h2>Reported by me</h2>
+                    <h:dataTable value="#{expenseReportRepository.findAllUnsettledByReporter(currentEmployee)}" var="report">
+
+                        <h:column>
+                            <f:facet name="header">ID</f:facet>
+                                #{report.id}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Short description</f:facet>
+                                #{report.description}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Last change</f:facet>
+                            <h:outputText value="#{report.lastChangeDate}">
+                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                                #{report.status}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Assignee</f:facet>
+                            <h:outputText value="#{report.assignee}" rendered="#{not empty report.assignee}"/>
+                            <h:outputText value="Unassigned" rendered="#{empty report.assignee}"/>
+                        </h:column>
+
+                    </h:dataTable>
+
+                    <div>
+                        <div>
+                            <h:commandLink action="#{expenseReportController.create()}" value="Create a report"/>
+                            <h:commandLink action="#{expenseReportController.showAllReportedByCurrentEmployee()}" value="Show all"/>
+                        </div>
+                    </div>
+                </h:form>
+
+                <!--ASSIGNED TO CURRENT ACCOUNTANT -->
+                <h:form rendered="#{idm.hasRole(ACCOUNTANT)}">
+                    <h2>Assigned to me</h2>
+                    <h:dataTable value="#{expenseReportRepository.findAllUnsettledByAssignee(currentEmployee)}" var="report">
+
+                        <h:column>
+                            <f:facet name="header">ID</f:facet>
+                                #{report.id}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:commandLink action="#{expenseReportController.edit(report)}"
+                                           value="#{report.name}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Short description</f:facet>
+                                #{report.description}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Last changed</f:facet>
+                            <h:outputText value="#{report.lastChangeDate}">
+                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                                #{report.status}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Approved</f:facet>
+                            <h:outputText value="#{report.approvedDate}">
+                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Reporter</f:facet>
+                                #{report.reporter.firstName} #{report.reporter.lastName}
+                        </h:column>
+
+                    </h:dataTable>
+                    
+                    <div>
+                        <div>
+                            <h:commandLink action="#{expenseReportController.showAllAssignedToCurrentAccountant()}" value="Show all"/>
+                        </div>
+                    </div>
+
+                </h:form>
+
+                <!--UNASSIGNED REPORTS -->
+                <h:form rendered="#{idm.hasRole(ACCOUNTANT)}">
+                    <h2>Unassigned reports</h2>
+                    <h:dataTable value="#{expenseReportRepository.findUnassigned()}" var="report">
+
+                        <h:column>
+                            <f:facet name="header">ID</f:facet>
+                                #{report.id}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Name</f:facet>
+                            <h:commandLink action="#{expenseReportController.edit(report)}"
+                                           value="#{report.name}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Short description</f:facet>
+                                #{report.description}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Last changed</f:facet>
+                            <h:outputText value="#{report.lastChangeDate}">
+                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                                #{report.status}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Reporter</f:facet>
+                                #{report.reporter.firstName} #{report.reporter.lastName}
+                        </h:column>
+
+                    </h:dataTable>
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

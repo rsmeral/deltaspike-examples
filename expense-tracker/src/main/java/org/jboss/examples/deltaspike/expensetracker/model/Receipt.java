@@ -35,6 +35,9 @@ public class Receipt implements Serializable {
 
     @NotNull
     private String documentName;
+    
+    @ManyToOne(optional = false)
+    private ExpenseReport report;
 
     public Long getId() {
         return id;

@@ -5,4 +5,8 @@
     <alternatives>
         <class>org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy</class>
     </alternatives>
+    
+    <interceptors>
+        <class>org.jboss.examples.deltaspike.expensetracker.app.controller.ConversationInterceptor</class>
+    </interceptors>
 </beans>

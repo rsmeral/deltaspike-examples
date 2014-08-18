@@ -3,6 +3,7 @@ package org.jboss.examples.deltaspike.expensetracker.app.security;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.*;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 import org.picketlink.authorization.annotations.RolesAllowed;
@@ -14,14 +15,17 @@ import org.picketlink.idm.model.IdentityType;
 import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
+import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 
-/*
- * Application layer service for registering Employees as system users
+/**
+ * Application layer service for registering Employees as system users. This
+ * service bridges the application model and the IDM model.
  */
 @ApplicationScoped
 @RolesAllowed(ADMIN)
-public class EmployeeRegistration {
+@Named
+public class EmployeeService {
 
     public static final String EMPLOYEE_ID_ATTRIBUTE = "employeeId";
 
@@ -36,6 +40,10 @@ public class EmployeeRegistration {
         return query.getResultList();
     }
 
+    public User getUserForEmployee(Employee employee) {
+        return idm.createIdentityQuery(User.class).setParameter(new AttributeParameter(EMPLOYEE_ID_ATTRIBUTE), employee.getId()).getResultList().get(0);
+    }
+
     public void registerEmployee(Employee emp, String username, String password, String... roles) {
         User user = new User();
         user.setLoginName(username);
@@ -43,7 +51,7 @@ public class EmployeeRegistration {
 
         idm.add(user);
         idm.updateCredential(user, new Password(password));
-        
+
         for (String role : roles) {
             BasicModel.grantRole(relMgr, user, BasicModel.getRole(idm, role));
         }

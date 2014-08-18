@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xml:lang="en" lang="en">
 
-<h:head>
-    <title>Employee</title>
-</h:head>
-<h:body>
+    <h:head>
+        <title>Employee</title>
+    </h:head>
+    <h:body>
 
-    <ui:composition template="/resources/template/layout.xhtml">
-        <ui:define name="content">
-            <!-- Title --> 
-            <h:form styleClass="form-horizontal">
-                <h:messages id="error-messages" />
-                <div class="control-group">
-                    <h:outputLabel value="Username:" styleClass="control-label" for="username"/>
-                    <div class="controls">
-                        <h:inputText value="#{currentUser.loginName}" label="Username" id="username"/>
+        <ui:composition template="/resources/template/layout.xhtml">
+            <ui:define name="content">
+                <!-- Title --> 
+                <h:form>
+                    <h:messages id="error-messages" />
+                    <div class="control-group">
+                        <h:outputLabel value="Username:" for="username"/>
+                        <div class="controls">
+                            <h:inputText value="#{currentUser.loginName}" label="Username" id="username" disabled="true"/>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <h:outputLabel value="First name:" styleClass="control-label" for="firstName"/>
-                    <div class="controls">
-                        <h:inputText value="#{currentEmployee.firstName}" label="First name" id="firstName"/>
+                    <div>
+                        <h:outputLabel value="First name:" for="firstName"/>
+                        <div>
+                            <h:inputText value="#{employeeController.selected.firstName}" label="First name" id="firstName"/>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <h:outputLabel value="Last name:" styleClass="control-label" for="lastName"/>
-                    <div class="controls">
-                        <h:inputText value="#{currentEmployee.lastName}" label="Last name" id="lastName"/>
+                    <div>
+                        <h:outputLabel value="Last name:" for="lastName"/>
+                        <div>
+                            <h:inputText value="#{employeeController.selected.lastName}" label="Last name" id="lastName"/>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <h:outputLabel value="Bank account:" styleClass="control-label" for="bankAccount"/>
-                    <div class="controls">
-                        <h:inputText value="#{currentEmployee.bankAccount}" label="Bank account" id="bankAccount"/>
+                    <div>
+                        <h:outputLabel value="Bank account:" for="bankAccount"/>
+                        <div>
+                            <h:inputText value="#{employeeController.selected.bankAccount}" label="Bank account" id="bankAccount"/>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <h:outputLabel value="Email:" styleClass="control-label" for="email"/>
-                    <div class="controls">
-                        <h:inputText value="#{currentEmployee.email}" label="Email" id="email"/>
+                    <div>
+                        <h:outputLabel value="Email:" for="email"/>
+                        <div>
+                            <h:inputText value="#{employeeController.selected.email}" label="Email" id="email"/>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <h:commandButton value="Save" action="#{personController.savePerson()}" styleClass="btn btn-primary"/>
-                        <h:commandButton value="Cancel" immediate="true"  styleClass="btn btn"/>
+                    <div>
+                        <div>
+                            <h:commandButton value="Save" action="#{employeeController.save()}" />
+                            <h:commandButton value="Cancel" immediate="true" />
+                        </div>
                     </div>
-                </div>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+                </h:form>
+            </ui:define>
+        </ui:composition>
 
-</h:body>
+    </h:body>
 </html>

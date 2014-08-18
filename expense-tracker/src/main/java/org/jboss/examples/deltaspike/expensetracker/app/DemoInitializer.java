@@ -6,7 +6,7 @@ import javax.ejb.Startup;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRegistration;
+import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeService;
 import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole;
 import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.*;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
@@ -20,7 +20,7 @@ import org.picketlink.idm.model.basic.Role;
 public class DemoInitializer {
 
     @Inject
-    private EmployeeRegistration empSvc;
+    private EmployeeService empSvc;
 
     @Inject
     private EmployeeRepository empRepo;

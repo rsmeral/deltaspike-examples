@@ -1,18 +1,19 @@
 package org.jboss.examples.deltaspike.expensetracker.service;
 
-import java.util.Date;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.*;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.model.ReportStatus;
 import org.picketlink.authorization.annotations.LoggedIn;
 import org.picketlink.authorization.annotations.RolesAllowed;
-import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.*;
 
 @Transactional
 @LoggedIn
+@RequestScoped
 public class ExpenseReportService {
 
     @Inject
@@ -58,13 +59,12 @@ public class ExpenseReportService {
             throw new IllegalStateException("Report is already assigned");
         }
 
-        report.setLastSubmittedDate(new Date(System.currentTimeMillis()));
         report.setStatus(ReportStatus.SUBMITTED);
         
         repo.save(report);
     }
 
-    @RolesAllowed({ACCOUNTANT, ADMIN})
+    @RolesAllowed(ACCOUNTANT)
     public void reject(ExpenseReport report) {
         if (report == null) {
             throw new IllegalArgumentException("null");
@@ -77,8 +77,8 @@ public class ExpenseReportService {
         repo.save(report);
     }
 
-    @RolesAllowed({ACCOUNTANT, ADMIN})
-    public void reimburse(ExpenseReport report) {
+    @RolesAllowed(ACCOUNTANT)
+    public void settle(ExpenseReport report) {
         if (report == null) {
             throw new IllegalArgumentException("null");
         }
@@ -90,7 +90,7 @@ public class ExpenseReportService {
         repo.save(report);
     }
 
-    @RolesAllowed({ACCOUNTANT, ADMIN})
+    @RolesAllowed(ACCOUNTANT)
     public void approve(ExpenseReport report) {
         if (report == null) {
             throw new IllegalArgumentException("null");
@@ -99,7 +99,6 @@ public class ExpenseReportService {
             throw new RuntimeException("No assignee");
         }
 
-        report.setApprovedDate(new Date(System.currentTimeMillis()));
         report.setStatus(ReportStatus.APPROVED);
         repo.save(report);
     }

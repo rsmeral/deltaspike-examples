@@ -7,6 +7,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 import java.util.Collections;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
@@ -30,6 +31,7 @@ public @interface RolesAllowed {
 
     String[] value();
 
+    @RequestScoped
     public static class Voter implements AccessDecisionVoter {
 
         @Inject

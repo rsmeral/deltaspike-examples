@@ -3,6 +3,7 @@ package org.jboss.examples.deltaspike.expensetracker.app.security;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 
@@ -13,14 +14,17 @@ import javax.inject.Named;
 public class EmployeeRole {
 
     @Produces
+    @ApplicationScoped
     @Named
     public static final String ADMIN = "ADMIN";
 
     @Produces
+    @ApplicationScoped
     @Named
     public static final String EMPLOYEE = "EMPLOYEE";
 
     @Produces
+    @ApplicationScoped
     @Named
     public static final String ACCOUNTANT = "ACCOUNTANT";
 

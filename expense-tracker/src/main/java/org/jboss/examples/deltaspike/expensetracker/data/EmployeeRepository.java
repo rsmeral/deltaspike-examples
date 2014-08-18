@@ -2,12 +2,14 @@ package org.jboss.examples.deltaspike.expensetracker.data;
 
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 import org.jboss.examples.deltaspike.expensetracker.model.Employee;
 
 @ApplicationScoped
 @Repository
+@Named
 public abstract class EmployeeRepository implements EntityRepository<Employee, Long> {
 
     public abstract List<Employee> findByEmail(String email);

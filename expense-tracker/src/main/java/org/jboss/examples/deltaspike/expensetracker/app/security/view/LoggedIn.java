@@ -7,6 +7,7 @@ import static java.lang.annotation.RetentionPolicy.*;
 import java.lang.annotation.Target;
 import java.util.Collections;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
@@ -24,6 +25,7 @@ import org.picketlink.Identity;
 @Secured(LoggedIn.Voter.class)
 public @interface LoggedIn {
 
+    @RequestScoped
     public static class Voter implements AccessDecisionVoter {
 
         @Inject

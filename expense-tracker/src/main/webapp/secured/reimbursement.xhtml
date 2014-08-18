@@ -6,42 +6,41 @@
       xmlns:rich="http://richfaces.org/rich"
       xml:lang="en" lang="en">
     <h:body>
-        <ui:composition template="/resources/template/common/layout.xhtml">
+        <ui:composition template="/resources/template/layout.xhtml">
 
             <ui:define name="content">
                 <ui:insert name="title"/>
-                <h:form styleClass="form-horizontal">
+                <h:form>
                     <h:messages id="error-messages" />
-                    <h:inputHidden value="#{moneyTransfer.report}" converter="#{expenseReportConverter}"/>
+                    <h:inputHidden value="#{reimbursementController.selected.report}" />
 
-                    <div class="control-group">
-                        <h:outputLabel value="Date:" for="date" styleClass="control-label"/>
+                    <div>
+                        <h:outputLabel value="Date:" for="date"/>
 
-                        <div class="controls">
-                            <rich:calendar value="#{moneyTransfer.date}" id="date" />
+                        <div>
+                            <rich:calendar value="#{reimbursementController.selected.date}" id="date" />
                         </div>
                     </div>
-                    <div class="control-group">
-                        <h:outputLabel value="Value:" for="value" styleClass="control-label"/>
+                    <div>
+                        <h:outputLabel value="Value:" for="value" />
 
-                        <div class="controls">
-                            <h:inputText id="value" value="#{moneyTransfer.value}" label="Value"/>
+                        <div>
+                            <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value"/>
                         </div>
                     </div>
-                    <div class="control-group">
-                        <h:outputLabel value="Currency:" for="currency" styleClass="control-label"/>
+                    <div>
+                        <h:outputLabel value="Currency:" for="currency" />
 
-                        <div class="controls">
-                            <h:selectOneMenu id="currency" value="#{moneyTransfer.currency}" label="Currency">
+                        <div>
+                            <h:selectOneMenu id="currency" value="#{reimbursementController.selected.currency}" label="Currency">
                                 <f:selectItems value="#{currencies}"/>
                             </h:selectOneMenu>
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <div>
                         <div class="controls">
-                            <h:commandButton action="#{moneyTransferController.saveMoneyTransfer()}" value="Save" styleClass="btn btn-primary"/>
-                            <h:commandButton action="/secured/report" immediate="true"  value="Cancel" styleClass="btn btn"/>
+                            <h:commandButton action="#{reimbursementController.save()}" value="Save"/>
                         </div>
                     </div>
                 </h:form>

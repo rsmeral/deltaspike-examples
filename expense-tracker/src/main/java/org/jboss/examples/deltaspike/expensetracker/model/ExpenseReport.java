@@ -44,13 +44,10 @@ public class ExpenseReport implements Serializable {
 
     @OneToMany(mappedBy = "report", cascade = CascadeType.MERGE)
     private List<Reimbursement> reimbursements;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastSubmittedDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date approvedDate;
-
+    
+    @OneToMany(mappedBy = "report", cascade = CascadeType.MERGE)
+    private List<Receipt> receipts;
+    
     /**
      * Tracks last modification date using DeltaSpike Auditing API.
      */
@@ -138,22 +135,14 @@ public class ExpenseReport implements Serializable {
         this.reimbursements = reimbursements;
     }
 
-    public Date getLastSubmittedDate() {
-        return lastSubmittedDate;
+    public List<Receipt> getReceipts() {
+        return receipts;
     }
 
-    public void setLastSubmittedDate(Date lastSubmittedDate) {
-        this.lastSubmittedDate = lastSubmittedDate;
+    public void setReceipts(List<Receipt> receipts) {
+        this.receipts = receipts;
     }
-
-    public Date getApprovedDate() {
-        return approvedDate;
-    }
-
-    public void setApprovedDate(Date approvedDate) {
-        this.approvedDate = approvedDate;
-    }
-
+    
     public Date getLastChangeDate() {
         return lastChangeDate;
     }
@@ -211,8 +200,6 @@ public class ExpenseReport implements Serializable {
                 + ", assignee=" + assignee
                 + ", expenses=" + expenses
                 + ", reimbursements=" + reimbursements
-                + ", lastSubmittedDate=" + lastSubmittedDate
-                + ", approvedDate=" + approvedDate
                 + ", lastChangeDate=" + lastChangeDate
                 + ", status=" + status
                 + '}';

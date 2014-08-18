@@ -16,8 +16,18 @@
  */
 package org.jboss.examples.deltaspike.expensetracker.app.security.view;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.data.api.audit.CurrentUser;
+import org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole;
+import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.ACCOUNTANT;
+import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.ADMIN;
+import static org.jboss.examples.deltaspike.expensetracker.app.security.EmployeeRole.EMPLOYEE;
+import org.jboss.examples.deltaspike.expensetracker.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
+import static org.jboss.examples.deltaspike.expensetracker.model.ReportStatus.OPEN;
+import static org.jboss.examples.deltaspike.expensetracker.model.ReportStatus.SUBMITTED;
 import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
@@ -32,8 +42,9 @@ import org.picketlink.idm.model.basic.Role;
  *
  */
 @Named("idm")
+@RequestScoped
 public class AuthorizationChecker {
-    
+
     @Inject
     private Identity identity;
 
@@ -42,6 +53,14 @@ public class AuthorizationChecker {
 
     @Inject
     private RelationshipManager relationshipManager;
+
+    @Inject
+    @CurrentUser
+    private Employee currentEmployee;
+
+    public boolean isAdmin() {
+        return hasRole(EmployeeRole.ADMIN);
+    }
 
     public boolean hasRole(String roleName) {
         Role role = BasicModel.getRole(this.identityManager, roleName);
@@ -55,5 +74,61 @@ public class AuthorizationChecker {
             }
         }
         return false;
+    }
+
+    /**
+     * Condition for report editing. An accountant can edit if: - he is not the
+     * reporter, - he is the assignee, - report is in the SUBMITTED state.
+     *
+     * An employee can edit if: - he is the reporter, - report is in the OPEN
+     * state.
+     *
+     * @param report
+     * @return
+     */
+    public boolean canEditReport(ExpenseReport report) {
+        if (isAdmin()) {
+            return true;
+        }
+        if (hasRole(ACCOUNTANT)) {
+            return !report.getReporter().equals(currentEmployee)
+                    && report.getAssignee().equals(currentEmployee)
+                    && report.getStatus().equals(SUBMITTED);
+        } else if (hasRole(EMPLOYEE)) {
+            return report.getReporter().equals(currentEmployee)
+                    && report.getStatus().equals(OPEN);
+        }
+
+        return hasRole(ADMIN);
+    }
+
+    /**
+     * Reimbursements can be edited if the user is an accountant and the report
+     * is editable.
+     *
+     * @param report
+     * @return
+     */
+    public boolean canEditReimbursements(ExpenseReport report) {
+        if (isAdmin()) {
+            return true;
+        }
+        return canEditReport(report)
+                && hasRole(ACCOUNTANT);
+    }
+
+    /**
+     * Reimbursements can be edited if the user is an employee and the report is
+     * editable.
+     *
+     * @param report
+     * @return
+     */
+    public boolean canEditExpenses(ExpenseReport report) {
+        if (isAdmin()) {
+            return true;
+        }
+        return canEditReport(report)
+                && hasRole(EMPLOYEE);
     }
 }

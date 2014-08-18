@@ -1,217 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xml:lang="en" lang="en">
 
-<head>
-    <title>Report Details</title>
-</head>
+    <head>
+        <title>Report Details</title>
+    </head>
+
+    <body>
+        <ui:composition template="/resources/template/layout.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h2><h:inputText value=#{expenseReportController.selected.name} /></h2>
+                    Status: <h:outputText value="#{expenseReportController.selected.status}" /><br/>
+                    Assignee: #{expenseReportController.selected.assignee.firstName} #{expenseReportController.selected.assignee.lastName}<br/>
+                    Reporter: #{expenseReportController.selected.reporter.firstName} #{expenseReportController.selected.reporter.lastName}<br/>
+                    Description:
+                    <h:inputText value="#{expenseReportController.selected.description}" />
+                    Last Change: 
+                    <h:outputText value="#{expenseReportController.selected.lastChangeDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+
+                    <!-- REIMBURSEMENTS -->
+                    <hr/>
+                    <h3>Reimbursements</h3>
+                    <h:dataTable value="#{expenseReportController.selected.reimbursements}" var="reimbursement" rendered="#{not empty expenseReportController.selected.reimbursements}">
+                        <h:column>
+                            <f:facet name="header">Date</f:facet>
+                            <h:outputText value="#{reimbursement.date}">
+                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Creator</f:facet>
+                                #{reimbursement.creator.firstName} #{reimbursement.creator.lastName}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Value</f:facet>
+                                #{reimbursement.value}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Currency</f:facet>
+                                #{reimbursement.currency}
+                        </h:column>
+
+                        <h:column rendered="#{idm.canEditReimbursements(reimbursement.report)}">
+                            <f:facet name="header">Action</f:facet>
+                            <h:commandLink action="#{reimbursementController.edit(reimbursement)}">
+                                Edit
+                            </h:commandLink>
+                            <h:commandLink action="#{reimbursementController.delete(reimbursement)}">
+                                Delete
+                            </h:commandLink>
+
+                        </h:column>
+                    </h:dataTable>
+
+                    <span>
+                        <strong>Reimbursements total:
+                            <h:outputText value="#{expenseReportController.reimbursementsTotal}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </strong>
+                    </span>
+
+                    <h:panelGroup rendered="#{idm.canEditReimbursements(expenseReportController.selected)}">
+                        <div class="row">
+                            <div>
+                                <h:commandLink action="#{reimbursementController.create(expenseReportController.selected)}" value="Add reimbursement"/>
+                            </div>
+                        </div>
+                    </h:panelGroup>
 
 
-<body>
-<ui:composition template="../resources/templates/common/commonTemplate.xhtml">
-    <ui:define name="content">
-        <h:form>
-            <div class="row">
-                <div class="span10"><h2>#{expenseReport.name}</h2></div>
-                <div class="span2" style="margin-top: 20px;">
-                    <div class="pull-right">
-                        <h:commandLink action="#{expenseController.editReport(expenseReport.id)}"
-                                       rendered="#{(identityHelper.hasRole('ADMIN') or identityHelper.isReportOwner(expenseReport.id))
-                                                    and (expenseController.isOpen() or expenseController.isRejected() ) }"
-                                       styleClass="btn btn-mini" title="Edit report">
-                            <i class="icon-pencil"></i>
-                        </h:commandLink>
+                    <!-- EXPENSES -->
+                    <hr/>
+                    <h3>Expenses</h3>
+                    <h:dataTable value="#{expenseReportController.selected.expenses}" var="expense">
+
+                        <h:column>
+                            <f:facet name="header">Date</f:facet>
+                            <h:outputText value="#{expense.date}">
+                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Purpose</f:facet>
+                                #{expense.purpose.name}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Receipt</f:facet>
+                            <h:commandLink action="#{receiptController.show(expense.receipt)}">
+                                #{expense.receipt.documentName}
+                            </h:commandLink>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Value</f:facet>
+                                #{expense.value}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Currency</f:facet>
+                                #{expense.currency}
+                        </h:column>
+
+                        <h:column rendered="#{idm.canEditExpenses(expense.report)}">
+                            <f:facet name="header">Action</f:facet>
+                            <h:commandLink action="#{expenseController.edit(expense)}">
+                                Edit
+                            </h:commandLink>
+                            <h:commandLink action="#{expenseController.delete(expense)}">
+                                Delete
+                            </h:commandLink>
+
+                        </h:column>
+
+                    </h:dataTable>
+
+                    <span>
+                        <strong>Expenses total:
+                            <h:outputText value="#{expenseReportController.expensesTotal}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </strong>
+                    </span>
+
+
+                    <span>
+                        <strong>Total:
+                            <h:outputText value="#{expenseReportController.reportTotal}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </strong>
+                    </span>
+
+
+                    <div>
+                        <div>
+                            <!-- Reporter options -->
+                            <h:panelGroup rendered="#{idm.canEditReport(expenseReportController.selected)}">
+                                <h:commandLink action="#{expenseReportController.submit()}" rendered="#{expenseReportController.submittable}" value="Submit"/>
+                                <h:commandLink action="#{expenseController.create(expenseReportController.selected)}" rendered="#{idm.canEditExpenses(expenseReportController.selected)}" value="Add Expense"/>
+                            </h:panelGroup>
+
+                            <!-- Assignee options -->
+                            <h:panelGroup rendered="#{idm.canEditReport(expenseReportController.selected)}">
+                                <h:commandLink action="#{expenseReportController.reject()}" value="Reject"/>
+                                <h:commandLink action="#{expenseReportController.approve()}" value="Approve"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{idm.canEditReport(expenseReportController.selected)}">
+                                <h:commandLink action="#{expenseReportController.settle()}" value="Settle"/>
+                            </h:panelGroup>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- REPORT -->
-            <h:dataTable value="#{expenseReport}" styleClass="table table-bordered table-striped table-hover">
-                <h:column>
-                    <f:facet name="header">Status</f:facet>
-                    #{expenseReport.status}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Verifier</f:facet>
-                    #{expenseReport.verifier.firstName} #{expenseReport.verifier.lastName}
-                </h:column>
 
 
-                <h:column>
-                    <f:facet name="header">Submitter</f:facet>
-                    #{expenseReport.submitter.firstName} #{expenseReport.submitter.lastName}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Description</f:facet>
-                    #{expenseReport.description}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Submitted</f:facet>
-                    <h:outputText value="#{expenseReport.lastSubmittedDate}">
-                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                    </h:outputText>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Last Change</f:facet>
-                    <h:outputText value="#{expenseReport.lastChangeDate}">
-                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                    </h:outputText>
-
-                </h:column>
-            </h:dataTable>
-
-
-
-            <!-- MONEY TRANSFERS -->
-            <hr/>
-            <h3>Money Transfers</h3>
-            <h:dataTable value="#{expenseReport.moneyTransfers}" var="mt" rendered="#{not empty expenseReport.moneyTransfers}"
-                         styleClass="table table-bordered table-striped table-hover">
-                <h:column>
-                    <f:facet name="header">Date</f:facet>
-                    <h:outputText value="#{mt.date}">
-                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                    </h:outputText>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Creator</f:facet>
-                    #{mt.creator.firstName} #{mt.creator.lastName}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Value</f:facet>
-                    #{mt.value}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Currency</f:facet>
-                    #{mt.currency}
-                </h:column>
-
-                <h:column rendered="#{identityHelper.hasAnyRole('ADMIN,VERIFIER') and not identityHelper.isReportOwner(expenseReport.id)}">
-                    <f:facet name="header">Action</f:facet>
-                    <h:commandLink action="#{moneyTransferController.editMoneyTransfer(mt.id)}"
-                                   rendered="#{expenseController.isSubmitted() or expenseController.isApproved()}"
-                                   styleClass="btn btn-mini">
-                        <i class="icon-pencil"></i>
-                    </h:commandLink>
-                    <h:commandLink action="#{moneyTransferController.removeMoneyTransfer(mt)}"
-                                   rendered="#{expenseController.isSubmitted() or expenseController.isApproved()}"
-                                   styleClass="btn btn-mini">
-                        <i class="icon-trash"></i>
-                    </h:commandLink>
-
-                </h:column>
-            </h:dataTable>
-
-            <h:panelGroup rendered="#{identityHelper.hasAnyRole('ADMIN,VERIFIER')
-                and not identityHelper.isReportOwner(expenseReport.id) and expenseController.hasVerifier()
-                and expenseController.isSubmitted()}">
-            <div class="row">
-                <div class="span2 btn-group">
-                    <h:commandLink action="#{moneyTransferController.createMoneyTransfer()}"
-                                   styleClass="btn" value="Add money transfer"/>
-                </div>
-            </div>
-            </h:panelGroup>
-
-
-            <!-- PAYMENTS -->
-            <hr/>
-
-            <h3>Payments</h3>
-            <h:dataTable value="#{expenseReport.payments}" var="pmt"
-                         styleClass="table table-bordered table-striped table-hover">
-
-                <h:column>
-                    <f:facet name="header">Date</f:facet>
-                    <h:outputText value="#{pmt.date}">
-                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                    </h:outputText>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Purpose</f:facet>
-                    #{pmt.purpose.name}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Receipt</f:facet>
-                    <h:commandLink action="#{receiptController.showFile(pmt.receipt.id)}">
-                        #{pmt.receipt.documentName}
-                    </h:commandLink>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Value</f:facet>
-                    #{pmt.value}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">Currency</f:facet>
-                    #{pmt.currency}
-                </h:column>
-
-                <h:column rendered="#{(identityHelper.isReportOwner(expenseReport.id) or identityHelper.hasRole('ADMIN')) and (expenseController.isOpen() or expenseController.isRejected()) }">
-                    <f:facet name="header">Action</f:facet>
-                    <h:commandLink action="#{paymentController.editPayment(pmt.id)}" styleClass="btn btn-mini">
-                        <i class="icon-pencil"></i>
-                    </h:commandLink>
-                    <h:commandLink action="#{paymentController.removePayment(pmt)}" styleClass="btn btn-mini">
-                        <i class="icon-trash"></i>
-                    </h:commandLink>
-
-                </h:column>
-
-            </h:dataTable>
-            <span class="well" style="float: right;">
-                <strong>Total:
-                <h:outputText value="#{reportComputing.getTotalValue(expenseReport)}">
-                    <f:convertNumber/>
-                </h:outputText>
-                </strong>
-            </span>
-
-
-            <div class="row">
-                <div class="span3 btn-group">
-                    <!-- SUBMITTER OPTIONS -->
-                    <h:panelGroup rendered="#{(identityHelper.isReportOwner(expenseReport.id) or identityHelper.hasRole('ADMIN'))
-                                                and (expenseController.isOpen() or expenseController.isRejected()) }">
-                        <h:commandLink action="#{expenseController.submitReport()}" rendered="#{expenseController.isSubmittable()}" styleClass="btn btn-primary" value="Submit"/>
-                        <h:commandLink action="#{paymentController.createPayment()}" rendered="#{expenseController.isOpen() or expenseController.isRejected()}" styleClass="btn" value="Add Payment"/>
-                    </h:panelGroup>
-
-                    <!-- VERIFIER OPTIONS -->
-
-                    <h:panelGroup rendered="#{identityHelper.hasAnyRole('ADMIN,VERIFIER') and expenseController.isSubmitted() and expenseController.hasVerifier() and not identityHelper.isReportOwner(expenseReport.id)}">
-                        <!-- CHANGE COLOR !!!!!!!!!!! -->
-                        <h:commandLink action="#{expenseController.rejectReport()}" styleClass="btn btn-primary" value="Reject"/>
-                        <h:commandLink action="#{expenseController.approveReport()}" styleClass="btn btn-primary" value="Approve"/>
-                    </h:panelGroup>
-
-                    <h:panelGroup rendered="#{identityHelper.hasAnyRole('ADMIN,VERIFIER') and expenseController.isApproved() and not identityHelper.isReportOwner(expenseReport.id) }">
-                        <h:commandLink action="#{expenseController.sendMoney()}" styleClass="btn btn-primary" value="Send money"/>
-                    </h:panelGroup>
-
-                    <h:commandButton action="#{expenseController.cancel()}" rendered="#{true}" value="Back" styleClass="btn btn"/>
-                </div>
-            </div>
-
-
-        </h:form>
-    </ui:define>
-</ui:composition>
-</body>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
 </html>
