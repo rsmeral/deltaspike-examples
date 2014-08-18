@@ -6,6 +6,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
@@ -48,59 +49,59 @@ public class ExpenseReportController implements Serializable {
 
     private List<ExpenseReport> list;
 
-    public void create() {
+    public Class<? extends ViewConfig> create() {
         selected = new ExpenseReport();
-        view.navigateTo(Pages.Secured.Report.class);
+        return Pages.Secured.Report.class;
     }
 
-    public void edit(ExpenseReport report) {
+    public Class<? extends ViewConfig> edit(ExpenseReport report) {
         selected = report;
-        view.navigateTo(Pages.Secured.Report.class);
+        return Pages.Secured.Report.class;
     }
 
     @End
-    public void save() {
+    public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
-        view.navigateTo(viewStack.pop());
+        return viewStack.pop();
     }
 
-    public void submit() {
+    public Class<? extends ViewConfig> submit() {
         svc.submit(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report submitted.", null));
-        view.navigateTo(Pages.Secured.Report.class);
+        return Pages.Secured.Report.class;
     }
     
-    public void reject() {
+    public Class<? extends ViewConfig> reject() {
         svc.reject(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report rejected.", null));
-        view.navigateTo(Pages.Secured.Report.class);
+        return Pages.Secured.Report.class;
     }
     
-    public void approve() {
+    public Class<? extends ViewConfig> approve() {
         svc.approve(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report approved.", null));
-        view.navigateTo(Pages.Secured.Report.class);
+        return Pages.Secured.Report.class;
     }
     
-    public void settle() {
+    public Class<? extends ViewConfig> settle() {
         svc.settle(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Report settled.", null));
-        view.navigateTo(Pages.Secured.Report.class);
+        return Pages.Secured.Report.class;
     }
     
     public boolean isSubmittable() {
         return selected.getStatus().equals(ReportStatus.OPEN);
     }
     
-    public void showAllReportedByCurrentEmployee() {
+    public Class<? extends ViewConfig> showAllReportedByCurrentEmployee() {
         list = repo.findByReporter(currentEmployee);
-        view.navigateTo(Pages.Secured.Reports.class);
+        return Pages.Secured.Reports.class;
     }
     
-    public void showAllAssignedToCurrentAccountant() {
+    public Class<? extends ViewConfig> showAllAssignedToCurrentAccountant() {
         list = repo.findByAssignee(currentEmployee);
-        view.navigateTo(Pages.Secured.Reports.class);
+        return Pages.Secured.Reports.class;
     }
 
     public BigDecimal getExpensesTotal() {

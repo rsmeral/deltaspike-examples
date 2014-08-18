@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
@@ -29,14 +30,14 @@ public class ReceiptController implements Serializable {
 
     private Receipt selected;
 
-    public void create() {
+    public Class<? extends ViewConfig> create() {
         selected = new Receipt();
-        view.navigateTo(Pages.Secured.Receipt.class);
+        return Pages.Secured.Receipt.class;
     }
     
-    public void edit(Receipt receipt) {
+    public Class<? extends ViewConfig> edit(Receipt receipt) {
         selected = receipt;
-        view.navigateTo(Pages.Secured.Receipt.class);
+        return Pages.Secured.Receipt.class;
     }
     
     public void delete(Receipt receipt) {
@@ -44,16 +45,16 @@ public class ReceiptController implements Serializable {
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
     }
     
-    public void show(Receipt receipt) {
+    public Class<? extends ViewConfig> show(Receipt receipt) {
         selected = receipt;
-        view.navigateTo(Pages.Secured.Receipt.class);// TODO
+        return Pages.Secured.Receipt.class;// TODO
     }
     
     @End
-    public void save() {
+    public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
-        view.navigateTo(viewStack.pop());
+        return viewStack.pop();
     }
 
     public Receipt getSelected() {

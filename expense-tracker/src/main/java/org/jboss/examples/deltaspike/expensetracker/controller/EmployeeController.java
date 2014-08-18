@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
@@ -42,19 +43,19 @@ public class EmployeeController implements Serializable {
 
     private List<String> roles;
 
-    public void create() {
+    public Class<? extends ViewConfig> create() {
         selected = new Employee();
-        view.navigateTo(Pages.Secured.Employee.class);
+        return Pages.Secured.Employee.class;
     }
 
-    public void edit(Employee employee) {
+    public Class<? extends ViewConfig> edit(Employee employee) {
         selected = employee;
         username = svc.getUserForEmployee(employee).getLoginName();
-        view.navigateTo(Pages.Secured.Employee.class);
+        return Pages.Secured.Employee.class;
     }
 
     @End
-    public void save() {
+    public Class<? extends ViewConfig> save() {
         if (isNewEmployee()) {
             svc.registerEmployee(repo.save(selected), username, password, (String[]) roles.toArray());
             faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee created.", null));
@@ -62,7 +63,7 @@ public class EmployeeController implements Serializable {
             repo.save(selected);
             faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
         }
-        view.navigateTo(viewStack.pop());
+        return viewStack.pop();
     }
 
     private boolean isNewEmployee() {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
@@ -30,15 +31,15 @@ public class ExpenseController implements Serializable {
 
     private Expense selected;
 
-    public void create(ExpenseReport report) {
+    public Class<? extends ViewConfig> create(ExpenseReport report) {
         selected = new Expense();
         selected.setReport(report);
-        view.navigateTo(Pages.Secured.Expense.class);
+        return Pages.Secured.Expense.class;
     }
     
-    public void edit(Expense expense) {
+    public Class<? extends ViewConfig> edit(Expense expense) {
         selected = expense;
-        view.navigateTo(Pages.Secured.Expense.class);
+        return Pages.Secured.Expense.class;
     }
     
     public void delete(Expense expense) {
@@ -47,10 +48,10 @@ public class ExpenseController implements Serializable {
     }
     
     @End
-    public void save() {
+    public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes saved.", null));
-        view.navigateTo(viewStack.pop());
+        return viewStack.pop();
     }
 
     public Expense getSelected() {
