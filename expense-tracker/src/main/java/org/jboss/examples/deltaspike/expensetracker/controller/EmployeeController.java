@@ -74,8 +74,14 @@ public class EmployeeController implements Serializable {
     public Class<? extends ViewConfig> cancel() {
         return viewStack.pop();
     }
+    
+    @End
+    public Class<? extends ViewConfig> changePassword() {
+        svc.changePassword(selected, password);
+        return viewStack.pop();
+    }
 
-    private boolean isNewEmployee() {
+    public boolean isNewEmployee() {
         return selected.getId() == null;
     }
 
@@ -109,6 +115,14 @@ public class EmployeeController implements Serializable {
 
     public void setPasswordConfirmation(String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
 }

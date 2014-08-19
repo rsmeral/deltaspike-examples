@@ -53,10 +53,18 @@ public class EmployeeService {
         idm.updateCredential(user, new Password(password));
 
         setRoles(user, roles);
-
     }
 
-    public void setRoles(IdentityType identity, String... roles) {
+    public void changePassword(Employee emp, String password) {
+        User user = getUserForEmployee(emp);
+        idm.updateCredential(user, new Password(password));
+    }
+
+    public void setRoles(Employee emp, String... roles) {
+        setRoles(getUserForEmployee(emp), roles);
+    }
+
+    private void setRoles(IdentityType identity, String... roles) {
         for (String role : EmployeeRole.getAllRoles()) {
             BasicModel.revokeRole(relMgr, identity, BasicModel.getRole(idm, role));
         }

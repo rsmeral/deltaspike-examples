@@ -17,12 +17,28 @@
                 <!-- Title --> 
                 <h:form>
                     <h:messages id="error-messages" />
-                    <div class="control-group">
-                        <h:outputLabel value="Username:" for="username"/>
-                        <div class="controls">
-                            <h:inputText value="#{currentUser.loginName}" label="Username" id="username" disabled="true"/>
-                        </div>
+                    <h:outputLabel value="Username:" for="username" />
+                    <div>
+                        <h:inputText value="#{employeeController.username}" label="Username" id="username" disabled="#{not employeeController.newEmployee}"/>
                     </div>
+
+                    <h:outputLabel value="Roles:" for="roles"/>
+                    <div>
+                        <h:selectManyListbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.hasRole(ADMIN)}"/>
+                    </div>
+
+                    <h:outputLabel value="Password:" for="password"/>
+                    <div>
+                        <h:inputSecret value="#{employeeController.password}" label="Password" id="password"/>
+                    </div>
+
+                    <h:outputLabel value="Password confirmation:" for="passwordConfirmation"/>
+                    <div>
+                        <h:inputSecret value="#{employeeController.passwordConfirmation}" label="Password Confirmation" id="passwordConfirmation"/>
+                    </div>
+
+                    <h:commandButton action="#{employeeController.changePassword()}" rendered="#{not employeeController.newEmployee}" value="Change password" />
+
                     <div>
                         <h:outputLabel value="First name:" for="firstName"/>
                         <div>
