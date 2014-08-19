@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.model;
+package org.jboss.examples.deltaspike.expensetracker.domain.model;
 
 import java.util.Arrays;
 import java.util.List;

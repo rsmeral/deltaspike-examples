@@ -49,10 +49,14 @@ public interface AppMessages {
 
     @MessageTemplate("{service.reportNotApproved}")
     String reportNotApproved(String reportName);
-    
+
+    @MessageTemplate("{service.reportCantBeReopened}")
+    String reportCantBeReopened(String reportName);
+
     @MessageTemplate("{security.loginFailed}")
     String loginFailed();
-    
+
     @MessageTemplate("{security.loggedOutSuccessfully}")
     String loggedOutSuccessfully();
+
 }

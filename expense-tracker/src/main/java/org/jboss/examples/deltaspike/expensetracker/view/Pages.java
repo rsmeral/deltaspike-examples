@@ -4,7 +4,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStacked;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.jsf.api.config.view.Folder;
-import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.ADMIN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ADMIN;
 import org.jboss.examples.deltaspike.expensetracker.app.security.LoggedIn;
 import org.jboss.examples.deltaspike.expensetracker.app.security.RolesAllowed;
 

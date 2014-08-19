@@ -11,8 +11,8 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ReimbursementRepository;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
-import org.jboss.examples.deltaspike.expensetracker.model.Reimbursement;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
 import org.jboss.examples.deltaspike.expensetracker.view.Pages;
 
 @Controller

@@ -10,6 +10,11 @@
 
             <ui:define name="content">
                 <ui:insert name="title"/>
+                
+                <h:outputText value="#{reimbursementController.selected.report.id}" /><br />
+                <h:outputText value="#{reimbursementController.selected.report.name}" /><br />
+                <h:outputText value="#{reimbursementController.selected.report.reporter.firstName} #{reimbursementController.selected.report.reporter.lastName}" /><br />
+                
                 <h:form>
                     <h:messages id="error-messages" />
                     <h:inputHidden value="#{reimbursementController.selected.report}" />

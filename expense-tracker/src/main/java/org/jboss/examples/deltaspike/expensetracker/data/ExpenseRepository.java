@@ -7,9 +7,9 @@ import javax.inject.Named;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
-import org.jboss.examples.deltaspike.expensetracker.model.Employee;
-import org.jboss.examples.deltaspike.expensetracker.model.Expense;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Expense;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport_;
 import org.jboss.examples.deltaspike.expensetracker.model.Expense_;
 

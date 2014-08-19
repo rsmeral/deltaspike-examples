@@ -6,10 +6,10 @@ import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.examples.deltaspike.expensetracker.app.exception.ApplicationException;
 import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
-import org.jboss.examples.deltaspike.expensetracker.model.Employee;
-import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.*;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
-import org.jboss.examples.deltaspike.expensetracker.model.ReportStatus;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.picketlink.authorization.annotations.LoggedIn;
 import org.picketlink.authorization.annotations.RolesAllowed;
 
@@ -23,6 +23,20 @@ public class ExpenseReportService {
 
     @Inject
     private AppMessages msg;
+
+    @RolesAllowed(EMPLOYEE)
+    public void open(ExpenseReport report) throws ApplicationException {
+        if (report == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(report.getStatus() == null) && !(report.getStatus() == ReportStatus.REJECTED)) {
+            throw new ApplicationException(msg.reportCantBeReopened(report.getName()));
+        }
+
+        report.setStatus(ReportStatus.OPEN);
+        repo.save(report);
+    }
 
     @RolesAllowed(ACCOUNTANT)
     public void assign(ExpenseReport report, Employee assignee) throws ApplicationException {

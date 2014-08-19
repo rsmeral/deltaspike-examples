@@ -9,10 +9,10 @@ import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.QueryParam;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
-import org.jboss.examples.deltaspike.expensetracker.model.Employee;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport_;
-import org.jboss.examples.deltaspike.expensetracker.model.ReportStatus;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 
 @ApplicationScoped
 @Repository

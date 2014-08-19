@@ -16,6 +16,11 @@
         <ui:composition template="/resources/template/layout.xhtml">
             <ui:define name="content">
                 <ui:insert name="title"/>
+                
+                <h:outputText value="#{expenseController.selected.report.id}" /><br />
+                <h:outputText value="#{expenseController.selected.report.name}" /><br />
+                <h:outputText value="#{expenseController.selected.report.reporter.firstName} #{expenseController.selected.report.reporter.lastName}" /><br />
+                
                 <h:form id="form">
                     <h:messages id="error-messages" />
 

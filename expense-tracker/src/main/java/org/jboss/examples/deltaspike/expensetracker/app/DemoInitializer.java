@@ -7,10 +7,10 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
-import org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole;
-import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.*;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
-import org.jboss.examples.deltaspike.expensetracker.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.model.basic.Role;
 

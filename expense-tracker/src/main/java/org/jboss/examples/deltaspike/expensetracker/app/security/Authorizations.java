@@ -16,18 +16,18 @@
  */
 package org.jboss.examples.deltaspike.expensetracker.app.security;
 
-import org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
-import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.ACCOUNTANT;
-import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.ADMIN;
-import static org.jboss.examples.deltaspike.expensetracker.model.EmployeeRole.EMPLOYEE;
-import org.jboss.examples.deltaspike.expensetracker.model.Employee;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
-import static org.jboss.examples.deltaspike.expensetracker.model.ReportStatus.OPEN;
-import static org.jboss.examples.deltaspike.expensetracker.model.ReportStatus.SUBMITTED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ADMIN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.OPEN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.SUBMITTED;
 import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
@@ -77,11 +77,13 @@ public class Authorizations {
     }
 
     /**
-     * Condition for report editing. An accountant can edit if: - he is not the
-     * reporter, - he is the assignee, - report is in the SUBMITTED state.
+     * Condition for report editing.
+     * An accountant can edit if: 
+     * - he is not the reporter, 
+     * - he is the assignee
      *
-     * An employee can edit if: - he is the reporter, - report is in the OPEN
-     * state.
+     * An employee can edit if: 
+     * - he is the reporter
      *
      * @param report
      * @return
@@ -92,11 +94,9 @@ public class Authorizations {
         }
         if (hasRole(ACCOUNTANT)) {
             return !report.getReporter().equals(currentEmployee)
-                    && report.getAssignee().equals(currentEmployee)
-                    && report.getStatus().equals(SUBMITTED);
+                    && report.getAssignee().equals(currentEmployee);
         } else if (hasRole(EMPLOYEE)) {
-            return report.getReporter().equals(currentEmployee)
-                    && report.getStatus().equals(OPEN);
+            return report.getReporter().equals(currentEmployee);
         }
 
         return hasRole(ADMIN);

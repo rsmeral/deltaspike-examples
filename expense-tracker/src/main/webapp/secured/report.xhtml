@@ -16,19 +16,19 @@
         <ui:composition template="/resources/template/layout.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <h2><h:inputText value=#{expenseReportController.selected.name} /></h2>
+                    <h2><h:inputText value=#{expenseReportController.selected.name} disabled="#{not expenseReportController.reportEditable}" /></h2>
                     Status: <h:outputText value="#{expenseReportController.selected.status}" /><br/>
                     Assignee: #{expenseReportController.selected.assignee.firstName} #{expenseReportController.selected.assignee.lastName}<br/>
                     Reporter: #{expenseReportController.selected.reporter.firstName} #{expenseReportController.selected.reporter.lastName}<br/>
                     Description:
-                    <h:inputText value="#{expenseReportController.selected.description}" />
+                    <h:inputText value="#{expenseReportController.selected.description}" disabled="#{not expenseReportController.reportEditable}" />
                     Last Change: 
                     <h:outputText value="#{expenseReportController.selected.lastChangeDate}">
                         <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
                     </h:outputText>
 
                     <div>
-                        <h:commandButton value="Save" action="#{expenseReportController.save()}" />
+                        <h:commandButton value="Save" action="#{expenseReportController.save()}" rendered="#{expenseReportController.reportEditable}" />
                         <h:commandButton value="Cancel" action=#{expenseReportController.cancel()} immediate="true" />
                     </div>
 
@@ -58,7 +58,7 @@
                                 #{reimbursement.currency}
                         </h:column>
 
-                        <h:column rendered="#{idm.canEditReimbursements(reimbursement.report)}">
+                        <h:column rendered="#{expenseReportController.reimbursementsEditable}">
                             <f:facet name="header">Action</f:facet>
                             <h:commandLink action="#{reimbursementController.edit(reimbursement)}">
                                 Edit
@@ -78,7 +78,7 @@
                         </strong>
                     </span>
 
-                    <h:panelGroup rendered="#{idm.canEditReimbursements(expenseReportController.selected)}">
+                    <h:panelGroup rendered="#{expenseReportController.reimbursementsEditable}">
                         <div class="row">
                             <div>
                                 <h:commandLink action="#{reimbursementController.create(expenseReportController.selected)}" value="Add reimbursement"/>
@@ -121,7 +121,7 @@
                                 #{expense.currency}
                         </h:column>
 
-                        <h:column rendered="#{idm.canEditExpenses(expense.report)}">
+                        <h:column rendered="#{expenseReportController.expensesEditable}">
                             <f:facet name="header">Action</f:facet>
                             <h:commandLink action="#{expenseController.edit(expense)}">
                                 Edit
@@ -151,23 +151,23 @@
                         </strong>
                     </span>
 
-
                     <div>
                         <div>
                             <!-- Reporter options -->
-                            <h:panelGroup rendered="#{idm.canEditReport(expenseReportController.selected)}">
-                                <h:commandLink action="#{expenseReportController.submit()}" rendered="#{expenseReportController.submittable}" value="Submit"/>
-                                <h:commandLink action="#{expenseController.create(expenseReportController.selected)}" rendered="#{idm.canEditExpenses(expenseReportController.selected)}" value="Add Expense"/>
+                            <h:panelGroup rendered="#{expenseReportController.reportEditable}">
+                                <h:commandLink action="#{expenseReportController.open()}" rendered="#{expenseReportController.canBeOpened}" value="Reopen"/>
+                                <h:commandLink action="#{expenseReportController.submit()}" rendered="#{expenseReportController.canBeSubmitted}" value="Submit"/>
+                                <h:commandLink action="#{expenseController.create(expenseReportController.selected)}" rendered="#{expenseReportController.expensesEditable}" value="Add Expense"/>
                             </h:panelGroup>
 
                             <!-- Assignee options -->
-                            <h:panelGroup rendered="#{idm.canEditReport(expenseReportController.selected)}">
-                                <h:commandLink action="#{expenseReportController.reject()}" value="Reject"/>
-                                <h:commandLink action="#{expenseReportController.approve()}" value="Approve"/>
+                            <h:panelGroup rendered="#{expenseReportController.reportEditable}">
+                                <h:commandLink action="#{expenseReportController.reject()}" rendered="#{expenseReportController.canBeRejected}" value="Reject"/>
+                                <h:commandLink action="#{expenseReportController.approve()}" rendered="#{expenseReportController.canBeApproved}" value="Approve"/>
                             </h:panelGroup>
 
-                            <h:panelGroup rendered="#{idm.canEditReport(expenseReportController.selected)}">
-                                <h:commandLink action="#{expenseReportController.settle()}" value="Settle"/>
+                            <h:panelGroup rendered="#{expenseReportController.reportEditable}">
+                                <h:commandLink action="#{expenseReportController.settle()}" rendered="#{expenseReportController.canBeSettled}" value="Settle"/>
                             </h:panelGroup>
                         </div>
                     </div>

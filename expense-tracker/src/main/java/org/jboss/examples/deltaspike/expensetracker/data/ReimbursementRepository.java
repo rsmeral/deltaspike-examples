@@ -6,8 +6,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
-import org.jboss.examples.deltaspike.expensetracker.model.Reimbursement;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
 
 @ApplicationScoped
 @Repository

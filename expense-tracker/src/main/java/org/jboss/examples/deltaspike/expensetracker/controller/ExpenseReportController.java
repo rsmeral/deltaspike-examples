@@ -16,9 +16,10 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
-import org.jboss.examples.deltaspike.expensetracker.model.Employee;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport;
-import org.jboss.examples.deltaspike.expensetracker.model.ReportStatus;
+import org.jboss.examples.deltaspike.expensetracker.domain.logic.Rules;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.jboss.examples.deltaspike.expensetracker.service.ExpenseReportService;
 import org.jboss.examples.deltaspike.expensetracker.view.Pages;
 
@@ -44,6 +45,9 @@ public class ExpenseReportController implements Serializable {
     private Authorizations idm;
 
     @Inject
+    private Rules rules;
+
+    @Inject
     private AppMessages msg;
 
     @Inject
@@ -56,9 +60,15 @@ public class ExpenseReportController implements Serializable {
 
     public Class<? extends ViewConfig> create() {
         selected = new ExpenseReport();
+        selected.setStatus(ReportStatus.OPEN);
         return Pages.Secured.Report.class;
     }
 
+    public Class<? extends ViewConfig> open() {
+        selected.setStatus(ReportStatus.OPEN);
+        return Pages.Secured.Report.class;
+    }
+    
     public Class<? extends ViewConfig> edit(ExpenseReport report) {
         selected = report;
         return Pages.Secured.Report.class;
@@ -104,8 +114,36 @@ public class ExpenseReportController implements Serializable {
         return viewStack.pop();
     }
 
-    public boolean isSubmittable() {
-        return selected.getStatus().equals(ReportStatus.OPEN);
+    public boolean isCanBeOpened() {
+        return idm.canEditReport(selected) && rules.canOpen(selected);
+    }
+
+    public boolean isCanBeSubmitted() {
+        return idm.canEditReport(selected) && rules.canSubmit(selected);
+    }
+
+    public boolean isCanBeRejected() {
+        return idm.canEditReport(selected) && rules.canReject(selected);
+    }
+
+    public boolean isCanBeApproved() {
+        return idm.canEditReport(selected) && rules.canApprove(selected);
+    }
+
+    public boolean isCanBeSettled() {
+        return idm.canEditReport(selected) && rules.canSettle(selected);
+    }
+
+    public boolean isReportEditable() {
+        return idm.canEditReport(selected) && rules.canEditReport(selected);
+    }
+    
+    public boolean isReimbursementsEditable() {
+        return idm.canEditReimbursements(selected) && rules.canEditReimbursements(selected);
+    }
+
+    public boolean isExpensesEditable() {
+        return idm.canEditExpenses(selected) && rules.canEditExpenses(selected);
     }
 
     public Class<? extends ViewConfig> showAllReportedByCurrentEmployee() {

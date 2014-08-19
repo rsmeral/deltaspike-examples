@@ -13,7 +13,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.PurposeRepository;
-import org.jboss.examples.deltaspike.expensetracker.model.Purpose;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose;
 import org.jboss.examples.deltaspike.expensetracker.view.Pages;
 
 @Controller
