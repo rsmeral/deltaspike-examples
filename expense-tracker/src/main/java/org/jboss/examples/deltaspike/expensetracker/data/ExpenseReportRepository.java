@@ -11,7 +11,7 @@ import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
-import org.jboss.examples.deltaspike.expensetracker.model.ExpenseReport_;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport_;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 
 @ApplicationScoped

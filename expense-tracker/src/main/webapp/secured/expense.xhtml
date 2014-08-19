@@ -28,21 +28,19 @@
                         <h:outputLabel value="Date:" for="date" />
 
                         <div>
-                            <rich:calendar value="#{expenseController.selected.date}" id="date" />
+                            <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}"/>
                         </div>
                     </div>
                     <div>
                         <h:outputLabel value="Purpose:" for="purposes" />
 
                         <div>
-                            <h:selectOneMenu id="purposes" label="Purpose" value="#{expenseController.selected.purpose}">
+                            <h:selectOneMenu id="purposes" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not expenseReportController.expensesEditable}">
                                 <f:selectItem itemValue="#{null}" itemLabel="" />
                                 <f:selectItems value="#{purposes}" var="p" itemLabel="#{p.name}" itemValue="#{p}" />
                             </h:selectOneMenu>
 
-                            <h:commandButton id="newPurpose" action="#{purposeController.create()}"
-                                             value="New purpose" immediate="true">
-                            </h:commandButton>
+                            <h:commandButton id="newPurpose" action="#{purposeController.create()}" value="New purpose" immediate="true" rendered="#{expenseReportController.expensesEditable}" />
                         </div>
                     </div>
 
@@ -52,26 +50,25 @@
                         <div>
                             <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" >
                                 <f:selectItem itemValue="#{null}" itemLabel="" />
-                                <f:selectItems value="#{expenseController.selected.report.receipts}" var="r" itemLabel="#{r.documentName}"
+                                <f:selectItems value="#{expenseController.selected.report.receipts}" var="r" itemLabel="#{r.documentName}" 
                                                itemValue="#{r}"/>
                             </h:selectOneMenu>
-                            <h:commandButton id="newReceipt" action="#{receiptController.create()}"
-                                             value="Add receipt" immediate="true">
-                            </h:commandButton>
+                            <h:commandButton id="newReceipt" action="#{receiptController.create()}" rendered="#{expenseReportController.expensesEditable}"
+                                             value="Add receipt" immediate="true" />
                         </div>
                     </div>
                     <div>
                         <h:outputLabel value="Value:" for="value" />
 
                         <div>
-                            <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"/>
+                            <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not expenseReportController.expensesEditable}"/>
                         </div>
                     </div>
                     <div>
                         <h:outputLabel value="Currency:" for="currency" />
 
                         <div>
-                            <h:selectOneMenu id="currency" label="Currency" value="#{expenseController.selected.currency}">
+                            <h:selectOneMenu id="currency" label="Currency" value="#{expenseController.selected.currency}" disabled="#{not expenseReportController.expensesEditable}">
                                 <f:selectItems value="#{currencies}" />
                             </h:selectOneMenu>
                         </div>
@@ -79,8 +76,8 @@
 
                     <div>
                         <div>
-                            <h:commandButton action="#{expenseController.save()}" value="Save" />
-                            <h:commandButton action=#{expenseController.cancel()} value="Cancel" immediate="true" />
+                            <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{expenseReportController.expensesEditable}" />
+                            <h:commandButton action="#{expenseController.cancel()}" value="Cancel" immediate="true" />
                         </div>
                     </div>
                 </h:form>
