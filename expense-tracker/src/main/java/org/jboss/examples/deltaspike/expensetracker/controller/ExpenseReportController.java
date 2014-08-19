@@ -30,7 +30,7 @@ public class ExpenseReportController implements Serializable {
 
     @Inject
     private ExpenseReportRepository repo;
-    
+
     @Inject
     private ExpenseReportService svc;
 
@@ -42,7 +42,7 @@ public class ExpenseReportController implements Serializable {
 
     @Inject
     private Authorizations idm;
-    
+
     @Inject
     private AppMessages msg;
 
@@ -77,37 +77,42 @@ public class ExpenseReportController implements Serializable {
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSubmitted(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
-    
+
     @End
-    public Class<? extends ViewConfig> reject() throws ApplicationException  {
+    public Class<? extends ViewConfig> reject() throws ApplicationException {
         svc.reject(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportRejected(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
-    
+
     @End
-    public Class<? extends ViewConfig> approve() throws ApplicationException  {
+    public Class<? extends ViewConfig> approve() throws ApplicationException {
         svc.approve(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportApproved(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
-    
+
     @End
     public Class<? extends ViewConfig> settle() throws ApplicationException {
         svc.settle(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSettled(selected.getName()), null));
         return Pages.Secured.Report.class;
     }
-    
+
+    @End
+    public Class<? extends ViewConfig> cancel() {
+        return viewStack.pop();
+    }
+
     public boolean isSubmittable() {
         return selected.getStatus().equals(ReportStatus.OPEN);
     }
-    
+
     public Class<? extends ViewConfig> showAllReportedByCurrentEmployee() {
         list = repo.findByReporter(currentEmployee);
         return Pages.Secured.Reports.class;
     }
-    
+
     public Class<? extends ViewConfig> showAllAssignedToCurrentAccountant() {
         list = repo.findByAssignee(currentEmployee);
         return Pages.Secured.Reports.class;
@@ -116,15 +121,15 @@ public class ExpenseReportController implements Serializable {
     public BigDecimal getExpensesTotal() {
         return repo.getReportExpensesTotal(selected);
     }
-    
+
     public BigDecimal getReimbursementsTotal() {
         return repo.getReportReimbursementTotal(selected);
     }
-    
+
     public BigDecimal getReportTotal() {
         return repo.getReportBalance(selected);
     }
-    
+
     public ExpenseReport getSelected() {
         return selected;
     }

@@ -75,6 +75,7 @@
                     <div>
                         <div>
                             <h:commandButton action="#{expenseController.save()}" value="Save" />
+                            <h:commandButton action=#{expenseController.cancel()} value="Cancel" immediate="true" />
                         </div>
                     </div>
                 </h:form>

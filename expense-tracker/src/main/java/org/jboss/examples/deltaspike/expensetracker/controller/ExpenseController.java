@@ -26,10 +26,10 @@ public class ExpenseController implements Serializable {
 
     @Inject
     private FacesContext faces;
-    
+
     @Inject
     private ViewStack viewStack;
-    
+
     @Inject
     private AppMessages msg;
 
@@ -40,21 +40,26 @@ public class ExpenseController implements Serializable {
         selected.setReport(report);
         return Pages.Secured.Expense.class;
     }
-    
+
     public Class<? extends ViewConfig> edit(Expense expense) {
         selected = expense;
         return Pages.Secured.Expense.class;
     }
-    
+
     public void delete(Expense expense) {
         repo.remove(expense);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.itemDeleted(), null));
     }
-    
+
     @End
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
+        return viewStack.pop();
+    }
+
+    @End
+    public Class<? extends ViewConfig> cancel() {
         return viewStack.pop();
     }
 

@@ -69,6 +69,11 @@ public class EmployeeController implements Serializable {
         }
         return viewStack.pop();
     }
+    
+    @End
+    public Class<? extends ViewConfig> cancel() {
+        return viewStack.pop();
+    }
 
     private boolean isNewEmployee() {
         return selected.getId() == null;

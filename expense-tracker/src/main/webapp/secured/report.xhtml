@@ -27,6 +27,11 @@
                         <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
                     </h:outputText>
 
+                    <div>
+                        <h:commandButton value="Save" action="#{expenseReportController.save()}" />
+                        <h:commandButton value="Cancel" action=#{expenseReportController.cancel()} immediate="true" />
+                    </div>
+
                     <!-- REIMBURSEMENTS -->
                     <hr/>
                     <h3>Reimbursements</h3>

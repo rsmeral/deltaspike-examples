@@ -25,10 +25,10 @@ public class ReceiptController implements Serializable {
 
     @Inject
     private FacesContext faces;
-    
+
     @Inject
     private ViewStack viewStack;
-    
+
     @Inject
     private AppMessages msg;
 
@@ -38,26 +38,31 @@ public class ReceiptController implements Serializable {
         selected = new Receipt();
         return Pages.Secured.Receipt.class;
     }
-    
+
     public Class<? extends ViewConfig> edit(Receipt receipt) {
         selected = receipt;
         return Pages.Secured.Receipt.class;
     }
-    
+
     public void delete(Receipt receipt) {
         repo.remove(receipt);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.itemDeleted(), null));
     }
-    
+
     public Class<? extends ViewConfig> show(Receipt receipt) {
         selected = receipt;
         return Pages.Secured.Receipt.class;// TODO
     }
-    
+
     @End
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
+        return viewStack.pop();
+    }
+
+    @End
+    public Class<? extends ViewConfig> cancel() {
         return viewStack.pop();
     }
 

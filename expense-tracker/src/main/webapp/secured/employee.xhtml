@@ -50,7 +50,7 @@
                     <div>
                         <div>
                             <h:commandButton value="Save" action="#{employeeController.save()}" />
-                            <h:commandButton value="Cancel" immediate="true" />
+                            <h:commandButton value="Cancel" action=#{employeeController.cancel()} immediate="true" />
                         </div>
                     </div>
                 </h:form>
