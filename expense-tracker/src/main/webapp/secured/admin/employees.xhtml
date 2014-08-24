@@ -14,7 +14,7 @@
             <ui:define name="content">
                 <h:form rendered="#{idm.hasRole(ADMIN)}">
                     <h2>Employees</h2>
-                    <h:dataTable value="#{employeeRepository.findAll()}" var="e">
+                    <h:dataTable value="#{employeeController.allEmployees}" var="e">
                         <h:column>
                             <f:facet name="header">Username</f:facet>
                                 #{employeeService.getUserForEmployee(e).loginName}

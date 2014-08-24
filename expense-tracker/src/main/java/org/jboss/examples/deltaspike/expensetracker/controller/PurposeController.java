@@ -8,13 +8,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
-import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.PurposeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose;
-import org.jboss.examples.deltaspike.expensetracker.view.Pages;
+import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
 public class PurposeController implements Serializable {
@@ -36,29 +36,29 @@ public class PurposeController implements Serializable {
 
     private Purpose selected;
 
+    @Begin(force = true)
     public Class<? extends ViewConfig> create() {
         selected = new Purpose();
-        return Pages.Secured.Purpose.class;
+        return SecuredPages.Purpose.class;
     }
 
+    @Begin
     public Class<? extends ViewConfig> edit(Purpose purpose) {
         selected = purpose;
-        return Pages.Secured.Receipt.class;
+        return SecuredPages.Receipt.class;
     }
-
+    
     public void delete(Purpose purpose) {
         repo.remove(purpose);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.itemDeleted(), null));
     }
 
-    @End
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
         return viewStack.pop();
     }
 
-    @End
     public Class<? extends ViewConfig> cancel() {
         return viewStack.pop();
     }

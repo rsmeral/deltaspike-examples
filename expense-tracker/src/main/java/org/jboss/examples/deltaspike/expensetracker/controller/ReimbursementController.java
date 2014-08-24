@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
@@ -13,7 +14,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ReimbursementRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
-import org.jboss.examples.deltaspike.expensetracker.view.Pages;
+import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
 public class ReimbursementController implements Serializable {
@@ -35,15 +36,17 @@ public class ReimbursementController implements Serializable {
 
     private Reimbursement selected;
 
+    @Begin
     public Class<? extends ViewConfig> create(ExpenseReport report) {
         selected = new Reimbursement();
         selected.setReport(report);
-        return Pages.Secured.Reimbursement.class;
+        return SecuredPages.Reimbursement.class;
     }
 
+    @Begin
     public Class<? extends ViewConfig> edit(Reimbursement reimbursement) {
         selected = reimbursement;
-        return Pages.Secured.Reimbursement.class;
+        return SecuredPages.Reimbursement.class;
     }
 
     public void delete(Reimbursement reimbursement) {
@@ -51,7 +54,6 @@ public class ReimbursementController implements Serializable {
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.itemDeleted(), null));
     }
 
-    @End
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));

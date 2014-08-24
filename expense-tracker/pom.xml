@@ -96,6 +96,12 @@
             <scope>provided</scope>
         </dependency>
         
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
         
         <!-- DeltaSpike modules -->
         
@@ -106,7 +112,7 @@
         </dependency>
         
         <!-- This implementation module is compile instead of runtime-scoped 
-             because the AuditEntityListener class is referenced in code -->
+        because the AuditEntityListener class is referenced in code -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-impl</artifactId>
@@ -137,7 +143,7 @@
             <scope>runtime</scope>
         </dependency>
         
-         <dependency>
+        <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jsf-module-api</artifactId>
             <scope>compile</scope>
@@ -147,6 +153,18 @@
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
             <version>${version.org.apache.deltaspike}</version>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-servlet-module-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-servlet-module-impl</artifactId>
             <scope>runtime</scope>
         </dependency>
         

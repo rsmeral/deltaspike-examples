@@ -2,11 +2,13 @@
        xsi:schemaLocation="
       http://java.sun.com/xml/ns/javaee
       http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
-    <alternatives>
+    
+<!--    <alternatives>
         <class>org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy</class>
-    </alternatives>
+    </alternatives>-->
     
     <interceptors>
-        <class>org.jboss.examples.deltaspike.expensetracker.app.controller.ConversationInterceptor</class>
+        <class>org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor</class>
+        <class>org.jboss.examples.deltaspike.expensetracker.app.extension.ConversationInterceptor</class>
     </interceptors>
 </beans>

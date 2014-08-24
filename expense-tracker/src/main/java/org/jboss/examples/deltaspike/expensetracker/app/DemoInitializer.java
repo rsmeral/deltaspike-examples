@@ -1,22 +1,18 @@
 package org.jboss.examples.deltaspike.expensetracker.app;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
+import javax.inject.Named;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
+import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.model.basic.Role;
 
-@Startup
-@Singleton
-@TransactionManagement(TransactionManagementType.BEAN)
+@ApplicationScoped
+@Named
 public class DemoInitializer {
 
     @Inject
@@ -28,17 +24,26 @@ public class DemoInitializer {
     @Inject
     private IdentityManager idm;
 
-    @PostConstruct
+    private boolean initialized = false;
+
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
+
     public void initialize() {
-        
         for (String role : EmployeeRole.getAllRoles()) {
             idm.add(new Role(role));
         }
-        
+
         empSvc.registerEmployee(empRepo.save(new Employee("Admin", "Administrator", "admin@example.com", "123456789")), "admin", "admin", EMPLOYEE, ACCOUNTANT, ADMIN);
         empSvc.registerEmployee(empRepo.save(new Employee("John", "Employee", "john@example.com", "987654321")), "john", "john", EMPLOYEE);
         empSvc.registerEmployee(empRepo.save(new Employee("Anna", "Accountant", "anna@example.com", "654321987")), "anna", "anna", EMPLOYEE, ACCOUNTANT);
 
+        initialized = true;
     }
 
 }

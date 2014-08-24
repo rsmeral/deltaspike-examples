@@ -1,44 +1,144 @@
 package org.jboss.examples.deltaspike.expensetracker.domain.logic;
 
-import javax.inject.Named;
+import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
+import org.apache.deltaspike.data.api.audit.CurrentUser;
+import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.*;
+import org.picketlink.authentication.event.LoggedInEvent;
 
 /**
  * Contains state-transfer rules for ExpenseReports.
  */
-@Named
-public class Rules {
+@SessionScoped
+public class Rules implements Serializable {
 
-    public boolean canOpen(ExpenseReport report) {
+    private Employee currentEmployee;
+
+    public Rules() {
+    }
+
+    @Inject
+    public Rules(@CurrentUser Employee employee) {
+        this.currentEmployee = employee;
+    }
+
+    public void setCurrentEmployee(@Observes LoggedInEvent event, @CurrentUser Employee employee) {
+        this.currentEmployee = employee;
+    }
+
+    @Inject
+    private Authorizations auth;
+
+    public static boolean isAssignee(ExpenseReport report, Employee employee) {
+        return employee.equals(report.getAssignee());
+    }
+
+    public static boolean isReporter(ExpenseReport report, Employee employee) {
+        return employee.equals(report.getReporter());
+    }
+
+    /*
+     * STATE-BASED RULES
+     */
+    public static boolean canBeOpened(ExpenseReport report) {
         return report.getStatus() == null || report.getStatus() == REJECTED;
     }
 
-    public boolean canSubmit(ExpenseReport report) {
+    public static boolean canBeAssigned(ExpenseReport report) {
+        return report.getStatus() == SUBMITTED && report.getAssignee() == null;
+    }
+
+    public static boolean canBeUnassigned(ExpenseReport report) {
+        return report.getStatus() == SUBMITTED && report.getAssignee() != null;
+    }
+
+    public static boolean canBeSubmitted(ExpenseReport report) {
         return report.getStatus() == OPEN;
     }
 
-    public boolean canReject(ExpenseReport report) {
+    public static boolean canBeRejected(ExpenseReport report) {
         return report.getStatus() == SUBMITTED;
     }
 
-    public boolean canApprove(ExpenseReport report) {
+    public static boolean canBeApproved(ExpenseReport report) {
         return report.getStatus() == SUBMITTED;
     }
 
-    public boolean canSettle(ExpenseReport report) {
+    public static boolean canBeSettled(ExpenseReport report) {
         return report.getStatus() == APPROVED;
     }
-    
-    public boolean canEditReport(ExpenseReport report) {
+
+    public static boolean canReportDetailsBeEdited(ExpenseReport report) {
         return !(report.getStatus() == SETTLED);
     }
-    
-    public boolean canEditReimbursements(ExpenseReport report) {
+
+    public static boolean canReimbursementsBeEdited(ExpenseReport report) {
         return report.getStatus() == SUBMITTED;
     }
-    
-    public boolean canEditExpenses(ExpenseReport report) {
+
+    public static boolean canExpensesBeEdited(ExpenseReport report) {
         return report.getStatus() == OPEN;
+    }
+
+    /*
+     * AUTHORIZATION-BASED RULES
+     */
+    /**
+     * Condition for report editing. An accountant can edit if: - he is not the
+     * reporter, - he is the assignee
+     *
+     * An employee can edit if: - he is the reporter
+     *
+     * @param report
+     * @return
+     */
+    public boolean canUserEditReport(ExpenseReport report) {
+        if (auth.isAdmin()) {
+            return true;
+        }
+        if (auth.hasRole(ACCOUNTANT)) {
+            return !currentEmployee.equals(report.getReporter())
+                    && currentEmployee.equals(report.getAssignee());
+        } else if (auth.hasRole(EMPLOYEE)) {
+            return currentEmployee.equals(report.getReporter());
+        }
+        return false;
+    }
+
+    /**
+     * Reimbursements can be edited if the user is an accountant and the report
+     * is editable.
+     *
+     * @param report
+     * @return
+     */
+    public boolean canUserEditReimbursements(ExpenseReport report) {
+        if (auth.isAdmin()) {
+            return true;
+        }
+        return canUserEditReport(report)
+                && auth.hasRole(ACCOUNTANT);
+    }
+
+    /**
+     * Reimbursements can be edited if the user is an employee and the report is
+     * editable.
+     *
+     * @param report
+     * @return
+     */
+    public boolean canUserEditExpenses(ExpenseReport report) {
+        if (auth.isAdmin()) {
+            return true;
+        }
+        return canUserEditReport(report)
+                && auth.hasRole(EMPLOYEE);
     }
 }

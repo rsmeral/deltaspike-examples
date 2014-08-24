@@ -55,6 +55,20 @@ public class ExpenseReportService {
         report.setAssignee(assignee);
         repo.save(report);
     }
+    
+    @RolesAllowed(ACCOUNTANT)
+    public void unassign(ExpenseReport report) throws ApplicationException {
+        if (report == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (report.getAssignee() == null) {
+            throw new ApplicationException(msg.reportNotAssigned(report.getName()));
+        }
+
+        report.setAssignee(null);
+        repo.save(report);
+    }
 
     @RolesAllowed(EMPLOYEE)
     public void submit(ExpenseReport report) throws ApplicationException {

@@ -26,7 +26,7 @@ public class Receipt implements Serializable {
     @NotNull
     private Date importDate;
 
-    @ManyToOne(optional = false)//, targetEntity = Person.class) (cascade= CascadeType.MERGE)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @NotNull
     private Employee importedBy;
 
@@ -36,7 +36,7 @@ public class Receipt implements Serializable {
     @NotNull
     private String documentName;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     private ExpenseReport report;
 
     public Long getId() {

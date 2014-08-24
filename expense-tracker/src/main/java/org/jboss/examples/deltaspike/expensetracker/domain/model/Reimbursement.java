@@ -11,7 +11,7 @@ public class Reimbursement extends Transaction implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @NotNull
     private Employee creator;
 

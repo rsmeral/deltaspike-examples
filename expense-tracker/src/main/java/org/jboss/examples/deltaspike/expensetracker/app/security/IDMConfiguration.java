@@ -24,8 +24,7 @@ public class IDMConfiguration {
     private IdentityConfiguration identityConfig = null;
 
     @Produces
-    @ApplicationScoped
-    public IdentityConfiguration createJPAConfig() {
+    public IdentityConfiguration createConfig() {
         if (identityConfig == null) {
             initFileConfig();
         }

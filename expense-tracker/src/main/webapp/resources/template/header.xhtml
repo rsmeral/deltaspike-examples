@@ -1,65 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <head>
     </head>
 
     <body>
         <ui:composition>
-            <div>
-                <div>
-                    <div>
-                        <h:form>
-                            <ul id="navbar">
-                                <li>
-                                    <h:link outcome="/secured/home" id="nav-home">Home</h:link>
-                                </li>
-                                <li>
-                                    <h:link outcome="/secured/purposes" id="nav-purposes" rendered="#{idm.hasRole(ADMIN)}">Purposes</h:link>
-                                </li>
-                                <li>
-                                    <h:link outcome="/secured/employees" id="nav-employees" rendered="#{idm.hasRole(ADMIN)}">Employees</h:link>
-                                </li>
-                            </ul>
-                            <ul>
-                                <li>
-                                    <a id="nav-identity" href="#">
-                                        #{currentEmployee.firstName} #{currentEmployee.lastName}
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <h:commandLink action="#{employeeController.edit(currentEmployee)}" id="nav-drop-edit">
-                                                Edit profile
-                                            </h:commandLink>
-                                        </li>
-                                        <li>
-                                            <h:commandLink action="#{identity.logout()}" id="nav-drop-logout">
-                                                Logout
-                                            </h:commandLink>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </h:form>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div id="overview">
-                    <div>
-                        <div>
-                            <h1>Expense tracking</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr/>
+            <ui:fragment rendered="#{identity.loggedIn}">
+
+                <h:form>
+                    <rich:toolbar>
+                        <rich:menuItem><h:link outcome="/secured/home" id="nav-home">Home</h:link></rich:menuItem>
+                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/purposes" id="nav-purposes">Purposes</h:link></rich:menuItem>
+                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/employees" id="nav-employees">Employees</h:link></rich:menuItem>
+                        <rich:dropDownMenu>
+                            <f:facet name="label">
+                                <h:panelGroup>
+                                    <h:outputText value="#{currentEmployee.firstName} #{currentEmployee.lastName}" />
+                                </h:panelGroup>
+                            </f:facet>
+                            <rich:menuItem label="Edit profile" id="nav-drop-edit" action="#{employeeController.edit(currentEmployee)}" />
+                            <rich:menuItem label="Logout" id="nav-drop-logout" action="#{identity.logout()}" />
+                        </rich:dropDownMenu>
+                    </rich:toolbar>
+                </h:form>
+            </ui:fragment>
+            <h1>Expense tracking</h1>
         </ui:composition>
     </body>
 

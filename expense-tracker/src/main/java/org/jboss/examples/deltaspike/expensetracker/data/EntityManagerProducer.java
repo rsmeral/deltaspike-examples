@@ -1,5 +1,6 @@
-package org.jboss.examples.deltaspike.expensetracker.app.resources;
+package org.jboss.examples.deltaspike.expensetracker.data;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
@@ -11,13 +12,11 @@ import javax.persistence.PersistenceUnit;
  * An entity manager exposed as a CDI bean is required for DeltaSpike's 
  * EntityRepository to work.
  */
+@ApplicationScoped
 public class EntityManagerProducer {
 
     @PersistenceUnit(unitName = "primary")
     private EntityManagerFactory primaryEmf;
-    
-//    @PersistenceUnit(unitName = "identity")
-//    private EntityManagerFactory idEmf;
 
     @Produces
     @ConversationScoped
@@ -25,16 +24,10 @@ public class EntityManagerProducer {
         return primaryEmf.createEntityManager();
     }
 
-    public void destroyPrimaryEm(@Disposes EntityManager em) {
-        if (em.isOpen()) {
-            em.close();
+    public void dispose(@Disposes EntityManager entityManager) {
+        if (entityManager.isOpen()) {
+            entityManager.close();
         }
     }
-    
-//    @Produces
-//    @PicketLink
-//    public EntityManager produceIdentityEm() {
-//        return idEmf.createEntityManager();
-//    }
 
 }

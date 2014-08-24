@@ -7,14 +7,15 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
-import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
-import org.jboss.examples.deltaspike.expensetracker.view.Pages;
+import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
+import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
 public class EmployeeController implements Serializable {
@@ -46,16 +47,18 @@ public class EmployeeController implements Serializable {
     private String passwordConfirmation;
 
     private List<String> roles;
-
+    
+    @Begin(force = true)
     public Class<? extends ViewConfig> create() {
         selected = new Employee();
-        return Pages.Secured.Employee.class;
+        return SecuredPages.Employee.class;
     }
 
+    @Begin
     public Class<? extends ViewConfig> edit(Employee employee) {
         selected = employee;
         username = svc.getUserForEmployee(employee).getLoginName();
-        return Pages.Secured.Employee.class;
+        return SecuredPages.Employee.class;
     }
 
     @End
@@ -79,6 +82,10 @@ public class EmployeeController implements Serializable {
     public Class<? extends ViewConfig> changePassword() {
         svc.changePassword(selected, password);
         return viewStack.pop();
+    }
+    
+    public List<Employee> getAllEmployees() {
+        return repo.findAll();
     }
 
     public boolean isNewEmployee() {

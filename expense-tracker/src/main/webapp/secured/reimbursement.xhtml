@@ -21,21 +21,21 @@
                         <h:outputLabel value="Date:" for="date"/>
 
                         <div>
-                            <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}" />
+                            <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.reimbursementsEditable}" />
                         </div>
                     </div>
                     <div>
                         <h:outputLabel value="Value:" for="value" />
 
                         <div>
-                            <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not expenseReportController.expensesEditable}"/>
+                            <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not expenseReportController.reimbursementsEditable}"/>
                         </div>
                     </div>
                     <div>
                         <h:outputLabel value="Currency:" for="currency" />
 
                         <div>
-                            <h:selectOneMenu id="currency" value="#{reimbursementController.selected.currency}" label="Currency" disabled="#{not expenseReportController.expensesEditable}">
+                            <h:selectOneMenu id="currency" value="#{reimbursementController.selected.currency}" label="Currency" disabled="#{not expenseReportController.reimbursementsEditable}">
                                 <f:selectItems value="#{currencies}"/>
                             </h:selectOneMenu>
                         </div>
@@ -43,7 +43,7 @@
 
                     <div>
                         <div class="controls">
-                            <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.expensesEditable}"/>
+                            <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}"/>
                             <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" />
                         </div>
                     </div>

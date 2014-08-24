@@ -6,13 +6,14 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ReceiptRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Receipt;
-import org.jboss.examples.deltaspike.expensetracker.view.Pages;
+import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
 public class ReceiptController implements Serializable {
@@ -34,14 +35,16 @@ public class ReceiptController implements Serializable {
 
     private Receipt selected;
 
+    @Begin(force = true)
     public Class<? extends ViewConfig> create() {
         selected = new Receipt();
-        return Pages.Secured.Receipt.class;
+        return SecuredPages.Receipt.class;
     }
 
+    @Begin
     public Class<? extends ViewConfig> edit(Receipt receipt) {
         selected = receipt;
-        return Pages.Secured.Receipt.class;
+        return SecuredPages.Receipt.class;
     }
 
     public void delete(Receipt receipt) {
@@ -51,17 +54,15 @@ public class ReceiptController implements Serializable {
 
     public Class<? extends ViewConfig> show(Receipt receipt) {
         selected = receipt;
-        return Pages.Secured.Receipt.class;// TODO
+        return SecuredPages.Receipt.class;// TODO
     }
 
-    @End
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
         faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
         return viewStack.pop();
     }
 
-    @End
     public Class<? extends ViewConfig> cancel() {
         return viewStack.pop();
     }
