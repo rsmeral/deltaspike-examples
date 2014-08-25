@@ -5,7 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xml:lang="en" lang="en">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xml:lang="en" lang="en"
+      xmlns:et="http://java.sun.com/jsf/composite/et">
 
     <h:head>
         <title>Employee</title>
@@ -14,61 +17,53 @@
 
         <ui:composition template="/resources/template/layout.xhtml">
             <ui:define name="content">
-                <!-- Title --> 
+                <rich:panel header="Password" rendered="#{not employeeController.newEmployee}">
+                    <et:passwordForm />
+                </rich:panel>
                 <h:form>
-                    <h:messages id="error-messages" />
-                    <h:outputLabel value="Username:" for="username" />
-                    <div>
-                        <h:inputText value="#{employeeController.username}" label="Username" id="username" disabled="#{not employeeController.newEmployee}"/>
-                    </div>
+                    <rich:panel header="User">
+                        <h:panelGrid id="userPanel" columns="3" border="0">
+                            <h:outputLabel value="Username:" for="username" />
+                            <h:inputText value="#{employeeController.username}" label="Username" id="username" disabled="#{not employeeController.newEmployee}"/>
+                            <rich:message for="username" />
 
-                    <h:outputLabel value="Roles:" for="roles"/>
-                    <div>
-                        <h:selectManyListbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.hasRole(ADMIN)}"/>
-                    </div>
+                            <h:outputLabel value="Roles:" for="roles"/>
+                            <h:selectManyListbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.hasRole(ADMIN)}" >
+                                <f:selectItems value="#{roles}" />
+                            </h:selectManyListbox>
+                            <rich:message for="roles" />
+                        </h:panelGrid>
 
-                    <h:outputLabel value="Password:" for="password"/>
-                    <div>
-                        <h:inputSecret value="#{employeeController.password}" label="Password" id="password"/>
-                    </div>
+                        <et:passwordForm inline="#{true}" rendered="#{employeeController.newEmployee}" />
 
-                    <h:outputLabel value="Password confirmation:" for="passwordConfirmation"/>
-                    <div>
-                        <h:inputSecret value="#{employeeController.passwordConfirmation}" label="Password Confirmation" id="passwordConfirmation"/>
-                    </div>
+                    </rich:panel>
 
-                    <h:commandButton action="#{employeeController.changePassword()}" rendered="#{not employeeController.newEmployee}" value="Change password" />
-
-                    <div>
-                        <h:outputLabel value="First name:" for="firstName"/>
-                        <div>
+                    <rich:panel header="Employee">
+                        <h:panelGrid id="employeePanel" columns="3" border="0">
+                            <h:outputLabel value="First name:" for="firstName"/>
                             <h:inputText value="#{employeeController.selected.firstName}" label="First name" id="firstName"/>
-                        </div>
-                    </div>
-                    <div>
-                        <h:outputLabel value="Last name:" for="lastName"/>
-                        <div>
+                            <rich:message for="firstName" />
+
+                            <h:outputLabel value="Last name:" for="lastName"/>
                             <h:inputText value="#{employeeController.selected.lastName}" label="Last name" id="lastName"/>
-                        </div>
-                    </div>
-                    <div>
-                        <h:outputLabel value="Bank account:" for="bankAccount"/>
-                        <div>
+                            <rich:message for="lastName" />
+
+                            <h:outputLabel value="Bank account:" for="bankAccount"/>
                             <h:inputText value="#{employeeController.selected.bankAccount}" label="Bank account" id="bankAccount"/>
-                        </div>
-                    </div>
-                    <div>
-                        <h:outputLabel value="Email:" for="email"/>
-                        <div>
+                            <rich:message for="bankAccount" />
+
+                            <h:outputLabel value="Email:" for="email"/>
                             <h:inputText value="#{employeeController.selected.email}" label="Email" id="email"/>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <h:commandButton value="Save" action="#{employeeController.save()}" />
-                            <h:commandButton value="Cancel" action="#{employeeController.cancel()}" immediate="true" />
-                        </div>
-                    </div>
+                            <rich:message for="email" />
+                            <f:facet name="footer">
+                                <h:panelGroup>
+                                    <h:commandButton value="Save" action="#{employeeController.save()}" />
+                                    <h:commandButton value="Cancel" action="#{employeeController.cancel()}" immediate="true" />
+                                </h:panelGroup>
+                            </f:facet>
+
+                        </h:panelGrid>
+                    </rich:panel>
                 </h:form>
             </ui:define>
         </ui:composition>

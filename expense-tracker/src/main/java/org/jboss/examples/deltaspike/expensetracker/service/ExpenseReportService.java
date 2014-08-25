@@ -4,7 +4,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.examples.deltaspike.expensetracker.app.exception.ApplicationException;
-import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
@@ -13,7 +13,6 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.picketlink.authorization.annotations.LoggedIn;
 import org.picketlink.authorization.annotations.RolesAllowed;
 
-@Transactional
 @LoggedIn
 @RequestScoped
 public class ExpenseReportService {

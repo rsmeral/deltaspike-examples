@@ -15,7 +15,7 @@ import org.apache.deltaspike.security.api.authorization.AccessDecisionVoter;
 import org.apache.deltaspike.security.api.authorization.AccessDecisionVoterContext;
 import org.apache.deltaspike.security.api.authorization.Secured;
 import org.apache.deltaspike.security.api.authorization.SecurityViolation;
-import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.picketlink.Identity;
 import org.picketlink.authorization.util.AuthorizationUtil;
 import org.picketlink.idm.IdentityManager;

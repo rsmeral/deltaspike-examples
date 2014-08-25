@@ -3,6 +3,7 @@ package org.jboss.examples.deltaspike.expensetracker.controller;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.enterprise.event.Observes;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -14,7 +15,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
-import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.logic.Rules;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
@@ -25,6 +26,9 @@ import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
 public class ExpenseReportController implements Serializable {
+    
+    public static class Modified {
+    }
 
     @Inject
     private ViewNavigationHandler view;
@@ -72,14 +76,12 @@ public class ExpenseReportController implements Serializable {
         return SecuredPages.Report.class;
     }
 
-    public Class<? extends ViewConfig> assign(Employee employee) throws ApplicationException {
+    public void assign(Employee employee) throws ApplicationException {
         svc.assign(selected, employee);
-        return SecuredPages.Report.class;
     }
 
-    public Class<? extends ViewConfig> unassign() throws ApplicationException {
+    public void unassign() throws ApplicationException {
         svc.unassign(selected);
-        return SecuredPages.Report.class;
     }
 
     public Class<? extends ViewConfig> save() {
@@ -240,5 +242,12 @@ public class ExpenseReportController implements Serializable {
     public void setList(List<ExpenseReport> list) {
         this.list = list;
     }
+    
+    /*
+     *  Observe modification events to refresh report
+     */
 
+    public void refreshReportOnModification(@Observes Modified event) {
+        repo.refresh(selected);
+    }
 }

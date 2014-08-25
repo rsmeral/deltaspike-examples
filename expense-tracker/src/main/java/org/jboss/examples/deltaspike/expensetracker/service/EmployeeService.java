@@ -1,12 +1,13 @@
 package org.jboss.examples.deltaspike.expensetracker.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.picketlink.authorization.annotations.RolesAllowed;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
@@ -44,6 +45,11 @@ public class EmployeeService {
         return idm.createIdentityQuery(User.class).setParameter(new AttributeParameter(EMPLOYEE_ID_ATTRIBUTE), employee.getId()).getResultList().get(0);
     }
 
+    public boolean isUsernameAvailable(String username) {
+        int resultCount = idm.createIdentityQuery(User.class).setParameter(User.LOGIN_NAME, username).getResultCount();
+        return resultCount == 0;
+    }
+
     public void registerEmployee(Employee emp, String username, String password, String... roles) {
         User user = new User();
         user.setLoginName(username);
@@ -72,5 +78,16 @@ public class EmployeeService {
         for (String role : roles) {
             BasicModel.grantRole(relMgr, identity, BasicModel.getRole(idm, role));
         }
+    }
+
+    public List<String> getRoles(Employee employee) {
+        User user = getUserForEmployee(employee);
+        List<String> result = new ArrayList<String>();
+        for (String role : EmployeeRole.getAllRoles()) {
+            if (BasicModel.hasRole(relMgr, user, BasicModel.getRole(idm, role))) {
+                result.add(role);
+            }
+        }
+        return result;
     }
 }

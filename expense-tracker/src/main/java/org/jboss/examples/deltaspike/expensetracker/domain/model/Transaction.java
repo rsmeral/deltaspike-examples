@@ -22,10 +22,6 @@ public class Transaction {
     @Min(value = 0)
     private BigDecimal value;
 
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
-    private Currency currency;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "reportId")
     private ExpenseReport report;
@@ -54,20 +50,11 @@ public class Transaction {
         this.value = value;
     }
 
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 73 * hash + (this.date != null ? this.date.hashCode() : 0);
         hash = 73 * hash + (this.value != null ? this.value.hashCode() : 0);
-        hash = 73 * hash + (this.currency != null ? this.currency.hashCode() : 0);
         return hash;
     }
 
@@ -86,9 +73,6 @@ public class Transaction {
         if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
             return false;
         }
-        if (this.currency != other.currency && (this.currency == null || !this.currency.equals(other.currency))) {
-            return false;
-        }
         return true;
     }
 
@@ -97,7 +81,6 @@ public class Transaction {
         return "Transaction{"
                 + "date=" + date
                 + ", value=" + value
-                + ", currency=" + currency
                 + //                ", report=" + report +
                 '}';
     }

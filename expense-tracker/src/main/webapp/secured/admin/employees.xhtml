@@ -3,7 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      >
+      xmlns:rich="http://richfaces.org/rich">
 
     <head>
         <title>Employees</title>
@@ -14,38 +14,36 @@
             <ui:define name="content">
                 <h:form rendered="#{idm.hasRole(ADMIN)}">
                     <h2>Employees</h2>
-                    <h:dataTable value="#{employeeController.allEmployees}" var="e">
-                        <h:column>
+                    <rich:dataTable value="#{employeeController.allEmployees}" var="e">
+                        <rich:column>
                             <f:facet name="header">Username</f:facet>
                                 #{employeeService.getUserForEmployee(e).loginName}
-                        </h:column>
+                        </rich:column>
 
-                        <h:column>
+                        <rich:column>
                             <f:facet name="header">Name</f:facet>
                                 #{e.firstName} #{e.lastName}
-                        </h:column>
+                        </rich:column>
 
-                        <h:column>
+                        <rich:column>
                             <f:facet name="header">Email</f:facet>
                                 #{e.email}
-                        </h:column>
+                        </rich:column>
 
-                        <h:column>
+                        <rich:column>
                             <f:facet name="header">Bank Account</f:facet>
                                 #{e.bankAccount}
-                        </h:column>
+                        </rich:column>
 
-                        <h:column>
+                        <rich:column>
                             <f:facet name="header">Action</f:facet>
-                            <h:commandLink action="#{employeeController.edit(e)}" title="Edit" />
-                        </h:column>
-                    </h:dataTable>
+                            <h:commandButton action="#{employeeController.edit(e)}" title="Edit" />
+                        </rich:column>
+                    </rich:dataTable>
 
-                    <div>
-                        <div>
-                            <h:commandLink action="#{employeeController.create()}" value="Add employee"/>
-                        </div>
-                    </div>
+                    <h:panelGroup>
+                        <h:commandButton action="#{employeeController.create()}" value="Add employee"/>
+                    </h:panelGroup>
                 </h:form>
             </ui:define>
         </ui:composition>

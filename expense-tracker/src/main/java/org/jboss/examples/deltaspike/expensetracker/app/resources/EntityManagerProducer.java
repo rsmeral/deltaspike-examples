@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.data;
+package org.jboss.examples.deltaspike.expensetracker.app.resources;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.ConversationScoped;

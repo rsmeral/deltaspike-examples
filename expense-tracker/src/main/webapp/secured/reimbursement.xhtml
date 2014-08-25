@@ -4,49 +4,33 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:rich="http://richfaces.org/rich"
+      xmlns:et="http://java.sun.com/jsf/composite/et"
       xml:lang="en" lang="en">
     <h:body>
         <ui:composition template="/resources/template/layout.xhtml">
 
             <ui:define name="content">
                 <ui:insert name="title"/>
-                
-                <h:outputText value="#{reimbursementController.selected.report.id}" /><br />
-                <h:outputText value="#{reimbursementController.selected.report.name}" /><br />
-                <h:outputText value="#{reimbursementController.selected.report.reporter.firstName} #{reimbursementController.selected.report.reporter.lastName}" /><br />
-                
-                <h:form>
-                    <h:messages id="error-messages" />
-                    <div>
-                        <h:outputLabel value="Date:" for="date"/>
 
-                        <div>
+                <et:reportView report="#{reimbursementController.selected.report}" />
+
+                <h:form id="reimbursementForm">
+                    <rich:panel header="Expense">
+                        <h:panelGrid columns="3" border="0">
+                            <h:outputLabel value="Date:" for="date"/>
                             <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.reimbursementsEditable}" />
-                        </div>
-                    </div>
-                    <div>
-                        <h:outputLabel value="Value:" for="value" />
+                            <rich:message for="date" />
 
-                        <div>
+                            <h:outputLabel value="Value:" for="value" />
                             <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not expenseReportController.reimbursementsEditable}"/>
-                        </div>
-                    </div>
-                    <div>
-                        <h:outputLabel value="Currency:" for="currency" />
+                            <rich:message for="value" />
 
-                        <div>
-                            <h:selectOneMenu id="currency" value="#{reimbursementController.selected.currency}" label="Currency" disabled="#{not expenseReportController.reimbursementsEditable}">
-                                <f:selectItems value="#{currencies}"/>
-                            </h:selectOneMenu>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="controls">
-                            <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}"/>
-                            <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" />
-                        </div>
-                    </div>
+                            <f:facet name="footer">
+                                <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}"/>
+                                <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" />
+                            </f:facet>
+                        </h:panelGrid>
+                    </rich:panel>
                 </h:form>
             </ui:define>
         </ui:composition>

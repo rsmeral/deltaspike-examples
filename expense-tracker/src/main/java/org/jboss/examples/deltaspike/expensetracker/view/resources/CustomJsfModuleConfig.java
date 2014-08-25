@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.app.resources;
+package org.jboss.examples.deltaspike.expensetracker.view.resources;
 
 import javax.enterprise.inject.Specializes;
 import org.apache.deltaspike.jsf.api.config.JsfModuleConfig;

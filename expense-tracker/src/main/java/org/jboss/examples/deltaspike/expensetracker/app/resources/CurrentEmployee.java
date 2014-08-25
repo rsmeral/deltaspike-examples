@@ -15,15 +15,26 @@ import org.picketlink.authentication.event.LoggedInEvent;
 import org.picketlink.idm.model.basic.User;
 
 @SessionScoped
-public class CurrentEmployeeProducer implements Serializable {
+public class CurrentEmployee implements Serializable {
+
+    public static class Modified {
+    }
 
     private Employee cached;
 
     @Inject
     private EmployeeRepository repo;
 
-    public void setCurrentEmployee(@Observes LoggedInEvent event, Identity identity) {
+    private void updateCachedEmployee(Identity identity) {
         cached = repo.findBy(identity.getAccount().<Long>getAttribute(EmployeeService.EMPLOYEE_ID_ATTRIBUTE).getValue());
+    }
+
+    public void setOnLogin(@Observes LoggedInEvent event, Identity identity) {
+        updateCachedEmployee(identity);
+    }
+    
+    public void setOnModification(@Observes Modified event, Identity identity) {
+        updateCachedEmployee(identity);
     }
 
     // TODO: This should be cacheable (wider scope)

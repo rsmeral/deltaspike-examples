@@ -14,26 +14,25 @@ import static org.jboss.examples.deltaspike.expensetracker.domain.model.Employee
 @View(navigation = View.NavigationMode.REDIRECT)
 public interface SecuredPages extends ViewConfig {
 
-    
     class Home implements SecuredPages {
-    }
-
-    class Employee implements SecuredPages {
     }
 
     class Report implements SecuredPages {
     }
 
-    class Receipt implements SecuredPages {
-    }
-
     class Expense implements SecuredPages {
     }
 
-    class Purpose implements SecuredPages {
+    class Reimbursement implements SecuredPages {
     }
 
-    class Reimbursement implements SecuredPages {
+    class Employee implements SecuredPages {
+    }
+
+    class Receipt implements SecuredPages {
+    }
+
+    class Purpose implements SecuredPages {
     }
 
     class Reports implements SecuredPages {

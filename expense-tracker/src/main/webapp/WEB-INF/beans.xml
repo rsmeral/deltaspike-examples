@@ -3,12 +3,7 @@
       http://java.sun.com/xml/ns/javaee
       http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
     
-<!--    <alternatives>
-        <class>org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy</class>
-    </alternatives>-->
-    
     <interceptors>
-        <class>org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor</class>
         <class>org.jboss.examples.deltaspike.expensetracker.app.extension.ConversationInterceptor</class>
     </interceptors>
 </beans>

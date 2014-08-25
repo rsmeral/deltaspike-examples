@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.app.message;
+package org.jboss.examples.deltaspike.expensetracker.app.resources;
 
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.message.MessageBundle;
@@ -13,6 +13,9 @@ public interface AppMessages {
 
     @MessageTemplate("{security.noRolesAuthorized}")
     String noRolesAuthorized();
+    
+    @MessageTemplate("{security.passwordChanged}")
+    String passwordChanged();
 
     @MessageTemplate("{controller.employeeCreated}")
     String employeeCreated(String firstName, String lastName);

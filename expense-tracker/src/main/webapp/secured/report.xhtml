@@ -51,7 +51,7 @@
 
                 <h:form>
                     <!-- REIMBURSEMENTS -->
-                    <rich:panel header="Reimbursements">
+                    <rich:panel header="Reimbursements" rendered="#{not expenseReportController.isNew(expenseReportController.selected)}">
                         <rich:dataTable value="#{expenseReportController.selected.reimbursements}" var="reimbursement" rendered="#{not empty expenseReportController.selected.reimbursements}">
                             <rich:column>
                                 <f:facet name="header">Date</f:facet>
@@ -69,12 +69,7 @@
                                 <f:facet name="header">Value</f:facet>
                                     #{reimbursement.value}
                             </rich:column>
-
-                            <rich:column>
-                                <f:facet name="header">Currency</f:facet>
-                                    #{reimbursement.currency}
-                            </rich:column>
-
+                            
                             <rich:column>
                                 <f:facet name="header">Action</f:facet>
                                 <h:commandLink action="#{reimbursementController.edit(reimbursement)}" rendered="#{expenseReportController.reimbursementsEditable}">
@@ -105,7 +100,7 @@
 
                 <h:form>
                     <!-- EXPENSES -->
-                    <rich:panel header="Expenses">
+                    <rich:panel header="Expenses" rendered="#{not expenseReportController.isNew(expenseReportController.selected)}">
                         <rich:dataTable value="#{expenseReportController.selected.expenses}" rendered="#{not empty expenseReportController.selected.expenses}" var="expense">
 
                             <rich:column>
@@ -130,11 +125,6 @@
                             <rich:column>
                                 <f:facet name="header">Value</f:facet>
                                     #{expense.value}
-                            </rich:column>
-
-                            <rich:column>
-                                <f:facet name="header">Currency</f:facet>
-                                    #{expense.currency}
                             </rich:column>
 
                             <rich:column>
@@ -172,7 +162,7 @@
                 </h:form>
 
                 <h:form>
-                    <rich:panel header="Report actions">
+                    <rich:panel header="Report actions" rendered="#{not expenseReportController.isNew(expenseReportController.selected)}">
                         <!-- Reporter options -->
                         <h:commandButton action="#{expenseReportController.open()}" rendered="#{expenseReportController.canBeOpened}" value="Reopen"/>
                         <h:commandButton action="#{expenseReportController.submit()}" rendered="#{expenseReportController.canBeSubmitted}" value="Submit"/>

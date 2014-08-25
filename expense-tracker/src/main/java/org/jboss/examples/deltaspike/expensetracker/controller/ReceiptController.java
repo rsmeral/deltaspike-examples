@@ -10,7 +10,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
-import org.jboss.examples.deltaspike.expensetracker.app.message.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ReceiptRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Receipt;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
@@ -35,7 +35,7 @@ public class ReceiptController implements Serializable {
 
     private Receipt selected;
 
-    @Begin(force = true)
+    @Begin
     public Class<? extends ViewConfig> create() {
         selected = new Receipt();
         return SecuredPages.Receipt.class;

@@ -27,6 +27,8 @@ public class EmployeeRole {
     /**
      * A hack to replace the valueOf method of enums
      */
+    @Produces
+    @Named("roles")
     public static List<String> getAllRoles() {
         List<String> result = new ArrayList<String>();
         for (Field field : EmployeeRole.class.getDeclaredFields()) {
