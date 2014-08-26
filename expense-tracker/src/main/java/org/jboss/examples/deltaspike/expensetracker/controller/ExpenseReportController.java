@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.event.Observes;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.jboss.examples.deltaspike.expensetracker.app.exception.ApplicationException;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
@@ -49,7 +49,7 @@ public class ExpenseReportController implements Serializable {
     private Rules rules;
 
     @Inject
-    private AppMessages msg;
+    private JsfMessage<AppMessages> msg;
 
     @Inject
     @CurrentUser
@@ -86,7 +86,7 @@ public class ExpenseReportController implements Serializable {
 
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
+        msg.addInfo().allChangesSaved();
         return SecuredPages.Report.class;
     }
 
@@ -99,28 +99,28 @@ public class ExpenseReportController implements Serializable {
     @End
     public Class<? extends ViewConfig> submit() throws ApplicationException {
         svc.submit(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSubmitted(selected.getName()), null));
+        msg.addInfo().reportSubmitted(selected.getName());
         return viewStack.pop();
     }
 
     @End
     public Class<? extends ViewConfig> reject() throws ApplicationException {
         svc.reject(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportRejected(selected.getName()), null));
+        msg.addInfo().reportRejected(selected.getName());
         return viewStack.pop();
     }
 
     @End
     public Class<? extends ViewConfig> approve() throws ApplicationException {
         svc.approve(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportApproved(selected.getName()), null));
+        msg.addInfo().reportApproved(selected.getName());
         return viewStack.pop();
     }
 
     @End
     public Class<? extends ViewConfig> settle() throws ApplicationException {
         svc.settle(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.reportSettled(selected.getName()), null));
+        msg.addInfo().reportSettled(selected.getName());
         return viewStack.pop();
     }
 

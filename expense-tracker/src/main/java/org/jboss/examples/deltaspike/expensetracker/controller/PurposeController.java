@@ -1,11 +1,11 @@
 package org.jboss.examples.deltaspike.expensetracker.controller;
 
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
@@ -30,7 +30,7 @@ public class PurposeController implements Serializable {
     private ViewStack viewStack;
 
     @Inject
-    private AppMessages msg;
+    private JsfMessage<AppMessages> msg;
 
     private Purpose selected;
 
@@ -48,12 +48,12 @@ public class PurposeController implements Serializable {
     
     public void delete(Purpose purpose) {
         repo.remove(purpose);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.itemDeleted(), null));
+        msg.addInfo().itemDeleted();
     }
 
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
-        faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
+        msg.addInfo().allChangesSaved();
         return viewStack.pop();
     }
 

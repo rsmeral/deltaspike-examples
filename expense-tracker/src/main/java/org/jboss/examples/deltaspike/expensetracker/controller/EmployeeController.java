@@ -3,7 +3,6 @@ package org.jboss.examples.deltaspike.expensetracker.controller;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.event.Event;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.constraints.AssertTrue;
@@ -11,6 +10,7 @@ import javax.validation.constraints.Size;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
@@ -45,12 +45,12 @@ public class EmployeeController implements Serializable {
     private PasswordHolder pwdHolder;
 
     @Inject
-    private AppMessages msg;
+    private JsfMessage<AppMessages> msg;
 
     @Inject
     @CurrentUser
     private Employee currentEmployee;
-
+    
     @Inject
     private Event<CurrentEmployee.Modified> employeeModEvent;
 
@@ -78,11 +78,11 @@ public class EmployeeController implements Serializable {
     public Class<? extends ViewConfig> save() {
         if (isNewEmployee()) {
             svc.registerEmployee(repo.save(selected), username, pwdHolder.getPassword(), roles.toArray(new String[roles.size()]));
-            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.employeeCreated(selected.getFirstName(), selected.getLastName()), null));
+            msg.addInfo().employeeCreated(selected.getFirstName(), selected.getLastName());
         } else {
             svc.setRoles(selected, roles.toArray(new String[roles.size()]));
             repo.save(selected);
-            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.allChangesSaved(), null));
+            msg.addInfo().allChangesSaved();
             if (selected.equals(currentEmployee)) {
                 employeeModEvent.fire(new CurrentEmployee.Modified());
             }
@@ -137,7 +137,7 @@ public class EmployeeController implements Serializable {
         private EmployeeService svc;
 
         @Inject
-        private AppMessages msg;
+        private JsfMessage<AppMessages> msg;
 
         @Size(min = 4)
         private String password;
@@ -146,7 +146,7 @@ public class EmployeeController implements Serializable {
 
         public void changePassword(Employee employee, String password) {
             svc.changePassword(employee, password);
-            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg.passwordChanged(), null));
+            msg.addInfo().passwordChanged();
         }
 
         @AssertTrue(message = "Passwords don't match")
