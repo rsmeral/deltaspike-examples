@@ -7,6 +7,6 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.Receipt;
 
 @ApplicationScoped
 @Repository
-public abstract class ReceiptRepository implements EntityRepository<Receipt, Long> {
+public interface ReceiptRepository extends EntityRepository<Receipt, Long> {
 
 }

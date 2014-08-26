@@ -7,6 +7,6 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose;
 
 @ApplicationScoped
 @Repository
-public abstract class PurposeRepository implements EntityRepository<Purpose, Long> {
+public interface PurposeRepository extends EntityRepository<Purpose, Long> {
 
 }

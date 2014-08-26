@@ -35,8 +35,9 @@
                             <rich:column>
                                 <f:facet name="header">Last change</f:facet>
                                 <h:outputText value="#{report.lastChangeDate}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                                </h:outputText>
+                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                                </h:outputText> by
+                                <h:outputText value="#{report.lastChangedBy.firstName} #{report.lastChangedBy.lastName}" />
                             </rich:column>
 
                             <rich:column>
@@ -46,7 +47,7 @@
 
                             <rich:column>
                                 <f:facet name="header">Assignee</f:facet>
-                                <h:outputText value="#{report.assignee}" rendered="#{not empty report.assignee}"/>
+                                <h:outputText value="#{report.assignee.firstName} #{report.assignee.lastName}" rendered="#{not empty report.assignee}"/>
                                 <h:outputText value="Unassigned" rendered="#{empty report.assignee}"/>
                             </rich:column>
 
@@ -75,8 +76,7 @@
 
                             <rich:column>
                                 <f:facet name="header">Name</f:facet>
-                                <h:commandLink action="#{expenseReportController.edit(report)}"
-                                               value="#{report.name}"/>
+                                <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}"/>
                             </rich:column>
 
                             <rich:column>
@@ -87,8 +87,9 @@
                             <rich:column>
                                 <f:facet name="header">Last changed</f:facet>
                                 <h:outputText value="#{report.lastChangeDate}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                                </h:outputText>
+                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                                </h:outputText> by 
+                                <h:outputText value="#{report.lastChangedBy.firstName} #{report.lastChangedBy.lastName}" />
                             </rich:column>
 
                             <rich:column>
@@ -125,8 +126,7 @@
 
                             <rich:column>
                                 <f:facet name="header">Name</f:facet>
-                                <h:commandLink action="#{expenseReportController.edit(report)}"
-                                               value="#{report.name}"/>
+                                <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}"/>
                             </rich:column>
 
                             <rich:column>
@@ -137,8 +137,9 @@
                             <rich:column>
                                 <f:facet name="header">Last changed</f:facet>
                                 <h:outputText value="#{report.lastChangeDate}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                                </h:outputText>
+                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                                </h:outputText> by 
+                                <h:outputText value="#{report.lastChangedBy.firstName} #{report.lastChangedBy.lastName}" />
                             </rich:column>
 
                             <rich:column>

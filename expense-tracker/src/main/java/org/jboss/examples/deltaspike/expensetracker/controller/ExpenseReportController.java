@@ -26,7 +26,7 @@ import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
 public class ExpenseReportController implements Serializable {
-    
+
     public static class Modified {
     }
 
@@ -148,21 +148,23 @@ public class ExpenseReportController implements Serializable {
         if (isNew(report)) {
             return BigDecimal.ZERO;
         }
-        return repo.getReportExpensesTotal(report);
+        BigDecimal reportExpensesTotal = repo.getReportExpensesTotal(report);
+        return reportExpensesTotal == null? BigDecimal.ZERO : reportExpensesTotal;
     }
 
     public BigDecimal getReimbursementsTotal(ExpenseReport report) {
         if (isNew(report)) {
             return BigDecimal.ZERO;
         }
-        return repo.getReportReimbursementTotal(report);
+        BigDecimal reportReimbursementTotal = repo.getReportReimbursementTotal(report);
+        return reportReimbursementTotal == null ? BigDecimal.ZERO : reportReimbursementTotal;
     }
 
     public BigDecimal getReportTotal(ExpenseReport report) {
         if (isNew(report)) {
             return BigDecimal.ZERO;
         }
-        return repo.getReportBalance(report);
+        return getReimbursementsTotal(report).subtract(getExpensesTotal(report));
     }
 
     public List<ExpenseReport> getAllUnsettledForCurrentEmployee() {
@@ -242,11 +244,10 @@ public class ExpenseReportController implements Serializable {
     public void setList(List<ExpenseReport> list) {
         this.list = list;
     }
-    
+
     /*
      *  Observe modification events to refresh report
      */
-
     public void refreshReportOnModification(@Observes Modified event) {
         repo.refresh(selected);
     }

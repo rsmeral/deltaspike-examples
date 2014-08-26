@@ -35,9 +35,12 @@
                             <h:inputTextarea value="#{expenseReportController.selected.description}" id="reportDescription" disabled="#{not expenseReportController.reportEditable}" />
 
                             <h:outputLabel for="reportLastChangeDate" value="Last changed" />
-                            <h:outputText value="#{expenseReportController.selected.lastChangeDate}" id="reportLastChangeDate">
-                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2" />
-                            </h:outputText>
+                            <h:panelGroup>
+                                <h:outputText value="#{expenseReportController.selected.lastChangeDate}">
+                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                                </h:outputText> by 
+                                <h:outputText value="#{expenseReportController.selected.lastChangedBy.firstName} #{expenseReportController.selected.lastChangedBy.lastName}" />
+                            </h:panelGroup>
 
                             <f:facet name="footer">
                                 <h:panelGroup rendered="#{expenseReportController.reportEditable}">
@@ -56,7 +59,7 @@
                             <rich:column>
                                 <f:facet name="header">Date</f:facet>
                                 <h:outputText value="#{reimbursement.date}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                                    <f:convertDateTime pattern="MMM d, yyyy" />
                                 </h:outputText>
                             </rich:column>
 
@@ -69,7 +72,7 @@
                                 <f:facet name="header">Value</f:facet>
                                     #{reimbursement.value}
                             </rich:column>
-                            
+
                             <rich:column>
                                 <f:facet name="header">Action</f:facet>
                                 <h:commandLink action="#{reimbursementController.edit(reimbursement)}" rendered="#{expenseReportController.reimbursementsEditable}">
@@ -106,7 +109,7 @@
                             <rich:column>
                                 <f:facet name="header">Date</f:facet>
                                 <h:outputText value="#{expense.date}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                                    <f:convertDateTime pattern="MMM d, yyyy" />
                                 </h:outputText>
                             </rich:column>
 

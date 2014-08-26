@@ -3,11 +3,13 @@ package org.jboss.examples.deltaspike.expensetracker.data;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.QueryParam;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
+import org.apache.deltaspike.data.spi.QueryInvocationContext;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport_;
@@ -17,6 +19,8 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 @Repository
 public abstract class ExpenseReportRepository implements EntityRepository<ExpenseReport, Long>, CriteriaSupport<ExpenseReport> {
 
+    @Inject QueryInvocationContext ctx;
+    
     public abstract List<ExpenseReport> findByReporter(Employee reporter);
 
     public abstract List<ExpenseReport> findByAssignee(Employee assignee);
@@ -53,8 +57,4 @@ public abstract class ExpenseReportRepository implements EntityRepository<Expens
 
     @Query("SELECT SUM(r.value) FROM Reimbursement r WHERE r.report = :report")
     public abstract BigDecimal getReportReimbursementTotal(@QueryParam("report") ExpenseReport report);
-
-    @Query("SELECT SUM(r.value)-SUM(e.value) FROM Reimbursement r, Expense e WHERE r.report = :report AND e.report = :report")
-    public abstract BigDecimal getReportBalance(@QueryParam("report") ExpenseReport report);
-
 }

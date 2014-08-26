@@ -91,10 +91,7 @@ public class Rules implements Serializable {
      * AUTHORIZATION-BASED RULES
      */
     /**
-     * Condition for report editing. An accountant can edit if: - he is not the
-     * reporter, - he is the assignee
-     *
-     * An employee can edit if: - he is the reporter
+     * Report details can be edited by the reporter or the assignee.
      *
      * @param report
      * @return
@@ -103,13 +100,7 @@ public class Rules implements Serializable {
         if (auth.isAdmin()) {
             return true;
         }
-        if (auth.hasRole(ACCOUNTANT)) {
-            return !currentEmployee.equals(report.getReporter())
-                    && currentEmployee.equals(report.getAssignee());
-        } else if (auth.hasRole(EMPLOYEE)) {
-            return currentEmployee.equals(report.getReporter());
-        }
-        return false;
+        return currentEmployee.equals(report.getAssignee()) || currentEmployee.equals(report.getReporter());
     }
 
     /**

@@ -34,9 +34,9 @@
                         <rich:column>
                             <f:facet name="header">Last change</f:facet>
                             <h:outputText value="#{report.lastChangeDate}">
-                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
                             </h:outputText> by 
-                            <h:outputText value="#{report.lastChangedBy}" />
+                            <h:outputText value="#{report.lastChangedBy.firstName} #{report.lastChangedBy.lastName}" />
                         </rich:column>
 
                         <rich:column>

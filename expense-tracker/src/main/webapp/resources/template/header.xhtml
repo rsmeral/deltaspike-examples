@@ -18,8 +18,8 @@
                 <h:form>
                     <rich:toolbar>
                         <rich:menuItem><h:link outcome="/secured/home" id="nav-home">Home</h:link></rich:menuItem>
-                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/purposes" id="nav-purposes">Purposes</h:link></rich:menuItem>
-                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/employees" id="nav-employees">Employees</h:link></rich:menuItem>
+                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/purposes" id="nav-purposes">Purposes</h:link></rich:menuItem>
+                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/employees" id="nav-employees">Employees</h:link></rich:menuItem>
                         <rich:dropDownMenu>
                             <f:facet name="label">
                                 <h:panelGroup>

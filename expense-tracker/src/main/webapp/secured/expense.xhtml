@@ -23,16 +23,11 @@
                 <h:form id="expenseForm">
                     <rich:panel header="Expense">
                         <h:panelGrid columns="3" border="0">
-                            <h:outputLabel value="Date:" for="date" />
-                            <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}"/>
-                            <rich:message for="date" />
-
                             <h:outputLabel value="Purpose:" for="purpose" />
                             <h:panelGroup>
                                 <h:selectOneMenu id="purpose" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not expenseReportController.expensesEditable}" converter="#{purposeConverter}">
                                     <f:selectItems value="#{purposes}" var="p" itemValue="#{p}" itemLabel="#{p.name}" itemDescription="#{p.description}" />
                                 </h:selectOneMenu>
-                                <h:commandButton id="newPurpose" action="#{purposeController.create()}" value="New purpose" immediate="true" rendered="#{expenseReportController.expensesEditable}" />
                             </h:panelGroup>
                             <rich:message for="purpose" />
 
@@ -44,6 +39,10 @@
                                 <h:commandButton id="newReceipt" action="#{receiptController.create()}" rendered="#{expenseReportController.expensesEditable}" value="Add receipt" immediate="true" />
                             </h:panelGroup>
                             <rich:message for="receipt" />
+
+                            <h:outputLabel value="Date:" for="date" />
+                            <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}"/>
+                            <rich:message for="date" />
 
                             <h:outputLabel value="Value:" for="value" />
                             <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not expenseReportController.expensesEditable}"/>

@@ -7,12 +7,14 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ReimbursementRepository;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
@@ -36,6 +38,10 @@ public class ReimbursementController implements Serializable {
     private AppMessages msg;
     
     @Inject
+    @CurrentUser
+    private Employee currentEmployee;
+    
+    @Inject
     private Event<ExpenseReportController.Modified> reportModEvent;
     
     private Reimbursement selected;
@@ -44,6 +50,7 @@ public class ReimbursementController implements Serializable {
     public Class<? extends ViewConfig> create(ExpenseReport report) {
         selected = new Reimbursement();
         selected.setReport(report);
+        selected.setCreator(currentEmployee);
         return SecuredPages.Reimbursement.class;
     }
 

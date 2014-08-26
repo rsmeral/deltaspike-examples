@@ -10,10 +10,10 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
 
 @ApplicationScoped
 @Repository
-public abstract class ReimbursementRepository implements EntityRepository<Reimbursement, Long> {
+public interface ReimbursementRepository extends EntityRepository<Reimbursement, Long> {
 
-    public abstract List<Reimbursement> findByReport(ExpenseReport report);
+    public List<Reimbursement> findByReport(ExpenseReport report);
 
-    public abstract List<Reimbursement> findByDateBetween(Date from, Date to);
+    public List<Reimbursement> findByDateBetween(Date from, Date to);
 
 }

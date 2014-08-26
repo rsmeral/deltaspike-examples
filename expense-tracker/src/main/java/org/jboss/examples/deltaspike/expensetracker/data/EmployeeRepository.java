@@ -9,10 +9,10 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 
 @ApplicationScoped
 @Repository
-public abstract class EmployeeRepository implements EntityRepository<Employee, Long>, EntityManagerDelegate<Employee> {
+public interface EmployeeRepository extends EntityRepository<Employee, Long>, EntityManagerDelegate<Employee> {
 
-    public abstract List<Employee> findByEmail(String email);
+    public List<Employee> findByEmail(String email);
 
-    public abstract List<Employee> findByLastNameLike(String lastName);
+    public List<Employee> findByLastNameLike(String lastName);
 
 }
