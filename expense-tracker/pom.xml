@@ -22,7 +22,7 @@
         <maven.compiler.target>1.6</maven.compiler.target>
         <maven.compiler.source>1.6</maven.compiler.source>
         
-        <version.org.apache.deltaspike>1.0.1</version.org.apache.deltaspike>
+        <version.org.apache.deltaspike>1.0.2</version.org.apache.deltaspike>
     </properties>
 
     <dependencyManagement>
@@ -96,6 +96,13 @@
             <scope>provided</scope>
         </dependency>
         
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        
         <!-- DeltaSpike modules -->
         
         <dependency>
@@ -145,6 +152,32 @@
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-servlet-module-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-servlet-module-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.deltaspike.cdictrl</groupId>
+            <artifactId>deltaspike-cdictrl-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.deltaspike.cdictrl</groupId>
+            <artifactId>deltaspike-cdictrl-weld</artifactId>
             <version>${version.org.apache.deltaspike}</version>
             <scope>runtime</scope>
         </dependency>

@@ -11,12 +11,7 @@
     <h:body>
         <ui:composition template="/resources/template/layout.xhtml">
             <ui:define name="content">
-                <rich:panel header="Demo initialization" rendered="#{not demoInitializer.initialized}">
-                    <h:form>
-                        <h:commandButton value="Initialize" action="#{demoInitializer.initialize()}" id="initBtn" />
-                    </h:form>
-                </rich:panel>
-                <rich:panel header="Login" rendered="#{demoInitializer.initialized}">
+                <rich:panel header="Login">
                     <h:form id="login">
                         <h:panelGrid id="loginPanel" columns="2" border="0">
                             <h:outputLabel value="Username:" for="username" />
