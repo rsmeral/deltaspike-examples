@@ -2,39 +2,35 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:f="http://java.sun.com/jsf/core">
 
-    <head>
-    </head>
-
-    <body>
-        <ui:composition>
-            <ui:fragment rendered="#{identity.loggedIn}">
-
-                <h:form>
-                    <rich:toolbar>
-                        <rich:menuItem><h:link outcome="/secured/home" id="nav-home">Home</h:link></rich:menuItem>
-                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/purposes" id="nav-purposes">Purposes</h:link></rich:menuItem>
-                        <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/employees" id="nav-employees">Employees</h:link></rich:menuItem>
-                        <rich:dropDownMenu>
-                            <f:facet name="label">
-                                <h:panelGroup>
-                                    <h:outputText value="#{currentEmployee.firstName} #{currentEmployee.lastName}" />
-                                </h:panelGroup>
-                            </f:facet>
-                            <rich:menuItem label="Edit profile" id="nav-drop-edit" action="#{employeeController.edit(currentEmployee)}" />
-                            <rich:menuItem label="Logout" id="nav-drop-logout" action="#{identity.logout()}" />
-                        </rich:dropDownMenu>
-                    </rich:toolbar>
-                </h:form>
-            </ui:fragment>
-            <h1>Expense tracking</h1>
-            <rich:messages globalOnly="true" id="globalMessages" />
-        </ui:composition>
-    </body>
-
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:graphicImage value="/resources/img/ds-logo.png" alt="DeltaSpike logo" height="50" styleClass="logo"/>
+    <h1>Expense tracking</h1>
+    <ui:fragment rendered="#{identity.loggedIn}">
+        <h:form id="toolbarForm">
+            <rich:toolbar id="toolbar">
+                <rich:menuItem><h:link outcome="/secured/home" id="navHome">Home</h:link></rich:menuItem>
+                <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/purposes" id="navPurposes">Purposes</h:link></rich:menuItem>
+                <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/employees" id="navEmployees">Employees</h:link></rich:menuItem>
+                <rich:toolbarGroup location="right">
+                    <rich:dropDownMenu id="userMenu">
+                        <f:facet name="label">
+                            <h:panelGroup>
+                                <h:outputText value="#{currentEmployee.fullName}" />
+                            </h:panelGroup>
+                        </f:facet>
+                        <rich:menuItem label="Edit profile" id="navUserEdit" action="#{employeeController.edit(currentEmployee)}" />
+                        <rich:menuItem label="Logout" id="navUserLogout" action="#{identity.logout()}" />
+                    </rich:dropDownMenu>
+                </rich:toolbarGroup>
+            </rich:toolbar>
+        </h:form>
+    </ui:fragment>
+    <div id="globalMessages">
+        <rich:messages globalOnly="true" />
+    </div>
+</ui:composition>

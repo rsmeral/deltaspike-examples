@@ -1,5 +1,9 @@
 package org.jboss.examples.deltaspike.expensetracker.app;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
@@ -9,15 +13,25 @@ import javax.servlet.ServletContext;
 import org.apache.deltaspike.cdise.api.ContextControl;
 import org.apache.deltaspike.core.api.lifecycle.Initialized;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
+import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
+import org.jboss.examples.deltaspike.expensetracker.data.ExpenseRepository;
 import org.jboss.examples.deltaspike.expensetracker.data.PurposeRepository;
+import org.jboss.examples.deltaspike.expensetracker.data.ReimbursementRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Expense;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.model.basic.Role;
 
+/**
+ * Supplies initial data. Used instead of import.sql to support portability.
+ */
 public class DemoInitializer {
 
     @Inject
@@ -30,7 +44,16 @@ public class DemoInitializer {
     private PurposeRepository purposeRepo;
 
     @Inject
+    private ExpenseRepository expenseRepo;
+
+    @Inject
+    private ReimbursementRepository reimbursementRepo;
+
+    @Inject
     private IdentityManager idm;
+
+    @Inject
+    private ExpenseReportRepository expenseReportRepo;
 
     @Inject
     private ContextControl ctxCtl;
@@ -56,11 +79,31 @@ public class DemoInitializer {
             idm.add(new Role(role));
         }
 
-        empSvc.registerEmployee(empRepo.save(new Employee("Admin", "Administrator", "admin@example.com", "123456789")), "admin", "admin", EMPLOYEE, ACCOUNTANT, ADMIN);
-        empSvc.registerEmployee(empRepo.save(new Employee("John", "Employee", "john@example.com", "987654321")), "john", "john", EMPLOYEE);
-        empSvc.registerEmployee(empRepo.save(new Employee("Anna", "Accountant", "anna@example.com", "654321987")), "anna", "anna", EMPLOYEE, ACCOUNTANT);
+        final Employee admin = new Employee("Admin", "Administrator", "admin@example.com", "123456789");
+        final Employee john = new Employee("John", "Employee", "john@example.com", "987654321");
+        final Employee anna = new Employee("Anna", "Accountant", "anna@example.com", "654321987");
 
-        purposeRepo.save(new Purpose("Travel", "Travel expenses (train, plane, public transport, taxi)"));
+        empSvc.registerEmployee(empRepo.saveAndFlush(admin), "admin", "admin", EMPLOYEE, ACCOUNTANT, ADMIN);
+        empSvc.registerEmployee(empRepo.saveAndFlush(john), "john", "john", EMPLOYEE);
+        empSvc.registerEmployee(empRepo.saveAndFlush(anna), "anna", "anna", EMPLOYEE, ACCOUNTANT);
+
+        final Purpose travel = purposeRepo.save(new Purpose("Travel", "Train, plane, public transport, taxi"));
+        final Purpose accomodation = purposeRepo.save(new Purpose("Accommodation", "Hotels"));
+        final Purpose food = purposeRepo.save(new Purpose("Food/Drinks", "Any meals"));
+        final Purpose fuel = purposeRepo.save(new Purpose("Fuel", "Gas, LPG, Electricity"));
+
+        final ExpenseReport report = new ExpenseReport("GeeCon 2013", "Krakow, 3 days", john, anna, ReportStatus.OPEN);
+        
+        expenseReportRepo.save(report);
+
+        expenseRepo.save(new Expense(food, null, new GregorianCalendar(2013, 4, 14).getTime(), BigDecimal.valueOf(25), report));
+        expenseRepo.save(new Expense(food, null, new GregorianCalendar(2013, 4, 15).getTime(), BigDecimal.valueOf(20), report));
+        expenseRepo.save(new Expense(food, null, new GregorianCalendar(2013, 4, 16).getTime(), BigDecimal.valueOf(20), report));
+        expenseRepo.save(new Expense(accomodation, null, new GregorianCalendar(2013, 4, 16).getTime(), BigDecimal.valueOf(100), report));
+        expenseRepo.save(new Expense(travel, null, new GregorianCalendar(2013, 4, 14).getTime(), BigDecimal.valueOf(45), report));
+        expenseRepo.save(new Expense(travel, null, new GregorianCalendar(2013, 4, 16).getTime(), BigDecimal.valueOf(50), report));
+
+        reimbursementRepo.save(new Reimbursement(anna, new GregorianCalendar(2013, 4, 13).getTime(), BigDecimal.valueOf(150), report));
 
         ctxCtl.stopContext(ConversationScoped.class);
         ctxCtl.stopContext(RequestScoped.class);

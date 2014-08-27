@@ -1,164 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:rich="http://richfaces.org/rich">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                template="/resources/template/layout.xhtml">
+    
+    <ui:define name="content">
 
-    <head>
-        <title>Home</title>
-    </head>
-    <body>
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
+        <!--UNSETTLED REPORTS FOR EMPLOYEE -->
+        <rich:panel header="Reported by me" rendered="#{idm.hasRole(EMPLOYEE)}">
+            <h:form id="reportedByMeForm">
+                <rich:dataTable value="#{expenseReportController.allUnsettledForCurrentEmployee}" var="report" noDataLabel="No reports">
 
-                <!--UNSETTLED REPORTS FOR EMPLOYEE -->
-                <rich:panel header="Reported by me" rendered="#{idm.hasRole(EMPLOYEE)}">
-                    <h:form>
-                        <rich:dataTable value="#{expenseReportController.allUnsettledForCurrentEmployee}" var="report" noDataLabel="No reports">
+                    <rich:column>
+                        <f:facet name="header">ID</f:facet>
+                            #{report.id}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">ID</f:facet>
-                                    #{report.id}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}" id="editReportLink" />
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Name</f:facet>
-                                <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}"/>
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Short description</f:facet>
+                            #{report.description}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Short description</f:facet>
-                                    #{report.description}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Last change</f:facet>
+                        <h:outputText value="#{report.lastChangeDate}">
+                            <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                        </h:outputText> by
+                        <h:outputText value="#{report.lastChangedBy.fullName}" />
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Last change</f:facet>
-                                <h:outputText value="#{report.lastChangeDate}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
-                                </h:outputText> by
-                                <h:outputText value="#{report.lastChangedBy.firstName} #{report.lastChangedBy.lastName}" />
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Status</f:facet>
+                            #{report.status}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Status</f:facet>
-                                    #{report.status}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Assignee</f:facet>
+                        <h:outputText value="#{report.assignee.fullName}" rendered="#{not empty report.assignee}"/>
+                        <h:outputText value="Unassigned" rendered="#{empty report.assignee}"/>
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Assignee</f:facet>
-                                <h:outputText value="#{report.assignee.firstName} #{report.assignee.lastName}" rendered="#{not empty report.assignee}"/>
-                                <h:outputText value="Unassigned" rendered="#{empty report.assignee}"/>
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Balance</f:facet>
+                        <h:outputText value="#{expenseReportController.getReportTotal(report)}" />
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Balance</f:facet>
-                                <h:outputText value="#{expenseReportController.getReportTotal(report)}" />
-                            </rich:column>
+                </rich:dataTable>
+                <h:panelGroup>
+                    <h:commandButton action="#{expenseReportController.create()}" value="Create a report" id="createReportBtn" />
+                    <h:commandButton action="#{expenseReportController.showAllReportedByCurrentEmployee()}" value="Show all" id="showAllBtn" />
+                </h:panelGroup>
+            </h:form>
+        </rich:panel>
 
-                        </rich:dataTable>
-                        <h:panelGroup>
-                            <h:commandButton action="#{expenseReportController.create()}" value="Create a report"/>
-                            <h:commandButton action="#{expenseReportController.showAllReportedByCurrentEmployee()}" value="Show all"/>
-                        </h:panelGroup>
-                    </h:form>
-                </rich:panel>
+        <!--ASSIGNED TO CURRENT ACCOUNTANT -->
+        <rich:panel header="Assigned to me" rendered="#{idm.hasRole(ACCOUNTANT)}">
+            <h:form id="assignedToMeForm">
+                <rich:dataTable value="#{expenseReportController.allUnsettledForCurrentAccountant}" var="report" noDataLabel="No reports">
 
-                <!--ASSIGNED TO CURRENT ACCOUNTANT -->
-                <rich:panel header="Assigned to me" rendered="#{idm.hasRole(ACCOUNTANT)}">
-                    <h:form>
-                        <rich:dataTable value="#{expenseReportController.allUnsettledForCurrentAccountant}" var="report" noDataLabel="No reports">
+                    <rich:column>
+                        <f:facet name="header">ID</f:facet>
+                            #{report.id}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">ID</f:facet>
-                                    #{report.id}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}" id="editReportLink"/>
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Name</f:facet>
-                                <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}"/>
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Short description</f:facet>
+                            #{report.description}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Short description</f:facet>
-                                    #{report.description}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Last changed</f:facet>
+                        <h:outputText value="#{report.lastChangeDate}">
+                            <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                        </h:outputText> by 
+                        <h:outputText value="#{report.lastChangedBy.fullName}" />
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Last changed</f:facet>
-                                <h:outputText value="#{report.lastChangeDate}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
-                                </h:outputText> by 
-                                <h:outputText value="#{report.lastChangedBy.firstName} #{report.lastChangedBy.lastName}" />
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Status</f:facet>
+                            #{report.status}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Status</f:facet>
-                                    #{report.status}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Reporter</f:facet>
+                            #{report.reporter.fullName}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Reporter</f:facet>
-                                    #{report.reporter.firstName} #{report.reporter.lastName}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Balance</f:facet>
+                        <h:outputText value="#{expenseReportController.getReportTotal(report)}" />
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Balance</f:facet>
-                                <h:outputText value="#{expenseReportController.getReportTotal(report)}" />
-                            </rich:column>
+                </rich:dataTable>
+                <h:panelGroup>
+                    <h:commandButton action="#{expenseReportController.showAllAssignedToCurrentAccountant()}" value="Show all" id="showAllBtn" />
+                </h:panelGroup>
+            </h:form>
+        </rich:panel>
 
-                        </rich:dataTable>
-                        <h:panelGroup>
-                            <h:commandButton action="#{expenseReportController.showAllAssignedToCurrentAccountant()}" value="Show all"/>
-                        </h:panelGroup>
-                    </h:form>
-                </rich:panel>
+        <!--UNASSIGNED REPORTS -->
+        <rich:panel header="Unassigned reports" rendered="#{idm.hasRole(ACCOUNTANT)}">
+            <h:form id="unassignedForm">
+                <rich:dataTable value="#{expenseReportController.allUnassigned}" var="report" noDataLabel="No reports">
 
-                <!--UNASSIGNED REPORTS -->
-                <rich:panel header="Unassigned reports" rendered="#{idm.hasRole(ACCOUNTANT)}">
-                    <h:form>
-                        <rich:dataTable value="#{expenseReportController.allUnassigned}" var="report" noDataLabel="No reports">
+                    <rich:column>
+                        <f:facet name="header">ID</f:facet>
+                            #{report.id}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">ID</f:facet>
-                                    #{report.id}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}" id="editReportLink"/>
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Name</f:facet>
-                                <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}"/>
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Short description</f:facet>
+                            #{report.description}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Short description</f:facet>
-                                    #{report.description}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Last changed</f:facet>
+                        <h:outputText value="#{report.lastChangeDate}">
+                            <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                        </h:outputText> by 
+                        <h:outputText value="#{report.lastChangedBy.fullName}" />
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Last changed</f:facet>
-                                <h:outputText value="#{report.lastChangeDate}">
-                                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
-                                </h:outputText> by 
-                                <h:outputText value="#{report.lastChangedBy.firstName} #{report.lastChangedBy.lastName}" />
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Status</f:facet>
+                            #{report.status}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Status</f:facet>
-                                    #{report.status}
-                            </rich:column>
+                    <rich:column>
+                        <f:facet name="header">Reporter</f:facet>
+                            #{report.reporter.fullName}
+                    </rich:column>
 
-                            <rich:column>
-                                <f:facet name="header">Reporter</f:facet>
-                                    #{report.reporter.firstName} #{report.reporter.lastName}
-                            </rich:column>
+                </rich:dataTable>
 
-                        </rich:dataTable>
+            </h:form>
+        </rich:panel>
 
-                    </h:form>
-                </rich:panel>
-
-            </ui:define>
-        </ui:composition>
-
-    </body>
-</html>
+    </ui:define>
+</ui:composition>

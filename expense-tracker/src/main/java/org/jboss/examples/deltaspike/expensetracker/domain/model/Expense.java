@@ -1,8 +1,10 @@
 package org.jboss.examples.deltaspike.expensetracker.domain.model;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Entity
 public class Expense extends Transaction implements Serializable {
@@ -18,6 +20,15 @@ public class Expense extends Transaction implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Receipt receipt;
 
+    public Expense() {
+    }
+
+    public Expense(Purpose purpose, Receipt receipt, Date date, BigDecimal value, ExpenseReport report) {
+        super(date, value, report);
+        this.purpose = purpose;
+        this.receipt = receipt;
+    }
+    
     public Long getId() {
         return id;
     }

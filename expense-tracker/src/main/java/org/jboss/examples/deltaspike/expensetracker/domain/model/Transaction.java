@@ -26,6 +26,15 @@ public class Transaction {
     @JoinColumn(name = "reportId")
     private ExpenseReport report;
 
+    public Transaction() {
+    }
+
+    public Transaction(Date date, BigDecimal value, ExpenseReport report) {
+        this.date = date;
+        this.value = value;
+        this.report = report;
+    }
+    
     public ExpenseReport getReport() {
         return report;
     }

@@ -1,41 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xml:lang="en" lang="en">
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 template="/resources/template/layout.xhtml">
+    
+    <ui:define name="content">
+        <ui:insert name="title"/>
+        <h:form id="form">
 
-    <h:head>
-        <title>Receipt</title>
-    </h:head>
-    <h:body>
+            <h:messages id="error-messages" />
 
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
-                <ui:insert name="title"/>
-                <h:form id="form">
+            <div>
+                <h:outputLabel value="Receipt:" for="fileUpload" />
 
-                    <h:messages id="error-messages" />
-
-                    <div>
-                        <h:outputLabel value="Receipt:" for="fileUpload" />
-
-                        <div>
-                            TODO: add a file upload component
-
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <h:commandButton action="#{receiptController.save()}" value="Save" />
-                            <h:commandButton action="#{receiptController.cancel()}" value="Cancel" immediate="true" />
-                        </div>
-                    </div>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-
-    </h:body>
-</html>
+                <div>
+                    TODO: add a file upload component
+                </div>
+            </div>
+            <div>
+                <div>
+                    <h:commandButton action="#{receiptController.save()}" value="Save" />
+                    <h:commandButton action="#{receiptController.cancel()}" value="Cancel" immediate="true" />
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

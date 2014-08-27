@@ -1,5 +1,8 @@
 package org.jboss.examples.deltaspike.expensetracker.view;
 
+import java.io.Serializable;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -15,7 +18,8 @@ import org.picketlink.authentication.event.LoginFailedEvent;
 import org.picketlink.authentication.event.PostLoggedOutEvent;
 
 @ViewRef(config = Login.class)
-public class LoginNavigationHandler {
+@ApplicationScoped
+public class LoginNavigationHandler implements Serializable {
 
     @Inject
     private ViewNavigationHandler view;

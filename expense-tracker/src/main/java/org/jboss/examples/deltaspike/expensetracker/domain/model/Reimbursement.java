@@ -1,6 +1,8 @@
 package org.jboss.examples.deltaspike.expensetracker.domain.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -15,6 +17,14 @@ public class Reimbursement extends Transaction implements Serializable {
     @NotNull
     private Employee creator;
 
+    public Reimbursement() {
+    }
+
+    public Reimbursement(Employee creator, Date date, BigDecimal value, ExpenseReport report) {
+        super(date, value, report);
+        this.creator = creator;
+    }
+    
     public Long getId() {
         return id;
     }

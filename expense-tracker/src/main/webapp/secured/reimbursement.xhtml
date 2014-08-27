@@ -1,38 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:et="http://java.sun.com/jsf/composite/et"
-      xml:lang="en" lang="en">
-    <h:body>
-        <ui:composition template="/resources/template/layout.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:et="http://java.sun.com/jsf/composite/et"
+                template="/resources/template/layout.xhtml">
 
-            <ui:define name="content">
-                <ui:insert name="title"/>
+    <ui:define name="content">
+        <ui:insert name="title"/>
 
-                <et:reportView report="#{reimbursementController.selected.report}" />
+        <et:reportView report="#{reimbursementController.selected.report}" />
 
-                <h:form id="reimbursementForm">
-                    <rich:panel header="Expense">
-                        <h:panelGrid columns="3" border="0">
-                            <h:outputLabel value="Date:" for="date"/>
-                            <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.reimbursementsEditable}" />
-                            <rich:message for="date" />
+        <h:form id="reimbursementForm">
+            <rich:panel header="Expense">
+                <h:panelGrid columns="3" border="0">
+                    <h:outputLabel value="Date:" for="date"/>
+                    <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.reimbursementsEditable}" />
+                    <rich:message for="date" />
 
-                            <h:outputLabel value="Value:" for="value" />
-                            <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not expenseReportController.reimbursementsEditable}"/>
-                            <rich:message for="value" />
+                    <h:outputLabel value="Value:" for="value" />
+                    <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not expenseReportController.reimbursementsEditable}"/>
+                    <rich:message for="value" />
 
-                            <f:facet name="footer">
-                                <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}"/>
-                                <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" />
-                            </f:facet>
-                        </h:panelGrid>
-                    </rich:panel>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </h:body>
-</html>
+                    <f:facet name="footer">
+                        <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}"/>
+                        <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" />
+                    </f:facet>
+                </h:panelGrid>
+            </rich:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -27,13 +27,13 @@ import org.picketlink.idm.RelationshipManager;
 @Inherited
 @Stereotype
 @ViewMetaData // since 1.0.1
-@Secured(RolesAllowed.Voter.class)
+@Secured(RolesAllowed.RolesAllowedVoter.class)
 public @interface RolesAllowed {
 
     String[] value();
 
     @RequestScoped
-    public static class Voter implements AccessDecisionVoter {
+    public static class RolesAllowedVoter implements AccessDecisionVoter {
 
         @Inject
         private Identity identity;

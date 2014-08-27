@@ -32,7 +32,7 @@ public class CurrentEmployee implements Serializable {
     public void setOnLogin(@Observes LoggedInEvent event, Identity identity) {
         updateCachedEmployee(identity);
     }
-    
+
     public void setOnModification(@Observes Modified event, Identity identity) {
         updateCachedEmployee(identity);
     }
@@ -42,7 +42,10 @@ public class CurrentEmployee implements Serializable {
     @Named
     @CurrentUser
     public Employee getCurrentEmployee() {
-        return repo.merge(cached);
+        if (cached != null) {
+            cached = repo.merge(cached);
+        }
+        return cached;
     }
 
     @Produces

@@ -1,51 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:rich="http://richfaces.org/rich">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                template="/resources/template/layout.xhtml">
+    
+    <ui:define name="content">
+        <h:form rendered="#{idm.hasRole(ADMIN)}" id="employeesForm">
+            <h2>Employees</h2>
+            <rich:dataTable value="#{employeeController.allEmployees}" var="e">
+                <rich:column>
+                    <f:facet name="header">Username</f:facet>
+                        #{employeeService.getUserForEmployee(e).loginName}
+                </rich:column>
 
-    <head>
-        <title>Employees</title>
-    </head>
-    <body>
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
-                <h:form rendered="#{idm.hasRole(ADMIN)}">
-                    <h2>Employees</h2>
-                    <rich:dataTable value="#{employeeController.allEmployees}" var="e">
-                        <rich:column>
-                            <f:facet name="header">Username</f:facet>
-                                #{employeeService.getUserForEmployee(e).loginName}
-                        </rich:column>
+                <rich:column>
+                    <f:facet name="header">Name</f:facet>
+                        #{e.fullName}
+                </rich:column>
 
-                        <rich:column>
-                            <f:facet name="header">Name</f:facet>
-                                #{e.firstName} #{e.lastName}
-                        </rich:column>
+                <rich:column>
+                    <f:facet name="header">Email</f:facet>
+                        #{e.email}
+                </rich:column>
 
-                        <rich:column>
-                            <f:facet name="header">Email</f:facet>
-                                #{e.email}
-                        </rich:column>
+                <rich:column>
+                    <f:facet name="header">Bank Account</f:facet>
+                        #{e.bankAccount}
+                </rich:column>
 
-                        <rich:column>
-                            <f:facet name="header">Bank Account</f:facet>
-                                #{e.bankAccount}
-                        </rich:column>
+                <rich:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandButton action="#{employeeController.edit(e)}" value="Edit" id="editEmployeeBtn"/>
+                </rich:column>
+            </rich:dataTable>
 
-                        <rich:column>
-                            <f:facet name="header">Action</f:facet>
-                            <h:commandButton action="#{employeeController.edit(e)}" title="Edit" />
-                        </rich:column>
-                    </rich:dataTable>
-
-                    <h:panelGroup>
-                        <h:commandButton action="#{employeeController.create()}" value="Add employee"/>
-                    </h:panelGroup>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-
-    </body>
-</html>
+            <h:panelGroup>
+                <h:commandButton action="#{employeeController.create()}" value="Add employee" id="addEmployeeBtn"/>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

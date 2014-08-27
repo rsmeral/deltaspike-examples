@@ -15,6 +15,7 @@ import org.picketlink.authorization.annotations.RolesAllowed;
 
 @LoggedIn
 @RequestScoped
+@Transactional
 public class ExpenseReportService {
 
     @Inject

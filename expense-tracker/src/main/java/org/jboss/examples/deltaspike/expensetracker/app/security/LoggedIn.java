@@ -23,11 +23,11 @@ import org.picketlink.Identity;
 @Inherited
 @Stereotype
 @ViewMetaData // since 1.0.1
-@Secured(LoggedIn.Voter.class)
+@Secured(LoggedIn.LoggedInVoter.class)
 public @interface LoggedIn {
 
     @RequestScoped
-    public static class Voter implements AccessDecisionVoter {
+    public static class LoggedInVoter implements AccessDecisionVoter {
 
         @Inject
         private Identity identity;

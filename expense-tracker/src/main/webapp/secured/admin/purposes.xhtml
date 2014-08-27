@@ -1,47 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:rich="http://richfaces.org/rich">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                template="/resources/template/layout.xhtml">
+    
+    <ui:define name="content">
+        <h:form id="purposesForm">
+            <h2>Purposes</h2>
+            <rich:dataTable value="#{purposes}" var="p">
+                <rich:column>
+                    <f:facet name="header">Name</f:facet>
+                        ${p.name}
+                </rich:column>
 
-    <head>
-        <title>Expense Purposes</title>
-    </head>
-    <body>
+                <rich:column>
+                    <f:facet name="header">Short description</f:facet>
+                        #{p.description}
+                </rich:column>
 
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
-                <h:form>
-                    <h2>Purposes</h2>
-                    <rich:dataTable value="#{purposes}" var="p">
-                        <rich:column>
-                            <f:facet name="header">Name</f:facet>
-                                ${p.name}
-                        </rich:column>
+                <rich:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandButton action="#{purposeController.edit(p)}" value="Edit" id="editPurposeBtn" />
+                    <h:commandButton action="#{purposeController.delete(p)}" value="Delete" id="deletePurposeBtn"/>
+                </rich:column>
+            </rich:dataTable>
 
-                        <rich:column>
-                            <f:facet name="header">Short description</f:facet>
-                                #{p.description}
-                        </rich:column>
-
-                        <rich:column>
-                            <f:facet name="header">Action</f:facet>
-                            <h:commandButton action="#{purposeController.edit(p)}">
-                                Edit
-                            </h:commandButton>
-                            <h:commandButton action="#{purposeController.delete(p)}">
-                                Delete
-                            </h:commandButton>
-                        </rich:column>
-                    </rich:dataTable>
-
-                    <h:panelGroup>
-                        <h:commandButton action="#{purposeController.create()}" value="Add purpose"/>
-                    </h:panelGroup>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-
-    </body>
-</html>
+            <h:panelGroup>
+                <h:commandButton action="#{purposeController.create()}" value="Add purpose" id="addPurposeBtn" />
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

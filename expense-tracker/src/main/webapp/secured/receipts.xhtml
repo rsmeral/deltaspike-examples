@@ -1,59 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/resources/template/layout.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <h2>Receipts</h2>
 
-    <head>
-        <title>Expense Receipts</title>
-    </head>
-    <body>
+            <h:dataTable value="#{expenseReportController.selected.receipts}" var="r">
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:commandLink action="#{receiptController.show(r)}">
+                        #{r.documentName}
+                    </h:commandLink>
+                </h:column>
 
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
-                <h:form>
-                    <h2>Receipts</h2>
+                <h:column>
+                    <f:facet name="header">Imported by</f:facet>
+                        #{r.importedBy.fullName}
+                </h:column>
 
-                    <h:dataTable value="#{expenseReportController.selected.receipts}" var="r">
-                        <h:column>
-                            <f:facet name="header">Name</f:facet>
-                            <h:commandLink action="#{receiptController.show(r)}">
-                                #{r.documentName}
-                            </h:commandLink>
-                        </h:column>
+                <h:column>
+                    <f:facet name="header">Imported on</f:facet>
+                    <h:outputText value="#{r.importDate}">
+                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
+                    </h:outputText>
+                </h:column>
 
-                        <h:column>
-                            <f:facet name="header">Imported by</f:facet>
-                                #{r.importedBy.firstName} #{r.importedBy.lastName}
-                        </h:column>
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandLink action="#{receiptController.edit(r)}" >
+                        Edit
+                    </h:commandLink>
+                    <h:commandLink action="#{receiptController.delete(r)}">
+                        Delete
+                    </h:commandLink>
 
-                        <h:column>
-                            <f:facet name="header">Imported on</f:facet>
-                            <h:outputText value="#{r.importDate}">
-                                <f:convertDateTime pattern="MMM d, yyyy HH:mm" timeZone="GMT+2"/>
-                            </h:outputText>
-                        </h:column>
+                </h:column>
+            </h:dataTable>
 
-                        <h:column>
-                            <f:facet name="header">Action</f:facet>
-                            <h:commandLink action="#{receiptController.edit(r)}" >
-                                Edit
-                            </h:commandLink>
-                            <h:commandLink action="#{receiptController.delete(r)}">
-                                Delete
-                            </h:commandLink>
-
-                        </h:column>
-                    </h:dataTable>
-
-                    <div>
-                        <div>
-                            <h:commandLink action="#{receiptController.create()}" value="Add receipt"/>
-                        </div>
-                    </div>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-
-    </body>
-</html>
+            <div>
+                <div>
+                    <h:commandLink action="#{receiptController.create()}" value="Add receipt"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

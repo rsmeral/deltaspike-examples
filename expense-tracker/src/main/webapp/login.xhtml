@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
-        <title>Login Form</title>
-    </h:head>
-    <h:body>
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
-                <rich:panel header="Login">
-                    <h:form id="login">
-                        <h:panelGrid id="loginPanel" columns="2" border="0">
-                            <h:outputLabel value="Username:" for="username" />
-                            <h:inputText value="#{loginCredentials.userId}" id="username"/>
-                            <h:outputLabel value="Password:" for="password" />
-                            <h:inputSecret value="#{loginCredentials.password}" id="password"/>
-                            <f:facet name="footer">
-                                <h:commandButton value="Login" action="#{identity.login()}" id="loginBtn" />
-                            </f:facet>
-                        </h:panelGrid>
-                    </h:form>
-                </rich:panel>
-            </ui:define>
-        </ui:composition>
-    </h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                template="/resources/template/layout.xhtml">
+
+    <ui:define name="content">
+        <rich:panel header="Login">
+            <h:form id="login">
+                <h:panelGrid id="loginPanel" columns="2" border="0">
+                    <h:outputLabel value="Username:" for="username" />
+                    <h:inputText value="#{loginCredentials.userId}" id="username"/>
+                    <h:outputLabel value="Password:" for="password" />
+                    <h:inputSecret value="#{loginCredentials.password}" id="password"/>
+                    <f:facet name="footer">
+                        <h:commandButton value="Login" action="#{identity.login()}" id="loginBtn" />
+                    </f:facet>
+                </h:panelGrid>
+            </h:form>
+        </rich:panel>
+    </ui:define>
+</ui:composition>

@@ -1,61 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:et="http://java.sun.com/jsf/composite/et"
-      xml:lang="en" lang="en">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:et="http://java.sun.com/jsf/composite/et"
+                template="/resources/template/layout.xhtml">
 
-    <h:head>
-        <title>Expense</title>
-    </h:head>
-    <h:body>
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
-                <ui:insert name="title"/>
-                
-                <et:reportView report="#{expenseController.selected.report}" />
+    <ui:define name="content">
 
-                <h:form id="expenseForm">
-                    <rich:panel header="Expense">
-                        <h:panelGrid columns="3" border="0">
-                            <h:outputLabel value="Purpose:" for="purpose" />
-                            <h:panelGroup>
-                                <h:selectOneMenu id="purpose" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not expenseReportController.expensesEditable}" converter="#{purposeConverter}">
-                                    <f:selectItems value="#{purposes}" var="p" itemValue="#{p}" itemLabel="#{p.name}" itemDescription="#{p.description}" />
-                                </h:selectOneMenu>
-                            </h:panelGroup>
-                            <rich:message for="purpose" />
+        <et:reportView report="#{expenseController.selected.report}" />
 
-                            <h:outputLabel value="Receipt:" for="receipt" />
-                            <h:panelGroup>
-                                <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" >
-                                    <f:selectItems value="#{expenseController.selected.report.receipts}" var="r" itemLabel="#{r.documentName}" itemValue="#{r}"/>
-                                </h:selectOneMenu>
-                                <h:commandButton id="newReceipt" action="#{receiptController.create()}" rendered="#{expenseReportController.expensesEditable}" value="Add receipt" immediate="true" />
-                            </h:panelGroup>
-                            <rich:message for="receipt" />
+        <h:form id="expenseForm">
+            <rich:panel header="Expense">
+                <h:panelGrid columns="3" border="0">
+                    <h:outputLabel value="Purpose:" for="purpose" />
+                    <h:panelGroup>
+                        <h:selectOneMenu id="purpose" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not expenseReportController.expensesEditable}" converter="#{purposeConverter}">
+                            <f:selectItems value="#{purposes}" var="p" itemValue="#{p}" itemLabel="#{p.name}" itemDescription="#{p.description}" />
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    <rich:message for="purpose" />
 
-                            <h:outputLabel value="Date:" for="date" />
-                            <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}"/>
-                            <rich:message for="date" />
+                    <h:outputLabel value="Receipt:" for="receipt" />
+                    <h:panelGroup>
+                        <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" >
+                            <f:selectItems value="#{expenseController.selected.report.receipts}" var="r" itemLabel="#{r.documentName}" itemValue="#{r}"/>
+                        </h:selectOneMenu>
+                        <h:commandButton id="addReceiptBtn" action="#{receiptController.create()}" rendered="#{expenseReportController.expensesEditable}" value="Add receipt" immediate="true" />
+                    </h:panelGroup>
+                    <rich:message for="receipt" />
 
-                            <h:outputLabel value="Value:" for="value" />
-                            <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not expenseReportController.expensesEditable}"/>
-                            <rich:message for="value" />
+                    <h:outputLabel value="Date:" for="date" />
+                    <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}"/>
+                    <rich:message for="date" />
 
-                            <f:facet name="footer">
-                                <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{expenseReportController.expensesEditable}" />
-                                <h:commandButton action="#{expenseController.cancel()}" value="Cancel" immediate="true" />
-                            </f:facet>
-                        </h:panelGrid>
-                    </rich:panel>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </h:body>
-</html>
+                    <h:outputLabel value="Value:" for="value" />
+                    <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not expenseReportController.expensesEditable}"/>
+                    <rich:message for="value" />
+
+                    <f:facet name="footer">
+                        <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{expenseReportController.expensesEditable}" id="saveExpenseBtn" />
+                        <h:commandButton action="#{expenseController.cancel()}" value="Cancel" immediate="true" id="cancelBtn" />
+                    </f:facet>
+                </h:panelGrid>
+            </rich:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

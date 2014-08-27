@@ -4,6 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
@@ -22,6 +23,7 @@ public @interface NotTaken {
 
     Class<? extends Payload>[] payload() default {};
     
+    @ApplicationScoped
     public static class Validator implements ConstraintValidator<NotTaken, String> {
 
         @Inject

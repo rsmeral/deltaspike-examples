@@ -1,43 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xml:lang="en" lang="en"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/resources/template/layout.xhtml">
+    
+    <ui:define name="content">
+        <ui:insert name="title"/>
+        <h:messages id="error-messages" />
+        <h:form>
+            <rich:panel header="Purpose">
+                <h:panelGrid columns="3" border="0">
+                    <h:outputLabel value="Name:" for="name" />
+                    <h:inputText id="name" value="#{purposeController.selected.name}" />
+                    <rich:message for="name" />
 
-    <h:head>
-        <title>Purpose</title>
-    </h:head>
-    <h:body>
+                    <h:outputLabel value="Description:" for="description" />
+                    <h:inputTextarea id="description" value="#{purposeController.selected.description}" rows="5" cols="30" />
+                    <rich:message for="description" />
 
-        <ui:composition template="/resources/template/layout.xhtml">
-            <ui:define name="content">
-                <ui:insert name="title"/>
-                <h:messages id="error-messages" />
-                <h:form>
-                    <rich:panel header="Purpose">
-                        <h:panelGrid columns="3" border="0">
-                            <h:outputLabel value="Name:" for="name" />
-                            <h:inputText id="name" value="#{purposeController.selected.name}" />
-                            <rich:message for="name" />
-                            
-                            <h:outputLabel value="Description:" for="description" />
-                            <h:inputTextarea id="description" value="#{purposeController.selected.description}" rows="5" cols="30" />
-                            <rich:message for="description" />
-                            
-                            <f:facet name="footer">
-                                <h:commandButton action="#{purposeController.save()}" value="Save" />
-                                <h:commandButton action="#{purposeController.cancel()}" value="Cancel" immediate="true" />
-                            </f:facet>
-                        </h:panelGrid>
-                    </rich:panel>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-
-    </h:body>
-</html>
+                    <f:facet name="footer">
+                        <h:commandButton action="#{purposeController.save()}" value="Save" />
+                        <h:commandButton action="#{purposeController.cancel()}" value="Cancel" immediate="true" />
+                    </f:facet>
+                </h:panelGrid>
+            </rich:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
