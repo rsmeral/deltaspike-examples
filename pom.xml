@@ -11,7 +11,9 @@
     <name>DeltaSpike Examples: Aggregator</name>
 
     <modules>
-        <module>template</module>
+        <module>ds-passwd</module>
+        <module>mbeanTranslator</module>
+        <module>expense-tracker</module>
     </modules>
         
     <profiles>
@@ -19,7 +21,9 @@
         <profile>
             <id>ftest</id>
             <modules>
-                <module>template/functional-tests</module>
+                <module>ds-passwd/functional-tests</module>
+                <module>mbeanTranslator/functional-tests</module>
+                <module>expense-tracker/functional-tests</module>
             </modules>
         </profile>
         
