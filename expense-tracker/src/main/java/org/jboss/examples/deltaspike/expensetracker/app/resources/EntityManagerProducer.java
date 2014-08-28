@@ -8,8 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 
-/*
- * An entity manager exposed as a CDI bean is required for DeltaSpike's 
+/**
+ * An entity manager exposed as a CDI bean is required for DeltaSpike's
  * EntityRepository to work.
  */
 @ApplicationScoped
@@ -18,6 +18,10 @@ public class EntityManagerProducer {
     @PersistenceUnit(unitName = "primary")
     private EntityManagerFactory primaryEmf;
 
+    /*
+     * A conversation scoped entity manager avoids some trouble with transient
+     * entity references and merging.
+     */
     @Produces
     @ConversationScoped
     public EntityManager producePrimaryEm() {

@@ -1,5 +1,8 @@
 package org.jboss.examples.deltaspike.expensetracker.app.exception;
 
+/**
+ * Generic exception thrown by the application in any invalid state.
+ */
 public class ApplicationException extends Exception {
 
     public ApplicationException() {
@@ -20,5 +23,5 @@ public class ApplicationException extends Exception {
     public ApplicationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
-    
+
 }

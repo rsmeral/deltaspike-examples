@@ -50,7 +50,7 @@ public class EmployeeController implements Serializable {
     @Inject
     @CurrentUser
     private Employee currentEmployee;
-    
+
     @Inject
     private Event<CurrentEmployee.Modified> employeeModEvent;
 
@@ -127,6 +127,9 @@ public class EmployeeController implements Serializable {
         this.roles = roles;
     }
 
+    /*
+     * The password holder is separated to simplify validation. 
+     */
     @Controller
     public static class PasswordHolder implements Serializable {
 

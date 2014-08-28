@@ -22,6 +22,16 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.RelationshipManager;
 
+/**
+ * Declarative security in
+ * {@link org.apache.deltaspike.core.api.config.view.ViewConfig}s. Just a
+ * stereotype which hides the {@link Secured} annotation.
+ *
+ * The trick is, that it also holds the {@link ViewMetaData} meta-annotation,
+ * which makes this annotation stick to the annotated element (normally, a
+ * stereotype annotation is transparent). Then it is queriable and available
+ * also in {@link AccessDecisionVoterContext}.
+ */
 @Target({TYPE, METHOD, FIELD})
 @Retention(RUNTIME)
 @Inherited
@@ -46,8 +56,8 @@ public @interface RolesAllowed {
 
         @Inject
         private RelationshipManager relationshipManager;
-        
-        @Inject 
+
+        @Inject
         private AppMessages msg;
 
         @Override

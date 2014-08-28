@@ -8,10 +8,13 @@ import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Named;
 
+/**
+ * MVC controller stereotype. Conversation scoped, named, and intercepted by
+ * {@link ConversationInterceptor}.
+ */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Stereotype
-
 @Named
 @ConversationScoped
 @ConversationControlAnnotated

@@ -15,6 +15,9 @@ import org.picketlink.idm.jpa.model.sample.simple.RelationshipTypeEntity;
 import org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity;
 import org.picketlink.idm.model.Relationship;
 
+/**
+ * Configuration of PicketLink.
+ */
 @ApplicationScoped
 public class IDMConfiguration {
 //
@@ -64,7 +67,7 @@ public class IDMConfiguration {
                         RoleTypeEntity.class
                 )
                 .supportGlobalRelationship(Relationship.class)
-//                .addContextInitializer(contextInitializer)
+                //                .addContextInitializer(contextInitializer)
                 .supportAllFeatures();
 
         identityConfig = builder.build();

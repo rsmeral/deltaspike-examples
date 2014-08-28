@@ -14,7 +14,8 @@ import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportSt
 import org.picketlink.authentication.event.LoggedInEvent;
 
 /**
- * Contains state-transfer rules for ExpenseReports.
+ * Contains state-transfer conditions and authorization rules for
+ * ExpenseReports.
  */
 @SessionScoped
 public class Rules implements Serializable {

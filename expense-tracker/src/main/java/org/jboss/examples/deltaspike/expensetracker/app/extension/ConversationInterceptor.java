@@ -8,6 +8,10 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+/**
+ * Supports declarative conversation demarcation, like in Seam, with slightly
+ * different semantics and much more trivially.
+ */
 @Interceptor
 @ConversationControlAnnotated
 public class ConversationInterceptor implements Serializable {

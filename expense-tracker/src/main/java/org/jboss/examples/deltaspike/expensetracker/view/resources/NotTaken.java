@@ -12,6 +12,9 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
 
+/**
+ * A custom CDI-aware validator which checks that a username is available.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = {NotTaken.Validator.class})
@@ -22,13 +25,13 @@ public @interface NotTaken {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-    
+
     @ApplicationScoped
     public static class Validator implements ConstraintValidator<NotTaken, String> {
 
         @Inject
         private EmployeeService svc;
-        
+
         @Override
         public void initialize(NotTaken constraintAnnotation) {
         }
@@ -37,7 +40,7 @@ public @interface NotTaken {
         public boolean isValid(String value, ConstraintValidatorContext context) {
             return svc.isUsernameAvailable(value);
         }
-        
+
     }
-    
+
 }

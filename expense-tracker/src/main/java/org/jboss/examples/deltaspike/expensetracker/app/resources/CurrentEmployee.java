@@ -14,9 +14,24 @@ import org.picketlink.Identity;
 import org.picketlink.authentication.event.LoggedInEvent;
 import org.picketlink.idm.model.basic.User;
 
+/**
+ * Produces the current Employee for use with the Data module's audit
+ * capability.
+ *
+ * The
+ * {@link org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport}
+ * entity has a {@code Employee lastChangedBy} field annotated
+ * {@link org.apache.deltaspike.data.api.audit.ModifiedBy}. Upon persisting an
+ * ExpenseReport, the Data module looks for a producer of {@code Employee} qualified
+ * {@code @CurrentUser}.
+ *
+ */
 @SessionScoped
 public class CurrentEmployee implements Serializable {
 
+    /*
+     * Dummy used as event payload.
+     */
     public static class Modified {
     }
 

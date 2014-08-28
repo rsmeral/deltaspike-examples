@@ -1,9 +1,7 @@
 package org.jboss.examples.deltaspike.expensetracker.app;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;

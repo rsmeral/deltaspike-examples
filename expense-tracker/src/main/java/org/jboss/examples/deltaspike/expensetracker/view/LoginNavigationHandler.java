@@ -2,7 +2,6 @@ package org.jboss.examples.deltaspike.expensetracker.view;
 
 import java.io.Serializable;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -17,6 +16,11 @@ import org.picketlink.authentication.event.LoggedInEvent;
 import org.picketlink.authentication.event.LoginFailedEvent;
 import org.picketlink.authentication.event.PostLoggedOutEvent;
 
+/**
+ * Handles some automatic navigation by observing authentication events
+ * and Login view's lifecycle phases using {@link ViewRef} and
+ * {@link PreRenderView}.
+ */
 @ViewRef(config = Login.class)
 @ApplicationScoped
 public class LoginNavigationHandler implements Serializable {

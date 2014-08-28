@@ -18,11 +18,15 @@ import org.apache.deltaspike.security.api.authorization.SecurityViolation;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.picketlink.Identity;
 
+/**
+ * Declarative security in
+ * {@link org.apache.deltaspike.core.api.config.view.ViewConfig}s. Just a
+ * stereotype which hides the {@link Secured} annotation.
+ */
 @Target({TYPE, METHOD, FIELD})
 @Retention(RUNTIME)
 @Inherited
 @Stereotype
-@ViewMetaData // since 1.0.1
 @Secured(LoggedIn.LoggedInVoter.class)
 public @interface LoggedIn {
 
@@ -31,8 +35,8 @@ public @interface LoggedIn {
 
         @Inject
         private Identity identity;
-        
-        @Inject 
+
+        @Inject
         private AppMessages msg;
 
         @Override

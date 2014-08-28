@@ -4,6 +4,16 @@ import javax.inject.Named;
 import org.apache.deltaspike.core.api.message.MessageBundle;
 import org.apache.deltaspike.core.api.message.MessageTemplate;
 
+/**
+ * Type-safe messages for the application. The actual messages are located in a
+ * properties file in resources, in the same package as this class.
+ *
+ * Can also be referenced in views using EL.
+ *
+ * Or they can be easily used as Faces messages using
+ * {@link org.apache.deltaspike.jsf.api.message.JsfMessage}, instead of manually
+ * calling {@link javax.faces.context.FacesContext#addMessage}.
+ */
 @Named
 @MessageBundle
 public interface AppMessages {
@@ -13,7 +23,7 @@ public interface AppMessages {
 
     @MessageTemplate("{security.noRolesAuthorized}")
     String noRolesAuthorized();
-    
+
     @MessageTemplate("{security.passwordChanged}")
     String passwordChanged();
 

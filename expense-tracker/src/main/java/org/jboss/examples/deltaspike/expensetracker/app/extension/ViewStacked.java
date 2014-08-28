@@ -15,31 +15,35 @@ import org.apache.deltaspike.core.api.config.view.controller.ViewControllerRef;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
 
+/**
+ * Every view annotated with ViewStacked will be pushed on to the
+ * {@link ViewStack} on navigation.
+ */
 @Stereotype
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @ViewMetaData
 @ViewControllerRef(ViewStacked.Controller.class)
 public @interface ViewStacked {
-    
+
     @SessionScoped
     public static class Controller implements Serializable {
-    
+
         @Inject
         private FacesContext faces;
-        
+
         @Inject
         private ViewConfigResolver viewConfigResolver;
-        
+
         @Inject
         private ViewStack viewStack;
-        
+
         @PostRenderView
         public void pushViewToStack() {
             Class<? extends ViewConfig> configClass = viewConfigResolver.getViewConfigDescriptor(faces.getViewRoot().getViewId()).getConfigClass();
             viewStack.push(configClass);
         }
-        
+
     }
 
 }

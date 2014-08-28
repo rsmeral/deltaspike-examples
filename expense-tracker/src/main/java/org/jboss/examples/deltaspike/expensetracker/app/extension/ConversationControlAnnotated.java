@@ -8,6 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.interceptor.InterceptorBinding;
 
+/**
+ * An interceptor binding for the {@link ConversationInterceptor}. Can be used
+ * e.g. on view controllers, where individual methods can be annotated
+ * {@link Begin} and {@link End}.
+ */
 @Inherited
 @InterceptorBinding
 @Retention(RUNTIME)
