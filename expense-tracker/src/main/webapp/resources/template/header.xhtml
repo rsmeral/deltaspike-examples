@@ -4,15 +4,15 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:f="http://java.sun.com/jsf/core">
-    
+
     <h:graphicImage value="/resources/img/ds-logo.png" alt="DeltaSpike logo" height="50" styleClass="logo"/>
     <h1>Expense tracking</h1>
     <ui:fragment rendered="#{identity.loggedIn}">
         <h:form id="toolbarForm">
             <rich:toolbar id="toolbar">
-                <rich:menuItem><h:link outcome="/secured/home" id="navHome">Home</h:link></rich:menuItem>
-                <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/purposes" id="navPurposes">Purposes</h:link></rich:menuItem>
-                <rich:menuItem rendered="#{idm.hasRole(ADMIN)}"><h:link outcome="/secured/admin/employees" id="navEmployees">Employees</h:link></rich:menuItem>
+                <rich:menuItem id="navHome" label="Home" action="#{navigationController.goHome()}" />
+                <rich:menuItem rendered="#{idm.hasRole(ADMIN)}" id="navPurposes" label="Purposes" action="#{navigationController.goToPurposes()}" />
+                <rich:menuItem rendered="#{idm.hasRole(ADMIN)}" id="navEmployees" label="Employees" action="#{navigationController.goToEmployees()}" />
                 <rich:toolbarGroup location="right">
                     <rich:dropDownMenu id="userMenu">
                         <f:facet name="label">
@@ -25,9 +25,11 @@
                     </rich:dropDownMenu>
                 </rich:toolbarGroup>
             </rich:toolbar>
+            <!-- Tiny hack for testability -->
+            <h:inputHidden id="currentUserName" value="#{currentUser.loginName}" />
         </h:form>
     </ui:fragment>
-    <div id="globalMessages">
-        <rich:messages globalOnly="true" />
+    <div>
+        <rich:messages globalOnly="true" id="globalMessages"/>
     </div>
 </ui:composition>

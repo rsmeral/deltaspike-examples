@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!--
+        The login form. Made as a component in order to allow use in access-denied
+        error pages where login is required to continue. 
+    
+        Bound to PicketLink component names (identity, loginCredentials). 
+    -->
+    <cc:interface>
+        <cc:attribute name="headerText" type="java.lang.String" displayName="Header text" required="false" default="Login" />
+    </cc:interface>
+
+    <cc:implementation>
+        <h:form id="form">
+            <rich:panel header="#{cc.attrs.headerText}">
+                <h:panelGrid id="loginPanel" columns="2" border="0">
+                    <h:outputLabel value="Username:" for="username" />
+                    <h:inputText value="#{loginCredentials.userId}" id="username"/>
+                    <h:outputLabel value="Password:" for="password" />
+                    <h:inputSecret value="#{loginCredentials.password}" id="password"/>
+                    <f:facet name="footer">
+                        <h:commandButton value="Log in" action="#{identity.login()}" id="loginBtn" />
+                    </f:facet>
+                </h:panelGrid>
+            </rich:panel>
+        </h:form>
+    </cc:implementation>
+</html>

@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!--
+        Table of reports.
+    -->
+    <cc:interface>
+        <cc:attribute name="reports" required="true" type="java.util.List" />
+
+        <cc:attribute name="hideId" required="false" default="false" />
+        <cc:attribute name="hideDescription" required="false" default="false" />
+        <cc:attribute name="hideLastChange" required="false" default="false" />
+        <cc:attribute name="hideStatus" required="false" default="false" />
+        <cc:attribute name="hideReporter" required="false" default="false" />
+        <cc:attribute name="hideAssignee" required="false" default="false" />
+        <cc:attribute name="hideBalance" required="false" default="false" />
+    </cc:interface>
+
+    <cc:implementation>
+        <rich:dataTable value="#{cc.attrs.reports}" var="report" noDataLabel="No reports">
+
+            <rich:column rendered="#{not cc.attrs.hideId}" id="reportId">
+                <f:facet name="header">ID</f:facet>
+                    #{report.id}
+            </rich:column>
+
+            <rich:column id="reportName">
+                <f:facet name="header">Name</f:facet>
+                <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}" id="editReportLink" />
+            </rich:column>
+
+            <rich:column rendered="#{not cc.attrs.hideDescription}" id="reportDesc">
+                <f:facet name="header">Short description</f:facet>
+                    #{report.description}
+            </rich:column>
+
+            <rich:column rendered="#{not cc.attrs.hideLastChange}" id="reportLastChange">
+                <f:facet name="header">Last change</f:facet>
+                <h:outputText value="#{report.lastChangeDate}">
+                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
+                </h:outputText> by
+                <h:outputText value="#{report.lastChangedBy.fullName}" />
+            </rich:column>
+
+            <rich:column rendered="#{not cc.attrs.hideStatus}" id="reportStatus">
+                <f:facet name="header">Status</f:facet>
+                    #{report.status}
+            </rich:column>
+
+            <rich:column rendered="#{not cc.attrs.hideReporter}" id="reportReporter">
+                <f:facet name="header">Reporter</f:facet>
+                    #{report.reporter.fullName}
+            </rich:column>
+
+            <rich:column rendered="#{not cc.attrs.hideAssignee}" id="reportAssignee">
+                <f:facet name="header">Assignee</f:facet>
+                <h:outputText value="#{report.assignee.fullName}" rendered="#{not empty report.assignee}"/>
+                <h:outputText value="Unassigned" rendered="#{empty report.assignee}"/>
+            </rich:column>
+
+            <rich:column rendered="#{not cc.attrs.hideBalance}" id="reportBalance">
+                <f:facet name="header">Balance</f:facet>
+                <h:outputText value="#{expenseReportController.getReportTotal(report)}" />
+            </rich:column>
+
+        </rich:dataTable>
+    </cc:implementation>
+</html>

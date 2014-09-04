@@ -5,32 +5,32 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich"
                 template="/resources/template/layout.xhtml">
-    
+
     <ui:define name="content">
         <h:form rendered="#{idm.hasRole(ADMIN)}" id="employeesForm">
             <h2>Employees</h2>
-            <rich:dataTable value="#{employeeController.allEmployees}" var="e">
-                <rich:column>
+            <rich:dataTable value="#{employeeController.allEmployees}" var="e" id="employeesTable">
+                <rich:column id="employeeUsername">
                     <f:facet name="header">Username</f:facet>
                         #{employeeService.getUserForEmployee(e).loginName}
                 </rich:column>
 
-                <rich:column>
+                <rich:column id="employeeName">
                     <f:facet name="header">Name</f:facet>
                         #{e.fullName}
                 </rich:column>
 
-                <rich:column>
+                <rich:column id="employeeEmail">
                     <f:facet name="header">Email</f:facet>
                         #{e.email}
                 </rich:column>
 
-                <rich:column>
+                <rich:column id="employeeBankAccount">
                     <f:facet name="header">Bank Account</f:facet>
                         #{e.bankAccount}
                 </rich:column>
 
-                <rich:column>
+                <rich:column id="employeeAction">
                     <f:facet name="header">Action</f:facet>
                     <h:commandButton action="#{employeeController.edit(e)}" value="Edit" id="editEmployeeBtn"/>
                 </rich:column>

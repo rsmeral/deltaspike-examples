@@ -1,10 +1,18 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/resources/template/layout.xhtml">
+                template="/resources/template/layout.xhtml"
+                xmlns:rich="http://richfaces.org/rich">
 
     <ui:define name="header"/>
     <ui:define name="content">
         <h2>An Error Occurred</h2>
+        <rich:messages globalOnly="true" id="globalMessages"/>
+        
+        <rich:panel header="Error">
+            <h:link outcome="/secured/home" rendered="#{identity.loggedIn}" id="returnHome">Return</h:link>
+            <h:link outcome="/login" rendered="#{not identity.loggedIn}" id="returnToLogin">Return</h:link>
+        </rich:panel>
+
     </ui:define>
 </ui:composition>

@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Inject;
-import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
 import org.apache.deltaspike.security.api.authorization.AccessDecisionVoter;
 import org.apache.deltaspike.security.api.authorization.AccessDecisionVoterContext;
 import org.apache.deltaspike.security.api.authorization.Secured;

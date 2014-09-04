@@ -5,6 +5,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.ViewRef;
 import org.apache.deltaspike.core.api.config.view.controller.PreRenderView;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
@@ -17,8 +18,8 @@ import org.picketlink.authentication.event.LoginFailedEvent;
 import org.picketlink.authentication.event.PostLoggedOutEvent;
 
 /**
- * Handles some automatic navigation by observing authentication events
- * and Login view's lifecycle phases using {@link ViewRef} and
+ * Handles some automatic navigation by observing authentication events and
+ * Login view's lifecycle phases using {@link ViewRef} and
  * {@link PreRenderView}.
  */
 @ViewRef(config = Login.class)
@@ -37,8 +38,17 @@ public class LoginNavigationHandler implements Serializable {
     @Inject
     private Identity identity;
 
-    public void redirectHomeOnLogin(@Observes LoggedInEvent event) {
-        view.navigateTo(SecuredPages.Home.class);
+    /*
+     * Navigates to Home on regular log in, or to the last view that was
+     * requested and resulted in Access Denied exception.
+     */
+    public void redirectOnLogin(@Observes LoggedInEvent event, AccessDeniedViewHolder viewHolder) {
+        if (viewHolder.hasDeniedView()) {
+            view.navigateTo(viewHolder.getDeniedView());
+            viewHolder.resetDeniedView();
+        } else {
+            view.navigateTo(SecuredPages.Home.class);
+        }
     }
 
     public void redirectHomeWhenAlreadyLoggedIn(@Observes AlreadyLoggedInEvent event) {

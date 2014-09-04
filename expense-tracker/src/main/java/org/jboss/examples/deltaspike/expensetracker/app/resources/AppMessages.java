@@ -72,4 +72,7 @@ public interface AppMessages {
     @MessageTemplate("{security.loggedOutSuccessfully}")
     String loggedOutSuccessfully();
 
+    @MessageTemplate("{app.unknownError}")
+    String unknownErrorOccurred();
+    
 }

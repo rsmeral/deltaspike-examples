@@ -10,23 +10,23 @@
 
     <ui:define name="content">
         <rich:panel header="Password" rendered="#{not employeeController.newEmployee}">
-            <et:passwordForm id="passwordForm" />
+            <et:passwordForm id="changePassword" />
         </rich:panel>
-        <h:form>
+        <h:form id="employeeForm">
             <rich:panel header="User">
                 <h:panelGrid id="userPanel" columns="3" border="0">
                     <h:outputLabel value="Username:" for="username" />
                     <h:inputText value="#{employeeController.username}" label="Username" id="username" disabled="#{not employeeController.newEmployee}"/>
-                    <rich:message for="username" />
+                    <rich:message for="username" id="usernameMessage" />
 
                     <h:outputLabel value="Roles:" for="roles"/>
                     <h:selectManyListbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.hasRole(ADMIN)}" >
                         <f:selectItems value="#{roles}" />
                     </h:selectManyListbox>
-                    <rich:message for="roles" />
+                    <rich:message for="roles" id="rolesMessage" />
                 </h:panelGrid>
 
-                <et:passwordForm inline="#{true}" rendered="#{employeeController.newEmployee}" />
+                <et:passwordForm inline="#{true}" rendered="#{employeeController.newEmployee}" id="newPassword"/>
 
             </rich:panel>
 
@@ -34,19 +34,19 @@
                 <h:panelGrid id="employeePanel" columns="3" border="0">
                     <h:outputLabel value="First name:" for="firstName"/>
                     <h:inputText value="#{employeeController.selected.firstName}" label="First name" id="firstName"/>
-                    <rich:message for="firstName" />
+                    <rich:message for="firstName" id="firstNameMessage"/>
 
                     <h:outputLabel value="Last name:" for="lastName"/>
                     <h:inputText value="#{employeeController.selected.lastName}" label="Last name" id="lastName"/>
-                    <rich:message for="lastName" />
+                    <rich:message for="lastName" id="lastNameMessage"/>
 
                     <h:outputLabel value="Bank account:" for="bankAccount"/>
                     <h:inputText value="#{employeeController.selected.bankAccount}" label="Bank account" id="bankAccount"/>
-                    <rich:message for="bankAccount" />
+                    <rich:message for="bankAccount" id="bankAccountMessage"/>
 
                     <h:outputLabel value="Email:" for="email"/>
                     <h:inputText value="#{employeeController.selected.email}" label="Email" id="email"/>
-                    <rich:message for="email" />
+                    <rich:message for="email" id="emailMessage"/>
                     <f:facet name="footer">
                         <h:panelGroup>
                             <h:commandButton value="Save" action="#{employeeController.save()}" id="saveEmployeeBtn" />

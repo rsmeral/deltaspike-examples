@@ -152,7 +152,7 @@ public class EmployeeController implements Serializable {
             msg.addInfo().passwordChanged();
         }
 
-        @AssertTrue(message = "Passwords don't match")
+        @AssertTrue(message = "{validation.passwordsDontMatch}")
         public boolean isPasswordsEqual() {
             return password != null && password.equals(passwordConfirmation);
         }
