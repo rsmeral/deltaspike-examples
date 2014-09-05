@@ -6,6 +6,7 @@ Simple corporate expense tracking application.
 ## DeltaSpike features demonstrated
 * Core
  * project-stage-based bean exclusion `@Exclude(ifProjectStage=...)`
+ * simple configuration using `@ConfigProperty` and `PropertyFileConfig`
  * type-safe messages for i18n using `@MessageBundle`, `@MessageTemplate`
  * decoupled exception handling using `@ExceptionHandler`, `ExceptionToCatchEvent`
  * DS feature deactivation using `ClassDeactivator` and `Deactivatable`
