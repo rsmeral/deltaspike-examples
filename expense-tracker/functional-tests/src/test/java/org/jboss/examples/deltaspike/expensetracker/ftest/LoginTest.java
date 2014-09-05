@@ -1,5 +1,6 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest;
 
+import org.jboss.examples.deltaspike.expensetracker.ftest.util.ExpenseTrackerFunctionalTestBase;
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.page.InitialPage;
 import org.jboss.arquillian.graphene.page.Page;
@@ -9,7 +10,7 @@ import org.jboss.examples.deltaspike.expensetracker.ftest.pages.LoginPage;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.TestConstants.*;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.EmployeesPage;
 
 @RunWith(Arquillian.class)
@@ -20,9 +21,9 @@ public class LoginTest extends ExpenseTrackerFunctionalTestBase {
 
     @Test
     public void correctLoginWorks(@InitialPage LoginPage loginPage) {
-        loginPage.login(EMPLOYEE_USER, EMPLOYEE_USER);
+        loginPage.login(USER_EMPLOYEE, USER_EMPLOYEE);
         assertTrue("Should be home after login", getLocation().contains(PAGE_HOME));
-        assertEquals("User's full name should be on the page after login", EMPLOYEE_NAME, homePage.getToolbar().getEmployeeName());
+        assertEquals("User's full name should be on the page after login", NAME_EMPLOYEE, homePage.getToolbar().getEmployeeName());
 
         homePage.logout();
         assertTrue("Should be on login screen after logout", getLocation().contains(PAGE_LOGIN));
@@ -30,18 +31,18 @@ public class LoginTest extends ExpenseTrackerFunctionalTestBase {
 
     @Test
     public void badCredentialsDontLogin(@InitialPage LoginPage loginPage) {
-        loginPage.login(EMPLOYEE_USER, "bad password");
+        loginPage.login(USER_EMPLOYEE, "bad password");
         assertTrue("Should be on login screen after bad login", getLocation().contains(PAGE_LOGIN));
-        assertTrue(loginPage.isGlobalMessagePresent("Bad username or password"));
+        assertTrue(loginPage.isGlobalMessagePresent(MSG_BAD_LOGIN));
 
         loginPage.login("bad user", "bad password");
         assertTrue("Should be on login screen after bad login", getLocation().contains(PAGE_LOGIN));
-        assertTrue(loginPage.isGlobalMessagePresent("Bad username or password"));
+        assertTrue(loginPage.isGlobalMessagePresent(MSG_BAD_LOGIN));
     }
 
     @Test
     public void loginRedirectsToHome(@InitialPage LoginPage loginPage) {
-        loginPage.login(EMPLOYEE_USER, EMPLOYEE_USER);
+        loginPage.login(USER_EMPLOYEE, USER_EMPLOYEE);
         assertTrue("Should be home after login, but is " + getLocation(), getLocation().contains(PAGE_HOME));
 
         Graphene.goTo(LoginPage.class);
@@ -52,9 +53,9 @@ public class LoginTest extends ExpenseTrackerFunctionalTestBase {
     @Test
     public void deniedPageRequestRemembered(@InitialPage LoginPage loginPage) {
         Graphene.goTo(EmployeesPage.class);
-        assertTrue(loginPage.isGlobalMessagePresent("None of the user's roles are authorized to access this resource"));
+        assertTrue(loginPage.isGlobalMessagePresent(MSG_NO_AUTH_ROLE));
 
-        loginPage.login(ADMIN_USER, ADMIN_USER);
+        loginPage.login(USER_ADMIN, USER_ADMIN);
         assertTrue(getLocation().contains(PAGE_EMPLOYEES));
     }
 

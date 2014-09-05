@@ -1,59 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich"
-                template="/resources/template/layout.xhtml">
+                template="/resources/template/layout.xhtml"
+                xmlns:et="http://java.sun.com/jsf/composite/et">
     
     <ui:define name="content">
 
-        <h:form>
-            <rich:dataTable value="#{expenseReportController.list}" var="report" noDataLabel="No reports">
+        <h:form id="reportsForm">
+          
+            <et:reportList reports="#{expenseReportController.list}" id="list" />
 
-                <rich:column>
-                    <f:facet name="header">ID</f:facet>
-                        #{report.id}
-                </rich:column>
-
-                <rich:column>
-                    <f:facet name="header">Name</f:facet>
-                    <h:commandLink action="#{expenseReportController.edit(report)}" value="#{report.name}"/>
-                </rich:column>
-
-                <rich:column>
-                    <f:facet name="header">Short description</f:facet>
-                        #{report.description}
-                </rich:column>
-
-                <rich:column>
-                    <f:facet name="header">Last change</f:facet>
-                    <h:outputText value="#{report.lastChangeDate}">
-                        <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
-                    </h:outputText> by 
-                    <h:outputText value="#{report.lastChangedBy.fullName}" />
-                </rich:column>
-
-                <rich:column>
-                    <f:facet name="header">Status</f:facet>
-                        #{report.status}
-                </rich:column>
-
-                <rich:column>
-                    <f:facet name="header">Reporter</f:facet>
-                    <h:outputText value="#{report.reporter.fullName}" rendered="#{not empty report.assignee}"/>
-                    <h:outputText value="Unassigned" rendered="#{empty report.assignee}"/>
-                </rich:column>
-
-                <rich:column>
-                    <f:facet name="header">Assignee</f:facet>
-                    <h:outputText value="#{report.assignee.fullName}" rendered="#{not empty report.assignee}"/>
-                    <h:outputText value="Unassigned" rendered="#{empty report.assignee}"/>
-                </rich:column>
-
-            </rich:dataTable>
-
-            <h:commandButton action="#{expenseReportController.create()}" value="Create a report"/>
+            <h:commandButton action="#{expenseReportController.create()}" value="Create a report" id="createReportBtn"/>
         </h:form>
 
     </ui:define>

@@ -1,5 +1,7 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest;
 
+import org.jboss.examples.deltaspike.expensetracker.ftest.util.ExpenseTrackerFunctionalTestBase;
+import java.text.MessageFormat;
 import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
@@ -8,7 +10,7 @@ import org.jboss.examples.deltaspike.expensetracker.ftest.pages.HomePage;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.TestConstants.*;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.EmployeesListRow;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.EmployeePage;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.LoginPage;
@@ -35,7 +37,7 @@ public class EmployeesTest extends ExpenseTrackerFunctionalTestBase {
     @Test
     @InSequence(1)
     public void employeeShouldntSeeAdminOperations() {
-        login(EMPLOYEE_USER, EMPLOYEE_USER);
+        login(USER_EMPLOYEE, USER_EMPLOYEE);
 
         assertFalse("Non-admin shouldn't see employees link", homePage.getToolbar().isEmployeesLinkPresent());
         assertFalse("Non-admin shouldn't see purposes link", homePage.getToolbar().isPurposesLinkPresent());
@@ -49,37 +51,40 @@ public class EmployeesTest extends ExpenseTrackerFunctionalTestBase {
     @Test
     @InSequence(2)
     public void passwordMatchValidationWorks() {
-        login(EMPLOYEE_USER, EMPLOYEE_USER);
+        login(USER_EMPLOYEE, USER_EMPLOYEE);
         homePage.getToolbar().editProfile();
 
         employeePage.changePassword("asdf", "asdfghjk");
-        assertNotNull("Validation error message should appear when passwords don't match", employeePage.getChangePasswordForm().getValidatorMessages().getItem("Passwords don't match"));
+        assertNotNull("Validation error message should appear when passwords don't match", employeePage.getChangePasswordForm().getValidatorMessages().getItem(MSG_PWD_DONT_MATCH));
 
         employeePage.changePassword("asdf", "asdf");
         assertEquals("There should be no validator message when passwords match", 0, employeePage.getChangePasswordForm().getValidatorMessages().getItems().size());
-        assertTrue(employeePage.isGlobalMessagePresent("Password changed"));
+        assertTrue(employeePage.isGlobalMessagePresent(MSG_PWD_CHANGED));
 
         // return to original state
-        employeePage.changePassword(EMPLOYEE_USER, EMPLOYEE_USER);
+        employeePage.changePassword(USER_EMPLOYEE, USER_EMPLOYEE);
     }
 
     @Test
     @InSequence(3)
     public void employeeDetailsChange() {
-        login(EMPLOYEE_USER, EMPLOYEE_USER);
+        login(USER_EMPLOYEE, USER_EMPLOYEE);
+
+        final String NEW_FIRST_NAME = "Jonathan";
+        final String NEW_LAST_NAME = "Smith";
 
         homePage.getToolbar().editProfile();
 
-        employeePage.setEmployeeDetails("Jonathan", "Smith", null, null);
+        employeePage.setEmployeeDetails(NEW_FIRST_NAME, NEW_LAST_NAME, null, null);
         employeePage.save();
 
-        assertTrue(employeePage.isGlobalMessagePresent("All changes saved"));
-        assertEquals("New employee name should be in the toolbar", "Jonathan Smith", employeePage.getToolbar().getEmployeeName());
+        assertTrue(employeePage.isGlobalMessagePresent(MSG_CHANGES_SAVED));
+        assertEquals("New employee name should be in the toolbar", NEW_FIRST_NAME + " " + NEW_LAST_NAME, employeePage.getToolbar().getEmployeeName());
         assertTrue("Should be home after Save on Employee page", getLocation().contains(PAGE_HOME));
 
         // reset
         homePage.getToolbar().editProfile();
-        employeePage.setEmployeeDetails("John", "Employee", null, null);
+        employeePage.setEmployeeDetails(NAME_EMPLOYEE_FIRST, NAME_EMPLOYEE_LAST, null, null);
         employeePage.save();
 
     }
@@ -87,39 +92,39 @@ public class EmployeesTest extends ExpenseTrackerFunctionalTestBase {
     @Test
     @InSequence(4)
     public void employeesPageContainsInitialData() {
-        login(ADMIN_USER, ADMIN_USER);
+        login(USER_ADMIN, USER_ADMIN);
 
         homePage.getToolbar().goToEmployees();
         assertEquals(3, employeesPage.getEmployeesTable().getAllRows().size());
 
-        EmployeesListRow employee = employeesPage.getEmployeesTable().getEmployeeByUsername(EMPLOYEE_USER);
-        assertEquals(EMPLOYEE_NAME, employee.getName().getText());
+        EmployeesListRow employee = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_EMPLOYEE);
+        assertEquals(NAME_EMPLOYEE, employee.getName().getText());
 
-        EmployeesListRow admin = employeesPage.getEmployeesTable().getEmployeeByUsername(ADMIN_USER);
-        assertEquals(ADMIN_NAME, admin.getName().getText());
+        EmployeesListRow admin = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_ADMIN);
+        assertEquals(NAME_ADMIN, admin.getName().getText());
 
-        EmployeesListRow accountant = employeesPage.getEmployeesTable().getEmployeeByUsername(ACCOUNTANT_USER);
-        assertEquals(ACCOUNTANT_NAME, accountant.getName().getText());
+        EmployeesListRow accountant = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_ACCOUNTANT);
+        assertEquals(NAME_ACCOUNTANT, accountant.getName().getText());
     }
 
     @Test
     @InSequence(5)
     public void changeUserRole() {
-        login(ADMIN_USER, ADMIN_USER);
+        login(USER_ADMIN, USER_ADMIN);
 
         homePage.getToolbar().goToEmployees();
-        EmployeesListRow employee = employeesPage.getEmployeesTable().getEmployeeByUsername(EMPLOYEE_USER);
+        EmployeesListRow employee = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_EMPLOYEE);
         employee.editEmployee();
         assertTrue(getLocation().contains(PAGE_EMPLOYEE));
 
         employeePage.setUser(null, ROLE_EMPLOYEE, ROLE_ADMIN);
         employeePage.save();
-        assertTrue(employeePage.isGlobalMessagePresent("All changes saved"));
+        assertTrue(employeePage.isGlobalMessagePresent(MSG_CHANGES_SAVED));
         assertTrue(getLocation().contains(PAGE_EMPLOYEES));
 
         employeesPage.getToolbar().logout();
 
-        loginPage.login(EMPLOYEE_USER, EMPLOYEE_USER);
+        loginPage.login(USER_EMPLOYEE, USER_EMPLOYEE);
         assertTrue(homePage.getToolbar().isEmployeesLinkPresent());
 
         // reset
@@ -131,32 +136,39 @@ public class EmployeesTest extends ExpenseTrackerFunctionalTestBase {
     @Test
     @InSequence(6)
     public void addEmployee() {
-        login(ADMIN_USER, ADMIN_USER);
+        login(USER_ADMIN, USER_ADMIN);
+
+        final String NEW_PASSWORD = "password";
+        final String NEW_USERNAME = "foo";
+        final String NEW_FIRST_NAME = "Foo";
+        final String NEW_LAST_NAME = "Bar";
+        final String NEW_EMAIL = "foo@bar.com";
+        final String NEW_BANK_ACCOUNT = "123123123";
 
         homePage.getToolbar().goToEmployees();
-
         employeesPage.addEmployee();
         assertTrue(getLocation().contains(PAGE_EMPLOYEE));
 
-        employeePage.setPassword("password", "password");
-        employeePage.setEmployeeDetails("Foo", "Bar", "123123123", "foo@bar.com");
+        employeePage.setPassword(NEW_PASSWORD, NEW_PASSWORD);
+        employeePage.setEmployeeDetails(NEW_FIRST_NAME, NEW_LAST_NAME, NEW_BANK_ACCOUNT, NEW_EMAIL);
         // try existing username
-        employeePage.setUser("john", ROLE_EMPLOYEE);
+        employeePage.setUser(USER_EMPLOYEE, ROLE_EMPLOYEE);
 
         employeePage.save();
         assertTrue(employeePage.getUsernameMsg().advanced().isVisible());
-        assertEquals("This username is not available", employeePage.getUsernameMsg().getDetail());
+        assertEquals(MSG_USERNAME_TAKEN, employeePage.getUsernameMsg().getDetail());
 
-        employeePage.setUser("foo");
-        employeePage.setPassword("password", "password");
+        employeePage.setUser(NEW_USERNAME);
+        employeePage.setPassword(NEW_PASSWORD, NEW_PASSWORD);
         employeePage.save();
-        assertTrue(employeesPage.isGlobalMessagePresent("Employee Foo Bar created"));
-        assertEquals("foo@bar.com", employeesPage.getEmployeesTable().getEmployeeByUsername("foo").getEmail().getText());
+
+        assertTrue(employeesPage.isGlobalMessagePresent(MessageFormat.format(MSG_EMPLOYEE_CREATED, NEW_FIRST_NAME, NEW_LAST_NAME)));
+        assertEquals(NEW_EMAIL, employeesPage.getEmployeesTable().getEmployeeByUsername(NEW_USERNAME).getEmail().getText());
 
         employeesPage.getToolbar().logout();
+        loginPage.login(NEW_USERNAME, NEW_PASSWORD);
 
-        loginPage.login("foo", "password");
-        assertEquals("Foo Bar", employeePage.getToolbar().getEmployeeName());
+        assertEquals(NEW_FIRST_NAME + " " + NEW_LAST_NAME, employeePage.getToolbar().getEmployeeName());
 
     }
 

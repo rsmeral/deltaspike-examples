@@ -10,22 +10,22 @@
     <ui:define name="content">
         <ui:insert name="title"/>
 
-        <et:reportView report="#{reimbursementController.selected.report}" />
+        <et:reportView report="#{reimbursementController.selected.report}" id="selectedReport" />
 
         <h:form id="reimbursementForm">
             <rich:panel header="Expense">
                 <h:panelGrid columns="3" border="0">
                     <h:outputLabel value="Date:" for="date"/>
                     <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.reimbursementsEditable}" />
-                    <rich:message for="date" />
+                    <rich:message for="date" id="dateMessage" />
 
                     <h:outputLabel value="Value:" for="value" />
                     <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not expenseReportController.reimbursementsEditable}"/>
-                    <rich:message for="value" />
+                    <rich:message for="value" id="valueMessage" />
 
                     <f:facet name="footer">
-                        <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}"/>
-                        <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" />
+                        <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}" id="saveBtn"/>
+                        <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" id="cancelBtn" />
                     </f:facet>
                 </h:panelGrid>
             </rich:panel>

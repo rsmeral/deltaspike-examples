@@ -40,10 +40,8 @@
 
             <rich:column rendered="#{not cc.attrs.hideLastChange}" id="reportLastChange">
                 <f:facet name="header">Last change</f:facet>
-                <h:outputText value="#{report.lastChangeDate}">
-                    <f:convertDateTime pattern="MMM d, yyyy HH:mm" />
-                </h:outputText> by
-                <h:outputText value="#{report.lastChangedBy.fullName}" />
+                <h:outputText value="#{report.lastChangeDate}" converter="#{customDateTimeConverter}" id="date"/> by
+                <h:outputText value="#{report.lastChangedBy.fullName}" id="by" />
             </rich:column>
 
             <rich:column rendered="#{not cc.attrs.hideStatus}" id="reportStatus">
@@ -64,7 +62,9 @@
 
             <rich:column rendered="#{not cc.attrs.hideBalance}" id="reportBalance">
                 <f:facet name="header">Balance</f:facet>
-                <h:outputText value="#{expenseReportController.getReportTotal(report)}" />
+                <h:outputText value="#{expenseReportController.getReportTotal(report)}">
+                    <f:convertNumber maxFractionDigits="0"/>
+                </h:outputText>
             </rich:column>
 
         </rich:dataTable>

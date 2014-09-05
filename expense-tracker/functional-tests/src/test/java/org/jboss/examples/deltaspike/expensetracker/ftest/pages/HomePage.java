@@ -4,7 +4,7 @@ import org.jboss.arquillian.graphene.page.Location;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReportList;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.TestConstants.*;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 
 @Location(PAGE_HOME)
 public class HomePage extends TemplatePage {

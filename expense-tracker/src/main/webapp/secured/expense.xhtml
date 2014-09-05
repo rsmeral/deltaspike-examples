@@ -9,7 +9,7 @@
 
     <ui:define name="content">
 
-        <et:reportView report="#{expenseController.selected.report}" />
+        <et:reportView report="#{expenseController.selected.report}" id="selectedReport" />
 
         <h:form id="expenseForm">
             <rich:panel header="Expense">
@@ -20,7 +20,7 @@
                             <f:selectItems value="#{purposes}" var="p" itemValue="#{p}" itemLabel="#{p.name}" itemDescription="#{p.description}" />
                         </h:selectOneMenu>
                     </h:panelGroup>
-                    <rich:message for="purpose" />
+                    <rich:message for="purpose" id="purposeMessage"/>
 
                     <h:outputLabel value="Receipt:" for="receipt" />
                     <h:panelGroup>
@@ -29,18 +29,18 @@
                         </h:selectOneMenu>
                         <h:commandButton id="addReceiptBtn" action="#{receiptController.create()}" rendered="#{expenseReportController.expensesEditable}" value="Add receipt" immediate="true" />
                     </h:panelGroup>
-                    <rich:message for="receipt" />
+                    <rich:message for="receipt" id="receiptMessage"/>
 
                     <h:outputLabel value="Date:" for="date" />
                     <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}"/>
-                    <rich:message for="date" />
+                    <rich:message for="date" id="dateMessage" />
 
                     <h:outputLabel value="Value:" for="value" />
                     <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not expenseReportController.expensesEditable}"/>
-                    <rich:message for="value" />
+                    <rich:message for="value" id="valueMessage" />
 
                     <f:facet name="footer">
-                        <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{expenseReportController.expensesEditable}" id="saveExpenseBtn" />
+                        <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{expenseReportController.expensesEditable}" id="saveBtn" />
                         <h:commandButton action="#{expenseController.cancel()}" value="Cancel" immediate="true" id="cancelBtn" />
                     </f:facet>
                 </h:panelGrid>

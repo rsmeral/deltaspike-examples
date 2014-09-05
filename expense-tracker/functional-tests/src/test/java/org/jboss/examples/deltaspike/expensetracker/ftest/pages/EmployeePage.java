@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.Location;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.TestConstants.*;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.PasswordForm;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;

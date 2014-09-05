@@ -13,16 +13,16 @@
 
     <cc:implementation>
         <rich:panel header="Selected report">
-            <h:panelGrid columns="2" border="0" cellspacing="4">
-                <h:outputText value="#{cc.attrs.report.name}" id="report_#{cc.id}_name"/>
+            <h:panelGrid columns="2" border="0" cellspacing="4" id="panel">
+                <h:outputText value="#{cc.attrs.report.name}" id="name"/>
 
-                <h:outputText value="Reported by #{cc.attrs.report.reporter.firstName} #{cc.attrs.report.reporter.lastName}" id="report_#{cc.id}_reporter" />
+                <h:outputText value="Reported by #{cc.attrs.report.reporter.fullName}" id="reporter" />
 
-                <h:outputText value="#{cc.attrs.report.status}" id="report_#{cc.id}_status"/>
+                <h:outputText value="#{cc.attrs.report.status}" id="status"/>
 
-                <h:panelGroup>
-                    <h:outputText value="Assigned to #{cc.attrs.report.assignee.firstName} #{cc.attrs.report.assignee.lastName}" id="report_#{cc.id}_assignee" rendered="#{not empty cc.attrs.report.assignee}" />
-                    <h:outputText value="Unassigned" id="report_#{cc.id}_assignee_none" rendered="#{empty cc.attrs.report.assignee}" />
+                <h:panelGroup id="assignee">
+                    <h:outputText value="Assigned to #{cc.attrs.report.assignee.fullName}" rendered="#{not empty cc.attrs.report.assignee}" />
+                    <h:outputText value="Unassigned" rendered="#{empty cc.attrs.report.assignee}" />
                 </h:panelGroup>
             </h:panelGrid>
         </rich:panel>

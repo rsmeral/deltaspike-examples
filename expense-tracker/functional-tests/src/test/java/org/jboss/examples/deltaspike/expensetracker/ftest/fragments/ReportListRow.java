@@ -1,5 +1,6 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest.fragments;
 
+import java.util.Date;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 
@@ -14,8 +15,11 @@ public class ReportListRow {
     @FindByJQuery("td[id$='reportDesc']")
     private WebElement desc;
 
-    @FindByJQuery("td[id$='reportLastChange']")
-    private WebElement lastChange;
+    @FindByJQuery("td[id$='reportLastChange'] > span[id$='date']")
+    private WebElement lastChangeDate;
+    
+    @FindByJQuery("td[id$='reportLastChange'] > span[id$='by']")
+    private WebElement lastChangeBy;
 
     @FindByJQuery("td[id$='reportStatus']")
     private WebElement status;
@@ -26,7 +30,7 @@ public class ReportListRow {
     @FindByJQuery("td[id$='reportAssignee']")
     private WebElement assignee;
 
-    @FindByJQuery("td[id$='reportId']")
+    @FindByJQuery("td[id$='reportBalance']")
     private WebElement balance;
 
     public WebElement getId() {
@@ -37,28 +41,32 @@ public class ReportListRow {
         return nameLink.getText();
     }
 
-    public WebElement getDesc() {
-        return desc;
+    public String getDesc() {
+        return desc.getText();
     }
 
-    public WebElement getLastChange() {
-        return lastChange;
+    public String getLastChangeBy() {
+        return lastChangeBy.getText();
     }
 
-    public WebElement getStatus() {
-        return status;
+    public Date getLastChangeDate() {
+        return new Date(Long.valueOf(lastChangeDate.getText()));
     }
 
-    public WebElement getReporter() {
-        return reporter;
+    public String getStatus() {
+        return status.getText();
     }
 
-    public WebElement getAssignee() {
-        return assignee;
+    public String getReporter() {
+        return reporter.getText();
     }
 
-    public WebElement getBalance() {
-        return balance;
+    public String getAssignee() {
+        return assignee.getText();
+    }
+
+    public String getBalance() {
+        return balance.getText();
     }
 
     public void editReport() {
