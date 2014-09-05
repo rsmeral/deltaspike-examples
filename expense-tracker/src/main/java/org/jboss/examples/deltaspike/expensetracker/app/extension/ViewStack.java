@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
-import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 /**
@@ -28,9 +26,6 @@ public class ViewStack implements Serializable {
     private static final Class<? extends ViewConfig> DEFAULT_VIEW = SecuredPages.Home.class;
 
     private final Deque<Class<? extends ViewConfig>> viewStack;
-
-    @Inject
-    private ViewConfigResolver viewConfigResolver;
 
     public ViewStack() {
         viewStack = new ArrayDeque<Class<? extends ViewConfig>>(DEPTH);

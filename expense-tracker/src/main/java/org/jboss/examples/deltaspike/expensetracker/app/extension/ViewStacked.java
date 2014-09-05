@@ -6,13 +6,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Stereotype;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.controller.PostRenderView;
 import org.apache.deltaspike.core.api.config.view.controller.ViewControllerRef;
-import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
 
 /**
@@ -33,15 +32,15 @@ public @interface ViewStacked {
         private FacesContext faces;
 
         @Inject
-        private ViewConfigResolver viewConfigResolver;
+        @CurrentView
+        private Instance<Class> currentView;
 
         @Inject
         private ViewStack viewStack;
 
         @PostRenderView
         public void pushViewToStack() {
-            Class<? extends ViewConfig> configClass = viewConfigResolver.getViewConfigDescriptor(faces.getViewRoot().getViewId()).getConfigClass();
-            viewStack.push(configClass);
+            viewStack.push(currentView.get());
         }
 
     }
