@@ -11,4 +11,16 @@ faces-config.NavData
 *.ear
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+hs_err_pid
+
+#jbds
+.project
+.settings/
+.loadpath
+bin/
+tmp/
+.metadata
+.classpath
+
+#temporary files
+*~
