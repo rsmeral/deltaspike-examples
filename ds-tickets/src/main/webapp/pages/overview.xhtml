@@ -1,0 +1,90 @@
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2014, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ds="http://deltaspike.apache.org/jsf">
+
+<h:head>
+	<title><ui:insert name="pageTitle">Deltaspike tickets example</ui:insert></title>
+	<link rel="stylesheet" type="text/css" href="tickets.css" />
+</h:head>
+
+<h:body>
+	<ds:windowId />
+	<div class="main_box">
+		<p class="title">Bus tickets reservation system</p>
+		<h2>Order overview:</h2>
+
+		<h:dataTable value="#{order.tickets}" var="orderItem" styleClass="order-table"
+			headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
+
+			<h:column>
+				<!-- column header -->
+				<f:facet name="header">Ticket No</f:facet>
+    				#{order.tickets.indexOf(orderItem) + 1} 
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Departure</f:facet>
+    				#{line.departure}  
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Arrival</f:facet>
+    				#{line.arrival} 
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Departure Date</f:facet>
+    				#{utils.formatDate(ticket.bus.date)} 
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">Seat</f:facet>
+    				#{orderItem.seatNumber}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">First Class Surcharge</f:facet>
+    				 #{orderItem.isInFirstClass() ? 'yes' : 'no'}
+    			</h:column>
+
+			<h:column>
+				<f:facet name="header">price</f:facet>
+    				 #{ticket.bus.line.price * (orderItem.isInFirstClass() ? 1.5 : 1.0)}
+    			</h:column>
+		</h:dataTable>
+
+		<div align="right">
+			<b style="margin-right: 80px; margin: 50px;">To pay: #{order.toPay}</b>
+		</div>
+
+
+		<div align="right" style="margin-right: 50px" height="80px">
+			<h:form>
+				<h:commandButton styleClass="commandButton" style="margin-right: 10px;" immediate="true"
+					action="#{navigationManager.backToSeat()}" value="Back" />
+				<h:commandButton styleClass="commandButton" immediate="true"
+					action="#{navigationManager.order()}" value="Order" />
+				<ds:preventDoubleSubmit />
+			</h:form>
+		</div>
+	</div>
+</h:body>
+
+</html>
