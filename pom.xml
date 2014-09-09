@@ -14,6 +14,8 @@
         <module>ds-passwd</module>
         <module>mbeanTranslator</module>
         <module>expense-tracker</module>
+        <module>ds-tickets</module>
+        <module>ds-task-management</module>
     </modules>
         
     <profiles>
