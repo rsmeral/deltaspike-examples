@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/web.css" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="pageTitle">DeltaSpike Task Management System - Login</ui:define>
+
+		<ui:define name="content">
+
+			<h:form style="vertical-align: middle; text-align: center;" id="loginForm">
+
+				<div class="loginRow">
+					<h:outputLabel for="name" value="Username" styleClass="loginLabel" />
+					<h:inputText id="name" value="#{loginCredentials.login}" />
+				</div>
+
+				<div class="loginRow">
+					<h:outputLabel for="password" value="Password" styleClass="loginLabel" />
+					<h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true" />
+				</div>
+
+				<div class="loginRow"></div>
+
+				<div class="buttons">
+					<h:commandButton id="login" value="Login" action="#{loginController.login}" styleClass="loginButton" />
+				</div>
+
+    Tip: you can login with a username/password: <br />
+    as administator: admin/admin123. <br />
+    as common user: user/user123.
+
+		</h:form>
+
+			<br style="clear: both" />
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

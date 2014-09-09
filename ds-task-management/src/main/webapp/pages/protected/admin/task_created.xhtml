@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/web.css" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="pageTitle">DeltaSpike Task Management System - Task Created</ui:define>
+		<ui:define name="content">
+
+			<h2 align="center">Task has been created:</h2>
+			<div>
+				<h:outputText id="taskNameLabel" styleClass="create-task-label" value="Task name:" />
+				<h:outputText id="taskName" value="#{task.name}" />
+				<br />
+				<br />
+			</div>
+
+			<div>
+				<h:outputText id="taskUserLabel" styleClass="create-task-label" value="User:" />
+				<h:outputText id="taskUser" value="#{task.user.login}" />
+				<br />
+				<br />
+			</div>
+
+			<div>
+				<h:outputText id="taskDescribtionLabel" styleClass="create-task-label" value="Describtion:" />
+				<h:outputText id="taskDescribtion" value="#{task.description}" />
+				<br />
+				<br />
+			</div>
+
+			<div>
+				<h:outputText id="taskDeadlineLabel" styleClass="create-task-label" value="Deadline:" />
+				<h:outputText id="datepicker" styleClass="datepicker" value="#{task.deadline}" />
+				<br />
+				<br />
+			</div>
+
+		</ui:define>
+	</ui:composition>
+
+
+</h:body>
+</html>

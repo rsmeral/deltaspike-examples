@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/web.css" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="pageTitle">DeltaSpike Task Management System - My Tasks</ui:define>
+
+		<ui:define name="content">
+
+			<h:dataTable value="#{userManagerImpl.getAllTasks()}" var="taskItem" styleClass="tasks-table"
+				headerClass="tasks-table-header" rowClasses="tasks-table-odd-row,tasks-table-even-row">
+
+				<h:column>
+					<f:facet name="header">Task name</f:facet>
+    				#{taskItem.name}<br />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Task description</f:facet>
+    				#{taskItem.description}  
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">Task deadline</f:facet>
+    				#{utils.formatShortDate(taskItem.deadline)}
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">Finish</f:facet>
+					<h:form rendered="#{taskItem.finishDate == null}">
+						<h:commandButton action="#{taskManagerImpl.finishTask(taskItem)}" image="/images/done.png" />
+					</h:form>
+					<h:outputLabel value="#{utils.formatShortDate(taskItem.finishDate)}"
+						rendered="#{taskItem.finishDate != null}" />
+				</h:column>
+
+			</h:dataTable>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,70 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.title {
+	font-size: 26px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.main_box {
+	vertical-align: middle;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	border: 10px solid #ADADAD;
+	background-color: #E2F0F2;
+}
+
+.main_table {
+	width: 90%;
+	text-align: center;
+}
+
+.tasks-table {
+	border-collapse: collapse;
+	width: 100%;
+	font-size: 20px;
+	text-align: center;
+	border-top: 1px solid #BBBBBB;
+}
+
+.tasks-table-header {
+	background: none repeat scroll 0 0 #E5E5E5;
+	padding: 16px;
+}
+
+.tasks-table-odd-row {
+	background: none repeat scroll 0 0 #FFFFFFF;
+	background: none repeat scroll 0 0 #FFFFFFF;
+}
+
+.tasks-table-even-row {
+	background: none repeat scroll 0 0 #F9F9F9;
+}
+
+.main-command-button {
+	background-color: #7da5ff;
+	border-width: 0px;
+	height: 50px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.create-task-label {
+	width: 30%;
+	margin-right: 10px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+input {
+	margin: 10px;
+}
+
+* {
+	font-size: 18px;
+}

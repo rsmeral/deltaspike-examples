@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ds="http://deltaspike.apache.org/jsf">
+<h:head>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/web.css" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="insertHead">
+			<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/jquery-ui.min.css" />
+			<script src="#{request.contextPath}/js/jquery-1.11.1.js"></script>
+			<script src="#{request.contextPath}/js/jquery-ui.min.js"></script>
+			<script>
+				$(function() {
+				$( ".datepicker" ).datepicker();
+				});
+			</script>
+		</ui:define>
+		<ui:define name="pageTitle">
+		DeltaSpike Task Management System - Create Task</ui:define>
+		<ui:define name="content">
+			<h:form style="margin-left: 50px;">
+				<ds:preventDoubleSubmit />
+				<div>
+					<h:outputText id="taskNameLabel" styleClass="create-task-label" value="Task name:" />
+					<h:inputText id="taskName" value="#{task.name}" required="true"
+						requiredMessage="Value is required" />
+					<h:message style="color: red;" for="taskName" />
+				</div>
+
+				<div>
+					<h:outputText id="taskUserLabel" styleClass="create-task-label" value="User:" />
+					<h:selectOneMenu id="taskUser" style="min-width: 200px;" value="#{task.user.login}"
+						required="true" requiredMessage="Value is required">
+						<f:selectItems value="#{userManagerImpl.getAllUsersLogin()}" />
+					</h:selectOneMenu>
+					<h:message style="color: red;" for="taskUser" />
+				</div>
+
+				<div style="height: 100px; margin-top: 10px;">
+					<h:outputText id="taskDescribtionLabel" styleClass="create-task-label"
+						style=" float: left; width: 100px;" value="Describtion:" />
+					<h:inputTextarea id="taskDescribtion" style="width: 400px;" value="#{task.description}"
+						required="true" requiredMessage="Value is required" />
+					<h:message style="color: red;" for="taskDescribtion" />
+				</div>
+
+				<div>
+					<h:outputText id="taskDeadlineLabel" styleClass="create-task-label" value="Deadline:" />
+					<h:inputText id="datepicker" styleClass="datepicker" value="#{task.deadline}" required="true"
+						requiredMessage="Value is required">
+						<f:convertDateTime pattern="MM/dd/yyyy" type="date" />
+					</h:inputText>
+					<h:message style="color: red;" for="datepicker" />
+				</div>
+
+				<div>
+					<h:commandButton type="reset" value="Reset" />
+					<h:commandButton type="submit" action="#{taskManagerImpl.createTask()}" value="Submit" />
+				</div>
+
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+
+</h:body>
+</html>
