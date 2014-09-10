@@ -1,9 +1,9 @@
 package org.jboss.examples.deltaspike.expensetracker.domain.logic;
 
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
@@ -17,7 +17,7 @@ import org.picketlink.authentication.event.LoggedInEvent;
  * Contains state-transfer conditions and authorization rules for
  * ExpenseReports.
  */
-@SessionScoped
+@WindowScoped
 public class Rules implements Serializable {
 
     private Employee currentEmployee;

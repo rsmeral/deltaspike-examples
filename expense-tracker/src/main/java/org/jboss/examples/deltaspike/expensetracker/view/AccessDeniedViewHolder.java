@@ -1,7 +1,6 @@
 package org.jboss.examples.deltaspike.expensetracker.view;
 
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -9,6 +8,7 @@ import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.exception.control.BeforeHandles;
 import org.apache.deltaspike.core.api.exception.control.ExceptionHandler;
 import org.apache.deltaspike.core.api.exception.control.event.ExceptionEvent;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.security.api.authorization.ErrorViewAwareAccessDeniedException;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.CurrentView;
 
@@ -16,7 +16,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.CurrentView;
  * A helper which holds the view that was requested and resulted in an access
  * denied exception.
  */
-@SessionScoped
+@WindowScoped
 @ExceptionHandler
 public class AccessDeniedViewHolder implements Serializable {
 

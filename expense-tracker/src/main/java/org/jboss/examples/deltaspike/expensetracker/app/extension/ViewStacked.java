@@ -5,7 +5,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Stereotype;
 import javax.faces.context.FacesContext;
@@ -13,6 +12,7 @@ import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.controller.PostRenderView;
 import org.apache.deltaspike.core.api.config.view.controller.ViewControllerRef;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 
 /**
  * Every view annotated with ViewStacked will be pushed on to the
@@ -25,7 +25,7 @@ import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
 @ViewControllerRef(ViewStacked.Controller.class)
 public @interface ViewStacked {
 
-    @SessionScoped
+    @WindowScoped
     public static class Controller implements Serializable {
 
         @Inject

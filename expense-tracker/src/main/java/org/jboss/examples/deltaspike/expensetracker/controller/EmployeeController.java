@@ -9,6 +9,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Size;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.apache.deltaspike.core.api.scope.ConversationGroup;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
@@ -24,6 +25,7 @@ import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 import org.jboss.examples.deltaspike.expensetracker.view.resources.NotTaken;
 
 @Controller
+@ConversationGroup(Controller.class)
 public class EmployeeController implements Serializable {
 
     @Inject
@@ -42,6 +44,7 @@ public class EmployeeController implements Serializable {
     private ViewStack viewStack;
 
     @Inject
+    @ConversationGroup(Controller.class)
     private PasswordHolder pwdHolder;
 
     @Inject
@@ -131,6 +134,7 @@ public class EmployeeController implements Serializable {
      * The password holder is separated to simplify validation. 
      */
     @Controller
+    @ConversationGroup(Controller.class)
     public static class PasswordHolder implements Serializable {
 
         @Inject

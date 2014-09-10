@@ -2,11 +2,13 @@ package org.jboss.examples.deltaspike.expensetracker.controller;
 
 import java.io.Serializable;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.scope.ConversationGroup;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
+@ConversationGroup(Controller.class)
 public class NavigationController implements Serializable {
     
     @End

@@ -7,12 +7,13 @@ import org.apache.deltaspike.jsf.spi.scope.window.ClientWindowConfig;
 /*
  * Disables the dswid URL parameter by disabling window scope completely.
  */
-@Specializes
-public class CustomJsfModuleConfig extends JsfModuleConfig {
+//@Specializes
+public class CustomJsfModuleConfig //extends JsfModuleConfig 
+{
 
-    @Override
-    public ClientWindowConfig.ClientWindowRenderMode getDefaultWindowMode() {
-        return ClientWindowConfig.ClientWindowRenderMode.NONE;
-    }
+//    @Override
+//    public ClientWindowConfig.ClientWindowRenderMode getDefaultWindowMode() {
+//        return ClientWindowConfig.ClientWindowRenderMode.NONE;
+//    }
 
 }

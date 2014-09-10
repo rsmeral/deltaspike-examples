@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.apache.deltaspike.core.api.scope.ConversationGroup;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
@@ -20,6 +21,7 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
+@ConversationGroup(Controller.class)
 public class ReimbursementController implements Serializable {
 
     @Inject

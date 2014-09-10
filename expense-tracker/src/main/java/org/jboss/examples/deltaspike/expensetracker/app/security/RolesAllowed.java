@@ -64,7 +64,7 @@ public @interface RolesAllowed {
         public Set<SecurityViolation> checkPermission(AccessDecisionVoterContext accessDecisionVoterContext) {
             RolesAllowed metaData = accessDecisionVoterContext.getMetaDataFor(RolesAllowed.class.getName(), RolesAllowed.class);
             for (String role : metaData.value()) {
-                if (AuthorizationUtil.hasRole(identity, partitionManager, identityManager, relationshipManager, role)) {
+                if (AuthorizationUtil.hasRole(identity, partitionManager, role)) {
                     return Collections.<SecurityViolation>emptySet();
                 }
             }

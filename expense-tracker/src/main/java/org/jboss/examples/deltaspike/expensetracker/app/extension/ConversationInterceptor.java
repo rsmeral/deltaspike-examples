@@ -1,14 +1,15 @@
 package org.jboss.examples.deltaspike.expensetracker.app.extension;
 
 import java.io.Serializable;
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.scope.ConversationGroup;
+import org.apache.deltaspike.core.api.scope.GroupedConversationScoped;
+import org.apache.deltaspike.core.spi.scope.conversation.GroupedConversationManager;
 
 /**
  * Supports declarative conversation demarcation, like in Seam, with slightly
@@ -19,9 +20,10 @@ import org.apache.deltaspike.core.api.config.view.ViewConfig;
 public class ConversationInterceptor implements Serializable {
 
     @Inject
-    private Conversation conv;
+    private GroupedConversationManager convMgr;
 
     @Inject
+    @ConversationGroup(Controller.class)
     private InitiatorHolder holder;
 
     @Inject
@@ -51,24 +53,26 @@ public class ConversationInterceptor implements Serializable {
 
     private Object conditionallyEndConversation(InvocationContext ctx, End end) throws Exception {
         Object result = ctx.proceed();
-        Class<? extends ViewConfig> returningTo = ((Class<? extends ViewConfig>)result);
+        Class<? extends ViewConfig> returningTo = ((Class<? extends ViewConfig>) result);
         if (returningTo.equals(holder.getConversationInitiator())) {
-            if (!conv.isTransient()) {
-                conv.end();
-            }
+            convMgr.closeConversationGroup(Controller.class);
+//            if (!conv.isTransient()) {
+//                conv.end();
+//            }
         }
         return result;
     }
 
     private Object conditionallyBeginConversation(InvocationContext ctx, Begin begin) throws Exception {
-        if (conv.isTransient() || begin.force()) {
-            if (begin.force()) {
-                // not sure if this works
-                if (!conv.isTransient()) {
-                    conv.end();
-                }
-            }
-            conv.begin();
+        if (holder.getConversationInitiator() == null) {
+//        if (conv.isTransient() || begin.force()) {
+//            if (begin.force()) {
+            // not sure if this works
+//                if (!conv.isTransient()) {
+//                    conv.end();
+//                }
+//            }
+//            conv.begin();
             holder.setConversationInitiator(currentView.get());
         }
         return ctx.proceed();
@@ -78,7 +82,8 @@ public class ConversationInterceptor implements Serializable {
      * Conversation initiator is the view that is current at the time of 
      * interception.
      */
-    @ConversationScoped
+    @GroupedConversationScoped
+    @ConversationGroup(Controller.class)
     public static class InitiatorHolder implements Serializable {
 
         private Class<?> conversationInitiator;

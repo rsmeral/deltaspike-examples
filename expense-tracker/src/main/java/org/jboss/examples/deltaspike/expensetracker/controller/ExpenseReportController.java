@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.apache.deltaspike.core.api.scope.ConversationGroup;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.jboss.examples.deltaspike.expensetracker.app.exception.ApplicationException;
@@ -25,6 +26,7 @@ import org.jboss.examples.deltaspike.expensetracker.service.ExpenseReportService
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 @Controller
+@ConversationGroup(Controller.class)
 public class ExpenseReportController implements Serializable {
 
     public static class Modified {
@@ -73,6 +75,7 @@ public class ExpenseReportController implements Serializable {
     @Begin
     public Class<? extends ViewConfig> edit(ExpenseReport report) {
         selected = report;
+        repo.refresh(report);
         return SecuredPages.Report.class;
     }
 

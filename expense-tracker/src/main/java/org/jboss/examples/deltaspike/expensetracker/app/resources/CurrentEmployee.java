@@ -1,11 +1,11 @@
 package org.jboss.examples.deltaspike.expensetracker.app.resources;
 
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
@@ -26,7 +26,7 @@ import org.picketlink.idm.model.basic.User;
  * {@code @CurrentUser}.
  *
  */
-@SessionScoped
+@WindowScoped
 public class CurrentEmployee implements Serializable {
 
     /*
@@ -64,7 +64,7 @@ public class CurrentEmployee implements Serializable {
     }
 
     @Produces
-    @SessionScoped
+    @WindowScoped
     @Named
     @CurrentUser
     public User getCurrentUser(Identity identity) {

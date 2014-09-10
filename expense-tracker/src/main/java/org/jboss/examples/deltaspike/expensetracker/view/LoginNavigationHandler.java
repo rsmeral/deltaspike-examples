@@ -1,21 +1,26 @@
 package org.jboss.examples.deltaspike.expensetracker.view;
 
 import java.io.Serializable;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.cdise.api.ContextControl;
 import org.apache.deltaspike.core.api.config.view.ViewRef;
+import org.apache.deltaspike.core.api.config.view.controller.InitView;
 import org.apache.deltaspike.core.api.config.view.controller.PreRenderView;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
+import org.apache.deltaspike.core.spi.scope.window.WindowContext;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
+import org.jboss.examples.deltaspike.expensetracker.app.DemoInitializer;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.picketlink.Identity;
 import org.picketlink.authentication.event.AlreadyLoggedInEvent;
 import org.picketlink.authentication.event.LoggedInEvent;
 import org.picketlink.authentication.event.LoginFailedEvent;
 import org.picketlink.authentication.event.PostLoggedOutEvent;
+import org.picketlink.authentication.event.PreLoggedOutEvent;
 
 /**
  * Handles some automatic navigation by observing authentication events and
@@ -23,7 +28,7 @@ import org.picketlink.authentication.event.PostLoggedOutEvent;
  * {@link PreRenderView}.
  */
 @ViewRef(config = Login.class)
-@ApplicationScoped
+@RequestScoped
 public class LoginNavigationHandler implements Serializable {
 
     @Inject
@@ -37,6 +42,11 @@ public class LoginNavigationHandler implements Serializable {
 
     @Inject
     private Identity identity;
+
+    @Inject
+    private DemoInitializer init;
+    
+    @Inject private WindowContext wctx;
 
     /*
      * Navigates to Home on regular log in, or to the last view that was
@@ -60,8 +70,9 @@ public class LoginNavigationHandler implements Serializable {
         view.navigateTo(Login.class);
     }
 
-    public void invalidateSessionOnLogout(@Observes PostLoggedOutEvent event) {
-        faces.getExternalContext().invalidateSession();
+    public void invalidateSessionOnLogout(@Observes PreLoggedOutEvent event) {
+//        faces.getExternalContext().invalidateSession();
+        wctx.closeWindow(wctx.getCurrentWindowId());
     }
 
     public void redirectToLoginOnLogout(@Observes PostLoggedOutEvent event) {
@@ -73,6 +84,11 @@ public class LoginNavigationHandler implements Serializable {
         if (identity.isLoggedIn()) {
             view.navigateTo(SecuredPages.Home.class);
         }
+    }
+    
+    @InitView
+    public void init() {
+        init.initialize();
     }
 
 }

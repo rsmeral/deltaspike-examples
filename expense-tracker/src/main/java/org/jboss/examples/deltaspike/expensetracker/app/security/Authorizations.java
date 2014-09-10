@@ -1,9 +1,9 @@
 package org.jboss.examples.deltaspike.expensetracker.app.security;
 
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
 import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
@@ -16,7 +16,7 @@ import org.picketlink.idm.model.basic.Role;
  * whether the current user has specific privileges.
  */
 @Named("idm")
-@SessionScoped
+@WindowScoped
 public class Authorizations implements Serializable {
 
     @Inject

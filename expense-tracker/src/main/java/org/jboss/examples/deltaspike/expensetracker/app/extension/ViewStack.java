@@ -3,8 +3,8 @@ package org.jboss.examples.deltaspike.expensetracker.app.extension;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import javax.enterprise.context.SessionScoped;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
 
 /**
@@ -18,7 +18,7 @@ import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
  *
  * The stack has a fixed depth and works in a LRU fashion.
  */
-@SessionScoped
+@WindowScoped
 public class ViewStack implements Serializable {
 
     private static final int DEPTH = 10;

@@ -1,7 +1,11 @@
 package org.jboss.examples.deltaspike.expensetracker.app.security;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
+import org.picketlink.config.SecurityConfigurationBuilder;
+import org.picketlink.event.SecurityConfigurationEvent;
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
 import org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity;
@@ -25,6 +29,14 @@ public class IDMConfiguration {
 //    private EEJPAContextInitializer contextInitializer;
 
     private IdentityConfiguration identityConfig = null;
+
+    public void onInit(@Observes SecurityConfigurationEvent event) {
+        SecurityConfigurationBuilder builder = event.getBuilder();
+
+        builder
+                .identity()
+                .scope(WindowScoped.class);
+    }
 
     @Produces
     public IdentityConfiguration createConfig() {
