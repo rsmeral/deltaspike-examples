@@ -5,7 +5,7 @@ import org.apache.deltaspike.jsf.api.config.view.View;
 import org.apache.deltaspike.jsf.api.config.view.View.Extension;
 import org.apache.deltaspike.jsf.api.config.view.View.NavigationMode;
 
-@View(extension = Extension.JSF, navigation = NavigationMode.REDIRECT)
+@View(extension = Extension.XHTML, navigation = NavigationMode.REDIRECT)
 public interface Pages extends ViewConfig {
 
     @View(name = "bus_line")
@@ -21,7 +21,7 @@ public interface Pages extends ViewConfig {
     public class Overview implements Pages {
     };
 
-    public class Ordered implements Pages{
+    public class Ordered implements Pages {
     };
 
 }

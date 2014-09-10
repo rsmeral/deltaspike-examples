@@ -3,10 +3,11 @@ package org.jboss.examples.deltaspike.tickets.util;
 import java.io.Serializable;
 import java.util.Calendar;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.deltaspike.core.api.config.view.ViewRef;
+import org.apache.deltaspike.core.api.config.view.controller.InitView;
 import org.jboss.examples.deltaspike.tickets.model.Bus;
 import org.jboss.examples.deltaspike.tickets.model.Line;
 import org.jboss.examples.deltaspike.tickets.model.Ticket;
@@ -15,7 +16,7 @@ import org.jboss.examples.deltaspike.tickets.repositories.LineReporitory;
 import org.jboss.examples.deltaspike.tickets.repositories.TicketRepository;
 
 @Named
-@ApplicationScoped
+@ViewRef(config = Pages.BusLine.class)
 public class AppInitializer implements Serializable {
 
     /**
@@ -37,6 +38,7 @@ public class AppInitializer implements Serializable {
     public AppInitializer() {
     }
 
+    @InitView
     public void initialize() {
         if (initialized) {
             return;
@@ -45,15 +47,15 @@ public class AppInitializer implements Serializable {
 
         createLine("Paris", "Prague", 900);
         createLine("Prague", "Paris", 900);
-//        createLine("Paris", "Lisboa", 800);
-//        createLine("Lisboa", "Paris", 800);
-//        createLine("Roma", "Paris", 700);
-//        createLine("Paris", "Roma", 700);
-//        createLine("Paris", "Berlin", 900);
-//        createLine("Berlin", "Paris", 900);
-//        createLine("Oslo", "Paris", 1300);
-//        createLine("Berlin", "Oslo", 1200);
-//        createLine("Oslo", "Lisboa", 1800);
+        // createLine("Paris", "Lisboa", 800);
+        // createLine("Lisboa", "Paris", 800);
+        // createLine("Roma", "Paris", 700);
+        // createLine("Paris", "Roma", 700);
+        // createLine("Paris", "Berlin", 900);
+        // createLine("Berlin", "Paris", 900);
+        // createLine("Oslo", "Paris", 1300);
+        // createLine("Berlin", "Oslo", 1200);
+        // createLine("Oslo", "Lisboa", 1800);
         initialized = true;
     }
 
