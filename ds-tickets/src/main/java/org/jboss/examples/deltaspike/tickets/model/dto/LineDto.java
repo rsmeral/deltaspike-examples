@@ -1,30 +1,26 @@
-package org.jboss.examples.deltaspike.tickets.model;
+package org.jboss.examples.deltaspike.tickets.model.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.inject.Named;
 
-@Entity
-public class Line implements Serializable {
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 
-    private static final long serialVersionUID = -3606817363522150334L;
+@Named
+@ViewAccessScoped
+public class LineDto implements Serializable {
 
-    @Id
-    @GeneratedValue
+    private static final long serialVersionUID = -6837044939654258118L;
+
     private Long id;
-
     private String departure;
-
     private String arrival;
-
     private int price;
 
-    public Line() {
+    public LineDto() {
     }
 
-    public Line(String departure, String arrival, int price) {
+    public LineDto(String departure, String arrival, int price) {
         super();
         this.departure = departure;
         this.arrival = arrival;

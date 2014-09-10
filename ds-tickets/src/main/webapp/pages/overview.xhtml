@@ -30,28 +30,28 @@
 		<p class="title">Bus tickets reservation system</p>
 		<h2>Order overview:</h2>
 
-		<h:dataTable value="#{order.tickets}" var="orderItem" styleClass="order-table"
+		<h:dataTable value="#{orderDto.ticketsDto}" var="orderItem" styleClass="order-table"
 			headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
 
 			<h:column>
 				<!-- column header -->
 				<f:facet name="header">Ticket No</f:facet>
-    				#{order.tickets.indexOf(orderItem) + 1} 
+    				#{orderDto.ticketsDto.indexOf(orderItem) + 1} 
     			</h:column>
 
 			<h:column>
 				<f:facet name="header">Departure</f:facet>
-    				#{line.departure}  
+    				#{lineDto.departure}  
     			</h:column>
 
 			<h:column>
 				<f:facet name="header">Arrival</f:facet>
-    				#{line.arrival} 
+    				#{lineDto.arrival} 
     			</h:column>
 
 			<h:column>
 				<f:facet name="header">Departure Date</f:facet>
-    				#{utils.formatDate(ticket.bus.date)} 
+    				#{utils.formatDate(ticketDto.busDto.date)} 
     			</h:column>
 
 			<h:column>
@@ -66,12 +66,12 @@
 
 			<h:column>
 				<f:facet name="header">price</f:facet>
-    				 #{ticket.bus.line.price * (orderItem.isInFirstClass() ? 1.5 : 1.0)}
+    				 #{ticketDto.busDto.lineDto.price * (orderItem.isInFirstClass() ? 1.5 : 1.0)}
     			</h:column>
 		</h:dataTable>
 
 		<div align="right">
-			<b style="margin-right: 80px; margin: 50px;">To pay: #{order.toPay}</b>
+			<b style="margin-right: 80px; margin: 50px;">To pay: #{orderDto.toPay}</b>
 		</div>
 
 

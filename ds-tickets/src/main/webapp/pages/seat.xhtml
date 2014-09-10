@@ -29,10 +29,10 @@
 	<div class="main_box">
 		<p class="title">Train tickets reservation system</p>
 		<p>
-			<b>From: <i>#{line.departure}</i> to: <i>#{line.arrival}</i></b>
+			<b>From: <i>#{lineDto.departure}</i> to: <i>#{lineDto.arrival}</i></b>
 		</p>
 		<p>
-			<b>On: <i>#{utils.formatDate(ticket.bus.date)}</i></b>
+			<b>On: <i>#{utils.formatDate(ticketDto.busDto.date)}</i></b>
 		</p>
 		<h2>Please choose seat(s)</h2>
 
@@ -43,9 +43,9 @@
 						<td>The seats in the bus: <br /> <img src="../images/bus.png" />
 						</td>
 						<td><h:selectManyListbox id="selectSeats" style="max-height: 400px; width: 80px;"
-								value="#{seats.chosenSeats}" immediate="true" required="true">
+								value="#{seatsDto.chosenSeats}" immediate="true" required="true">
 								<f:selectItems value="#{seatsManagerImpl.getFreeSeats()}" />
-								<f:ajax event="change" execute="#{seats.chosenSeats}" />
+								<f:ajax event="change" execute="#{seatsDto.chosenSeats}" />
 							</h:selectManyListbox></td>
 					</tr>
 					<tr>

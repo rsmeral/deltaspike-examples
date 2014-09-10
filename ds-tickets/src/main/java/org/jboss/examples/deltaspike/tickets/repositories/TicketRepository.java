@@ -10,10 +10,10 @@ import org.jboss.examples.deltaspike.tickets.model.Bus_;
 import org.jboss.examples.deltaspike.tickets.model.Ticket;
 import org.jboss.examples.deltaspike.tickets.model.Ticket_;
 
-@Repository
-public abstract class TicketRepository extends AbstractEntityRepository<Ticket, Long> implements CriteriaSupport<Ticket>{
+@Repository(forEntity = Ticket.class)
+public abstract class TicketRepository extends AbstractEntityRepository<Ticket, Long> implements CriteriaSupport<Ticket> {
 
-    public List<Ticket> getBusTickets(long busId){
+    public List<Ticket> getBusTickets(long busId) {
         return criteria().join(Ticket_.bus, where(Bus.class).eq(Bus_.id, busId)).getResultList();
     }
 }

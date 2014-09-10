@@ -7,7 +7,7 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
 import org.jboss.examples.deltaspike.tickets.model.Bus;
-import org.jboss.examples.deltaspike.tickets.model.Line;
+import org.jboss.examples.deltaspike.tickets.model.dto.LineDto;
 import org.jboss.examples.deltaspike.tickets.repositories.BusReporitory;
 
 @Model
@@ -17,13 +17,13 @@ public class BusesManagerImpl implements BusesManager {
     private BusReporitory busReporitory;
 
     @Inject
-    private Line line;
+    private LineDto lineDto;
 
     public List<Bus> getBuses() {
-        if (line.getDeparture() == null || line.getArrival() == null){
+        if (lineDto.getDeparture() == null || lineDto.getArrival() == null) {
             return new ArrayList<Bus>();
         }
-        List<Bus> buses = busReporitory.getDates(line.getDeparture(), line.getArrival());
+        List<Bus> buses = busReporitory.getDates(lineDto.getDeparture(), lineDto.getArrival());
         return buses;
     }
 

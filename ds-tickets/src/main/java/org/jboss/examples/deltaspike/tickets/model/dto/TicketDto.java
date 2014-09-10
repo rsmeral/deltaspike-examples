@@ -1,31 +1,28 @@
-package org.jboss.examples.deltaspike.tickets.model;
+package org.jboss.examples.deltaspike.tickets.model.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.inject.Named;
 
-@Entity
-public class Ticket implements Serializable {
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 
-    @Id
-    @GeneratedValue
+@Named
+@ViewAccessScoped
+public class TicketDto implements Serializable {
+
+    private static final long serialVersionUID = -8351858997978049478L;
+
     private Long id;
-    private static final long serialVersionUID = 6681604968417252681L;
-
-    @ManyToOne
-    private Bus bus;
+    private BusDto busDto;
     private String seatNumber;
     private boolean isInFirstClass;
 
-    public Ticket() {
+    public TicketDto() {
     }
 
-    public Ticket(Bus bus, String seatNumber, boolean isInFirstClass) {
+    public TicketDto(BusDto busDto, String seatNumber, boolean isInFirstClass) {
         super();
-        this.bus = bus;
+        this.busDto = busDto;
         this.seatNumber = seatNumber;
         this.isInFirstClass = isInFirstClass;
     }
@@ -38,12 +35,12 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
-    public Bus getBus() {
-        return bus;
+    public BusDto getBusDto() {
+        return busDto;
     }
 
-    public void setBus(Bus bus) {
-        this.bus = bus;
+    public void setBusDto(BusDto busDto) {
+        this.busDto = busDto;
     }
 
     public String getSeatNumber() {
@@ -61,5 +58,4 @@ public class Ticket implements Serializable {
     public void setInFirstClass(boolean isInFirstClass) {
         this.isInFirstClass = isInFirstClass;
     }
-
 }

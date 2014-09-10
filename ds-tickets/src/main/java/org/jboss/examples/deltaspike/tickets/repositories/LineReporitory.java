@@ -7,7 +7,7 @@ import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 import org.jboss.examples.deltaspike.tickets.model.Line;
 
-@Repository
+@Repository(forEntity = Line.class)
 public interface LineReporitory extends EntityRepository<Line, Long> {
 
     @Query("SELECT l.departure FROM Line l GROUP BY l.departure")

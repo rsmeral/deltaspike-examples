@@ -10,7 +10,7 @@ import org.jboss.examples.deltaspike.tickets.model.Bus_;
 import org.jboss.examples.deltaspike.tickets.model.Line;
 import org.jboss.examples.deltaspike.tickets.model.Line_;
 
-@Repository
+@Repository(forEntity = Bus.class)
 public abstract class BusReporitory extends AbstractEntityRepository<Bus, Long> implements CriteriaSupport<Bus> {
 
     public List<Bus> getDates(String departure, String arrival) {

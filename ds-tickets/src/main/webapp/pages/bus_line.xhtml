@@ -39,20 +39,19 @@
 				<tr>
 					<td>
 						<p>Select station of departure:</p> <h:form>
-							<h:selectOneMenu required="true" id="departureSelection" value="#{line.departure}"
+							<h:selectOneMenu required="true" id="departureSelection" value="#{lineDto.departure}"
 								onchange="submit()">
 								<f:selectItem itemValue="" />
 								<f:selectItems value="#{lineManagerImpl.allDepartures}" var="departure" />
-								<!-- <f:selectItems value="#{line}" var="departure" /> -->
 							</h:selectOneMenu>
 						</h:form>
 					</td>
 					<td>
 						<p>Select station of arrival:</p> <h:form>
-							<h:selectOneMenu required="true" id="arrivalSelection" disabled="#{line.departure==null}"
-								value="#{line.arrival}" onchange="submit()">
+							<h:selectOneMenu required="true" id="arrivalSelection" disabled="#{lineDto.departure==null}"
+								value="#{lineDto.arrival}" onchange="submit()">
 								<f:selectItem itemValue="" />
-								<f:selectItems value="#{lineManagerImpl.getAllArrivals(line.departure)}" var="arrival" />
+								<f:selectItems value="#{lineManagerImpl.getAllArrivals(lineDto.departure)}" var="arrival" />
 							</h:selectOneMenu>
 						</h:form>
 					</td>
@@ -60,7 +59,7 @@
 				<tr>
 					<td></td>
 					<td align="right" height="80px"><h:form>
-							<h:commandButton styleClass="commandButton" immediate="true" disabled="#{line.arrival==null}"
+							<h:commandButton styleClass="commandButton" immediate="true" disabled="#{lineDto.arrival==null}"
 								action="#{navigationManager.submitBusLine()}" value="Next" />
 						</h:form></td>
 				</tr>

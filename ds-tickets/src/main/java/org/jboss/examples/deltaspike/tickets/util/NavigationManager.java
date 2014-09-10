@@ -8,38 +8,43 @@ import javax.inject.Inject;
 
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.jboss.examples.deltaspike.tickets.model.Bus;
-import org.jboss.examples.deltaspike.tickets.model.Line;
-import org.jboss.examples.deltaspike.tickets.model.Order;
-import org.jboss.examples.deltaspike.tickets.model.Seats;
-import org.jboss.examples.deltaspike.tickets.model.Ticket;
+import org.jboss.examples.deltaspike.tickets.model.dto.BusDto;
+import org.jboss.examples.deltaspike.tickets.model.dto.LineDto;
+import org.jboss.examples.deltaspike.tickets.model.dto.OrderDto;
+import org.jboss.examples.deltaspike.tickets.model.dto.SeatsDto;
+import org.jboss.examples.deltaspike.tickets.model.dto.TicketDto;
+import org.jboss.examples.deltaspike.tickets.model.mapper.BusMapper;
 import org.jboss.examples.deltaspike.tickets.repositories.OrderRepository;
 
 @Model
 public class NavigationManager {
 
     @Inject
-    private Ticket ticket;
+    private TicketDto ticketDto;
 
     @Inject
-    private Line line;
+    private LineDto lineDto;
 
     @Inject
-    private Seats seats;
+    private SeatsDto seatsDto;
 
     @Inject
-    private Order order;
+    private OrderDto orderDto;
 
     @Inject
     private OrderRepository orderRepository;
 
+    @Inject
+    private BusMapper busMapper;
+
     public Class<? extends ViewConfig> createTicket(Bus bus) {
-        ticket.setBus(bus);
+        ticketDto.setBusDto((BusDto) busMapper.mapResult(bus));
         return Pages.Seat.class;
     }
 
     public Class<? extends ViewConfig> submitBusLine() {
-        if (line != null && line.getDeparture() != null && line.getArrival() != null
-            && !line.getDeparture().equals(line.getArrival())) {
+        if (lineDto != null && lineDto.getDeparture() != null && lineDto.getArrival() != null
+            && !lineDto.getDeparture().equals(lineDto.getArrival())) {
             return Pages.Date.class;
         }
         return null;
@@ -47,38 +52,39 @@ public class NavigationManager {
 
     public Class<? extends ViewConfig> submitSeats() {
 
-        if (ticket.getBus() == null || ticket.getBus().getLine() == null || ticket.getBus().getDate() == null) {
+        if (ticketDto.getBusDto() == null || ticketDto.getBusDto().getLineDto() == null
+            || ticketDto.getBusDto().getDate() == null) {
             return Pages.BusLine.class;
         }
-        if (seats.getChosenSeats() == null || seats.getChosenSeats().size() == 0) {
+        if (seatsDto.getChosenSeats() == null || seatsDto.getChosenSeats().size() == 0) {
             return Pages.Seat.class;
         }
 
-        List<Ticket> tickets = new ArrayList<Ticket>();
-        order.setToPay(addTickets(tickets, seats.getChosenSeats()));
-        order.setTickets(tickets);
+        List<TicketDto> tickets = new ArrayList<TicketDto>();
+        orderDto.setToPay(addTickets(tickets, seatsDto.getChosenSeats()));
+        orderDto.setTicketsDto(tickets);
 
         return Pages.Overview.class;
     }
 
-    private double addTickets(List<Ticket> tickets, List<String> seatsToAdd) {
+    private double addTickets(List<TicketDto> tickets, List<String> seatsToAdd) {
         double price = 0;
         if (seatsToAdd != null) {
 
             for (String seat : seatsToAdd) {
                 boolean isFirstClass = Integer.valueOf(seat.substring(0, seat.length() - 1)) < 4;
-                Ticket orderTicket = new Ticket(ticket.getBus(), seat, isFirstClass);
+                TicketDto orderTicket = new TicketDto(ticketDto.getBusDto(), seat, isFirstClass);
                 orderTicket.setSeatNumber(seat);
                 orderTicket.setInFirstClass(isFirstClass);
                 tickets.add(orderTicket);
-                price += ticket.getBus().getLine().getPrice() * (isFirstClass ? 1.5 : 1.0);
+                price += ticketDto.getBusDto().getLineDto().getPrice() * (isFirstClass ? 1.5 : 1.0);
             }
         }
         return price;
     }
 
     public Class<? extends ViewConfig> order() {
-        order.setId(orderRepository.save(order).getId());
+        orderDto.setId(orderRepository.save(orderDto).getId());
         return Pages.Ordered.class;
     }
 
