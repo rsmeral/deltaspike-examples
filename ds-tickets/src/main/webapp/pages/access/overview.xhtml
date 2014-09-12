@@ -21,7 +21,7 @@
 
 <h:head>
 	<title><ui:insert name="pageTitle">Deltaspike tickets example</ui:insert></title>
-	<link rel="stylesheet" type="text/css" href="tickets.css" />
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/tickets.css" />
 </h:head>
 
 <h:body>
@@ -30,28 +30,28 @@
 		<p class="title">Bus tickets reservation system</p>
 		<h2>Order overview:</h2>
 
-		<h:dataTable value="#{orderDto.ticketsDto}" var="orderItem" styleClass="order-table"
+		<h:dataTable value="#{orderDtoAccess.ticketsDto}" var="orderItem" styleClass="order-table"
 			headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
 
 			<h:column>
 				<!-- column header -->
 				<f:facet name="header">Ticket No</f:facet>
-    				#{orderDto.ticketsDto.indexOf(orderItem) + 1} 
+    				#{orderDtoAccess.ticketsDto.indexOf(orderItem) + 1} 
     			</h:column>
 
 			<h:column>
 				<f:facet name="header">Departure</f:facet>
-    				#{lineDto.departure}  
+    				#{lineDtoAccess.departure}  
     			</h:column>
 
 			<h:column>
 				<f:facet name="header">Arrival</f:facet>
-    				#{lineDto.arrival} 
+    				#{lineDtoAccess.arrival} 
     			</h:column>
 
 			<h:column>
 				<f:facet name="header">Departure Date</f:facet>
-    				#{utils.formatDate(ticketDto.busDto.date)} 
+    				#{utils.formatDate(ticketDtoAccess.busDto.date)} 
     			</h:column>
 
 			<h:column>
@@ -66,12 +66,12 @@
 
 			<h:column>
 				<f:facet name="header">price</f:facet>
-    				 #{ticketDto.busDto.lineDto.price * (orderItem.isInFirstClass() ? 1.5 : 1.0)}
+    				 #{ticketDtoAccess.busDto.lineDto.price * (orderItem.isInFirstClass() ? 1.5 : 1.0)}
     			</h:column>
 		</h:dataTable>
 
 		<div align="right">
-			<b style="margin-right: 80px; margin: 50px;">To pay: #{orderDto.toPay}</b>
+			<b style="margin-right: 80px; margin: 50px;">To pay: #{orderDtoAccess.toPay}</b>
 		</div>
 
 

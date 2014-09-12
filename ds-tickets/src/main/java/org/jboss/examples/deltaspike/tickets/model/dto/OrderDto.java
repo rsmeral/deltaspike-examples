@@ -3,12 +3,6 @@ package org.jboss.examples.deltaspike.tickets.model.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.inject.Named;
-
-import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
-
-@ViewAccessScoped
-@Named
 public class OrderDto implements Serializable {
 
     private static final long serialVersionUID = 4011295393734808311L;

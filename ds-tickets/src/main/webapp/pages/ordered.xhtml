@@ -21,18 +21,23 @@
 
 <h:head>
 	<title><ui:insert name="pageTitle">Deltaspike tickets example</ui:insert></title>
-	<link rel="stylesheet" type="text/css" href="tickets.css" />
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/tickets.css" />
 </h:head>
 
 <h:body>
 	<ds:windowId />
+	<f:metadata>
+        <f:viewParam name="orderId" value="orderId" />
+        <f:viewParam name="price" value="orderPrice" />
+    </f:metadata>
+    
 	<div class="main_box">
 		<p class="title">Bus tickets reservation system</p>
 		<h2>Thank you</h2>
 
 
 		<div align="right" style="margin: 10px;">
-			<b style="margin-right: 50px;">Please pay: #{orderDto.toPay} for the order: #{orderDto.id}</b>
+			<b style="margin-right: 50px;">Please pay: #{price} for the order: #{orderId}</b>
 		</div>
 
 

@@ -1,0 +1,188 @@
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2014, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ds="http://deltaspike.apache.org/jsf">
+
+<h:head>
+	<title><ui:insert name="pageTitle">Deltaspike tickets example</ui:insert></title>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/tickets.css" />
+</h:head>
+
+<h:body>
+	<h:outputStylesheet name="tickets.css" />
+	<ds:windowId />
+
+	<div class="main_box">
+		<p class="title">Welcome to bus tickets reservation system - Single-page mode</p>
+		<h:form>
+			Switch to <h:commandLink action="#{navigationManager.backToBusLine()}" value="multiple-page mode" /> using ViewAcccessScope
+		</h:form>
+		<h2>Please select bus line are you looking for</h2>
+
+		<h:form>
+			<h:commandButton action="#{appInitializer.initialize()}" value="initialize DB"
+				rendered="#{!appInitializer.isInitialized()}" />
+		</h:form>
+
+		<table class="main_table">
+			<tbody>
+				<tr>
+					<td>
+						<p>Select station of departure:</p> <h:form>
+							<h:selectOneMenu required="true" id="departureSelection" value="#{lineDtoGroup.departure}"
+								onchange="submit()">
+								<f:selectItem itemValue="" />
+								<f:selectItems value="#{lineManagerImpl.allDepartures}" var="departure" />
+							</h:selectOneMenu>
+						</h:form>
+					</td>
+					<td>
+						<p>Select station of arrival:</p> <h:form>
+							<h:selectOneMenu required="true" id="arrivalSelection" disabled="#{lineDtoGroup.departure==null}"
+								value="#{lineDtoGroup.arrival}" onchange="submit()">
+								<f:selectItem itemValue="" />
+								<f:selectItems value="#{lineManagerImpl.getAllArrivals(lineDtoGroup.departure)}" var="arrival" />
+							</h:selectOneMenu>
+						</h:form>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<h:form id="busLinePart">
+						<td align="right" height="80px"><h:commandButton styleClass="commandButton"
+								disabled="#{lineDtoGroup.departure==null}" action="#{groupManager.resetBusLine()}" value="Reset" /></td>
+					</h:form>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<h:body id="datePart" rendered="#{lineDtoGroup.arrival != null}">
+			<h2>Please choose the date of the departure:</h2>
+
+			<h:dataTable styleClass="main_table" value="#{busesManagerImpl.buses}" var="bus">
+
+				<h:column>
+					<f:facet name="header">
+						<b>Dates:</b>
+					</f:facet>
+					<h:form>
+						<br />
+						<h:commandLink value="#{utils.formatDate(bus.date)}" action="#{navigationManager.createTicket(bus)}"
+							style="#{bus.id == ticketDtoGroup.busDto.id ? 'color: green; font-weight: bold;' : ''}" />
+					</h:form>
+				</h:column>
+
+
+			</h:dataTable>
+			<div align="right" style="margin-right: 50px" height="80px">
+				<h:form>
+					<h:commandButton styleClass="commandButton" action="#{groupManager.resetDate()}" value="Reset"
+						disabled="#{ticketDtoGroup.busDto==null}" />
+				</h:form>
+			</div>
+		</h:body>
+
+		<h:body id="seatsPart" rendered="#{ticketDtoGroup.busDto!=null}">
+			<h2>Please choose seat(s)</h2>
+
+			<table class="main_table">
+				<tbody>
+					<h:form id="selectSeatsForm">
+						<tr>
+							<td>The seats in the bus: <br /> <img src="#{request.contextPath}/images/bus.png" />
+							</td>
+							<td><h:selectManyListbox id="selectSeats" style="max-height: 400px; width: 80px;"
+									value="#{seatsDtoGroup.chosenSeats}" immediate="true" required="true">
+									<f:selectItems value="#{seatsManagerImpl.getFreeSeats()}" />
+									<f:ajax event="change"
+										execute="#{seatsDtoGroup.chosenSeats.size()==0 ? seatsDtoGroup.chosenSeats.size() : ' '}" />
+								</h:selectManyListbox></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td align="right" height="80px"><h:commandButton styleClass="commandButton"
+									disabled="#{seatsDtoGroup.chosenSeats==null}" action="#{groupManager.resetSeats()}" value="Reset" /> <h:commandButton
+									styleClass="commandButton" immediate="true" action="#{navigationManager.submitSeats()}" value="Submit"
+									type="submit" /></td>
+						</tr>
+					</h:form>
+				</tbody>
+			</table>
+		</h:body>
+
+		<h:body id="orderOverviewPart" rendered="#{orderDtoGroup.ticketsDto!=null}">
+			<h2>Order overview:</h2>
+
+			<h:dataTable value="#{orderDtoGroup.ticketsDto}" var="orderItem" styleClass="order-table"
+				headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
+
+				<h:column>
+					<!-- column header -->
+					<f:facet name="header">Ticket No</f:facet>
+    				#{orderDtoGroup.ticketsDto.indexOf(orderItem) + 1} 
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">Departure</f:facet>
+    				#{orderItem.busDto.lineDto.departure}  
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">Arrival</f:facet>
+    				#{orderItem.busDto.lineDto.arrival} 
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">Departure Date</f:facet>
+    				#{utils.formatDate(orderItem.busDto.date)} 
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">Seat</f:facet>
+    				#{orderItem.seatNumber}
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">First Class Surcharge</f:facet>
+    				 #{orderItem.isInFirstClass() ? 'yes' : 'no'}
+    			</h:column>
+
+				<h:column>
+					<f:facet name="header">price</f:facet>
+    				 #{orderItem.busDto.lineDto.price * (orderItem.isInFirstClass() ? 1.5 : 1.0)}
+    			</h:column>
+			</h:dataTable>
+
+			<div align="right">
+				<b style="margin-right: 80px; margin: 50px;">To pay: #{orderDtoGroup.toPay}</b>
+			</div>
+
+
+			<div align="right" style="margin-right: 50px" height="80px">
+				<h:form>
+					<h:commandButton styleClass="commandButton" immediate="true" action="#{navigationManager.order()}"
+						value="Order" />
+					<ds:preventDoubleSubmit />
+				</h:form>
+			</div>
+		</h:body>
+	</div>
+</h:body>
+</html>

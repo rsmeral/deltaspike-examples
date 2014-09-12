@@ -21,7 +21,7 @@
 
 <h:head>
 	<title><ui:insert name="pageTitle">Deltaspike tickets example</ui:insert></title>
-	<link rel="stylesheet" type="text/css" href="tickets.css" />
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/tickets.css" />
 </h:head>
 
 <h:body>
@@ -34,7 +34,7 @@
 
 			<h:column>
 				<f:facet name="header">
-					<b>From: <i>#{lineDto.departure}</i> to: <i>#{lineDto.arrival}</i></b>
+					<b>From: <i>#{lineDtoAccess.departure}</i> to: <i>#{lineDtoAccess.arrival}</i></b>
 				</f:facet>
 				<h:form>
 					<br />

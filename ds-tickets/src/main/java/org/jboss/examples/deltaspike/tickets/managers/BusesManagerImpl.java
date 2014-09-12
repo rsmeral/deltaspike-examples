@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.jboss.examples.deltaspike.tickets.model.Bus;
 import org.jboss.examples.deltaspike.tickets.model.dto.LineDto;
+import org.jboss.examples.deltaspike.tickets.model.dto.Produced;
 import org.jboss.examples.deltaspike.tickets.repositories.BusReporitory;
 
 @Model
@@ -17,6 +18,7 @@ public class BusesManagerImpl implements BusesManager {
     private BusReporitory busReporitory;
 
     @Inject
+    @Produced
     private LineDto lineDto;
 
     public List<Bus> getBuses() {

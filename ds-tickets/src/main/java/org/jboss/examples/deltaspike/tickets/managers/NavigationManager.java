@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.tickets.util;
+package org.jboss.examples.deltaspike.tickets.managers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,28 +7,37 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
 import org.jboss.examples.deltaspike.tickets.model.Bus;
 import org.jboss.examples.deltaspike.tickets.model.dto.BusDto;
 import org.jboss.examples.deltaspike.tickets.model.dto.LineDto;
 import org.jboss.examples.deltaspike.tickets.model.dto.OrderDto;
+import org.jboss.examples.deltaspike.tickets.model.dto.Produced;
 import org.jboss.examples.deltaspike.tickets.model.dto.SeatsDto;
 import org.jboss.examples.deltaspike.tickets.model.dto.TicketDto;
 import org.jboss.examples.deltaspike.tickets.model.mapper.BusMapper;
 import org.jboss.examples.deltaspike.tickets.repositories.OrderRepository;
+import org.jboss.examples.deltaspike.tickets.util.Pages;
+import org.jboss.examples.deltaspike.tickets.util.Pages.Access;
+import org.jboss.examples.deltaspike.tickets.util.Utils;
 
 @Model
 public class NavigationManager {
 
     @Inject
+    @Produced
     private TicketDto ticketDto;
 
     @Inject
+    @Produced
     private LineDto lineDto;
 
     @Inject
+    @Produced
     private SeatsDto seatsDto;
 
     @Inject
+    @Produced
     private OrderDto orderDto;
 
     @Inject
@@ -37,15 +46,24 @@ public class NavigationManager {
     @Inject
     private BusMapper busMapper;
 
+    @Inject
+    private Utils utils;
+
+    @Inject
+    private NavigationParameterContext navigationParameterContext;
+
+    @Inject
+    private GroupManager groupManager;
+
     public Class<? extends ViewConfig> createTicket(Bus bus) {
         ticketDto.setBusDto((BusDto) busMapper.mapResult(bus));
-        return Pages.Seat.class;
+        return utils.isGroup() ? null : Access.Seat.class;
     }
 
     public Class<? extends ViewConfig> submitBusLine() {
         if (lineDto != null && lineDto.getDeparture() != null && lineDto.getArrival() != null
             && !lineDto.getDeparture().equals(lineDto.getArrival())) {
-            return Pages.Date.class;
+            return Access.Date.class;
         }
         return null;
     }
@@ -54,17 +72,17 @@ public class NavigationManager {
 
         if (ticketDto.getBusDto() == null || ticketDto.getBusDto().getLineDto() == null
             || ticketDto.getBusDto().getDate() == null) {
-            return Pages.BusLine.class;
+            return Access.BusLine.class;
         }
         if (seatsDto.getChosenSeats() == null || seatsDto.getChosenSeats().size() == 0) {
-            return Pages.Seat.class;
+            return Access.Seat.class;
         }
 
         List<TicketDto> tickets = new ArrayList<TicketDto>();
         orderDto.setToPay(addTickets(tickets, seatsDto.getChosenSeats()));
         orderDto.setTicketsDto(tickets);
 
-        return Pages.Overview.class;
+        return utils.isGroup() ? null : Access.Overview.class;
     }
 
     private double addTickets(List<TicketDto> tickets, List<String> seatsToAdd) {
@@ -84,19 +102,28 @@ public class NavigationManager {
     }
 
     public Class<? extends ViewConfig> order() {
-        orderDto.setId(orderRepository.save(orderDto).getId());
+        Long orderId = orderRepository.save(orderDto).getId();
+
+        navigationParameterContext.addPageParameter("orderId", orderId);
+        navigationParameterContext.addPageParameter("price", orderDto.getToPay());
+        groupManager.resetBusLine();
+
         return Pages.Ordered.class;
     }
 
     public Class<? extends ViewConfig> backToBusLine() {
-        return Pages.BusLine.class;
+        return Access.BusLine.class;
     }
 
     public Class<? extends ViewConfig> backToDate() {
-        return Pages.Date.class;
+        return Access.Date.class;
     }
 
     public Class<? extends ViewConfig> backToSeat() {
-        return Pages.Seat.class;
+        return Access.Seat.class;
+    }
+
+    public Class<? extends ViewConfig> toSinglePage() {
+        return Pages.Group.SinglePage.class;
     }
 }

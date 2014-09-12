@@ -21,25 +21,31 @@
 
 <h:head>
 	<title><ui:insert name="pageTitle">Deltaspike tickets example</ui:insert></title>
-	<link rel="stylesheet" type="text/css" href="tickets.css" />
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/tickets.css" />
 </h:head>
 
 <h:body>
 	<h:outputStylesheet name="tickets.css" />
-	<h:link rel="stylesheet" type="text/css" href="tickets.css" />
 	<ds:windowId />
 	<div class="main_box">
-		<p class="title">Welcome to bus tickets reservation system</p>
+		<p class="title">Welcome to bus tickets reservation system - Multiple-page mode</p>
+		<h:form>
+			Switch to <h:commandLink action="#{navigationManager.toSinglePage()}" value="single-page mode" /> using GroupedConversationScoped
+		</h:form>
+
 		<h2>Please select bus line are you looking for</h2>
 
-	    <h:form><h:commandButton action="#{appInitializer.initialize()}" value="initialize DB" rendered="#{!appInitializer.isInitialized()}" /> </h:form>
+		<h:form>
+			<h:commandButton action="#{appInitializer.initialize()}" value="initialize DB"
+				rendered="#{!appInitializer.isInitialized()}" />
+		</h:form>
 
 		<table class="main_table">
 			<tbody>
 				<tr>
 					<td>
 						<p>Select station of departure:</p> <h:form>
-							<h:selectOneMenu required="true" id="departureSelection" value="#{lineDto.departure}"
+							<h:selectOneMenu required="true" id="departureSelection" value="#{lineDtoAccess.departure}"
 								onchange="submit()">
 								<f:selectItem itemValue="" />
 								<f:selectItems value="#{lineManagerImpl.allDepartures}" var="departure" />
@@ -48,10 +54,10 @@
 					</td>
 					<td>
 						<p>Select station of arrival:</p> <h:form>
-							<h:selectOneMenu required="true" id="arrivalSelection" disabled="#{lineDto.departure==null}"
-								value="#{lineDto.arrival}" onchange="submit()">
+							<h:selectOneMenu required="true" id="arrivalSelection" disabled="#{lineDtoAccess.departure==null}"
+								value="#{lineDtoAccess.arrival}" onchange="submit()">
 								<f:selectItem itemValue="" />
-								<f:selectItems value="#{lineManagerImpl.getAllArrivals(lineDto.departure)}" var="arrival" />
+								<f:selectItems value="#{lineManagerImpl.getAllArrivals(lineDtoAccess.departure)}" var="arrival" />
 							</h:selectOneMenu>
 						</h:form>
 					</td>
@@ -59,7 +65,7 @@
 				<tr>
 					<td></td>
 					<td align="right" height="80px"><h:form>
-							<h:commandButton styleClass="commandButton" immediate="true" disabled="#{lineDto.arrival==null}"
+							<h:commandButton styleClass="commandButton" immediate="true" disabled="#{lineDtoAccess.arrival==null}"
 								action="#{navigationManager.submitBusLine()}" value="Next" />
 						</h:form></td>
 				</tr>

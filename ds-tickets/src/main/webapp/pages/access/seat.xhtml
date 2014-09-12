@@ -21,7 +21,7 @@
 
 <h:head>
 	<title><ui:insert name="pageTitle">Deltaspike tickets example</ui:insert></title>
-	<link rel="stylesheet" type="text/css" href="tickets.css" />
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/tickets.css" />
 </h:head>
 
 <h:body>
@@ -29,10 +29,10 @@
 	<div class="main_box">
 		<p class="title">Train tickets reservation system</p>
 		<p>
-			<b>From: <i>#{lineDto.departure}</i> to: <i>#{lineDto.arrival}</i></b>
+			<b>From: <i>#{lineDtoAccess.departure}</i> to: <i>#{lineDtoAccess.arrival}</i></b>
 		</p>
 		<p>
-			<b>On: <i>#{utils.formatDate(ticketDto.busDto.date)}</i></b>
+			<b>On: <i>#{utils.formatDate(ticketDtoAccess.busDto.date)}</i></b>
 		</p>
 		<h2>Please choose seat(s)</h2>
 
@@ -40,12 +40,12 @@
 			<tbody>
 				<h:form id="selectSeatsForm">
 					<tr>
-						<td>The seats in the bus: <br /> <img src="../images/bus.png" />
+						<td>The seats in the bus: <br /> <img src="#{request.contextPath}/images/bus.png" />
 						</td>
 						<td><h:selectManyListbox id="selectSeats" style="max-height: 400px; width: 80px;"
-								value="#{seatsDto.chosenSeats}" immediate="true" required="true">
+								value="#{seatsDtoAccess.chosenSeats}" immediate="true" required="true">
 								<f:selectItems value="#{seatsManagerImpl.getFreeSeats()}" />
-								<f:ajax event="change" execute="#{seatsDto.chosenSeats}" />
+								<f:ajax event="change" execute="#{seatsDtoAccess.chosenSeats}" />
 							</h:selectManyListbox></td>
 					</tr>
 					<tr>

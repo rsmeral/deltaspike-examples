@@ -6,7 +6,6 @@ import java.util.Calendar;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.deltaspike.core.api.config.view.ViewRef;
 import org.apache.deltaspike.core.api.config.view.controller.InitView;
 import org.jboss.examples.deltaspike.tickets.model.Bus;
 import org.jboss.examples.deltaspike.tickets.model.Line;
@@ -16,7 +15,6 @@ import org.jboss.examples.deltaspike.tickets.repositories.LineReporitory;
 import org.jboss.examples.deltaspike.tickets.repositories.TicketRepository;
 
 @Named
-@ViewRef(config = Pages.BusLine.class)
 public class AppInitializer implements Serializable {
 
     /**

@@ -6,6 +6,7 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
 import org.jboss.examples.deltaspike.tickets.model.Ticket;
+import org.jboss.examples.deltaspike.tickets.model.dto.Produced;
 import org.jboss.examples.deltaspike.tickets.model.dto.TicketDto;
 import org.jboss.examples.deltaspike.tickets.repositories.TicketRepository;
 import org.jboss.examples.deltaspike.tickets.util.Utils;
@@ -17,6 +18,7 @@ public class SeatsManagerImpl implements SeatsManager {
     private TicketRepository ticketRepository;
 
     @Inject
+    @Produced
     private TicketDto ticketDto;
 
     @Inject

@@ -2,15 +2,7 @@ package org.jboss.examples.deltaspike.tickets.model.dto;
 
 import java.io.Serializable;
 
-import javax.inject.Named;
-
-import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
-
-@Named
-@ViewAccessScoped
-public class LineDto implements Serializable {
-
-    private static final long serialVersionUID = -6837044939654258118L;
+public abstract class LineDto implements Serializable {
 
     private Long id;
     private String departure;
@@ -36,18 +28,22 @@ public class LineDto implements Serializable {
     }
 
     public String getDeparture() {
+        // System.err.println("getDeparture " + this);
         return departure;
     }
 
     public void setDeparture(String departure) {
+        // System.err.println("setDeparture " + this);
         this.departure = departure;
     }
 
     public String getArrival() {
+        // System.err.println("getArrival " + this);
         return arrival;
     }
 
     public void setArrival(String arrival) {
+        // System.err.println("setArrival " + this);
         this.arrival = arrival;
     }
 

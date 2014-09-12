@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Model;
+import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
 
 @Model
 public class Utils {
@@ -14,7 +17,7 @@ public class Utils {
     }
 
     public String formatDate(Date date) {
-        if (date == null){
+        if (date == null) {
             return "";
         }
         SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -33,5 +36,15 @@ public class Utils {
         allSeats.remove("8D");
 
         return allSeats;
+    }
+
+    @Produces
+    @RequestScoped
+    public FacesContext getFacesContext() {
+        return FacesContext.getCurrentInstance();
+    }
+
+    public boolean isGroup() {
+        return getFacesContext().getViewRoot().getViewId().contains("group");
     }
 }
