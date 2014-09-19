@@ -2,6 +2,7 @@ package org.jboss.examples.deltaspike.expensetracker.app.security;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
 import org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity;
@@ -14,38 +15,25 @@ import org.picketlink.idm.jpa.model.sample.simple.RelationshipIdentityTypeEntity
 import org.picketlink.idm.jpa.model.sample.simple.RelationshipTypeEntity;
 import org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity;
 import org.picketlink.idm.model.Relationship;
+import org.picketlink.internal.EEJPAContextInitializer;
 
 /**
  * Configuration of PicketLink.
  */
 @ApplicationScoped
 public class IDMConfiguration {
-//
-//    @Inject
-//    private EEJPAContextInitializer contextInitializer;
+
+    @Inject
+    private EEJPAContextInitializer contextInitializer;
 
     private IdentityConfiguration identityConfig = null;
 
     @Produces
     public IdentityConfiguration createConfig() {
         if (identityConfig == null) {
-            initFileConfig();
+            initJPAConfig();
         }
         return identityConfig;
-    }
-
-    private void initFileConfig() {
-        IdentityConfigurationBuilder builder = new IdentityConfigurationBuilder();
-
-        builder
-                .named("default")
-                .stores()
-                .file()
-                .workingDirectory("target/data")
-                .supportGlobalRelationship(Relationship.class)
-                .supportAllFeatures();
-
-        identityConfig = builder.build();
     }
 
     private void initJPAConfig() {
@@ -67,7 +55,7 @@ public class IDMConfiguration {
                         RoleTypeEntity.class
                 )
                 .supportGlobalRelationship(Relationship.class)
-                //                .addContextInitializer(contextInitializer)
+                .addContextInitializer(contextInitializer)
                 .supportAllFeatures();
 
         identityConfig = builder.build();

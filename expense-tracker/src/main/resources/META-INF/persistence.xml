@@ -12,10 +12,10 @@
         </properties>
     </persistence-unit>
     
-<!--    <persistence-unit name="identity">
+    <persistence-unit name="identity" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/IdentityDS</jta-data-source>
-            It's necessary to list all PicketLink entities and exclude unlisted,
-                otherwise PL would pick up all entities in the application 
+        <!--        It's necessary to list all PicketLink entities and exclude unlisted,
+        otherwise PL would pick up all entities in the application -->
 
         <class>org.picketlink.idm.jpa.model.sample.simple.AbstractCredentialTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity</class>
@@ -33,5 +33,5 @@
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.show_sql" value="false" />
         </properties>
-    </persistence-unit>-->
+    </persistence-unit>
 </persistence>

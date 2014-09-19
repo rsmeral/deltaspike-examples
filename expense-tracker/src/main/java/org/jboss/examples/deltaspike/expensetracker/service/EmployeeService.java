@@ -5,9 +5,9 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
 import org.picketlink.authorization.annotations.RolesAllowed;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
@@ -19,12 +19,13 @@ import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ADMIN;
+
 /**
  * Application layer service for registering Employees as system users. This
  * service bridges the application model and the IDM model.
  */
 @ApplicationScoped
-@RolesAllowed(ADMIN)
 @Named
 public class EmployeeService {
 
@@ -36,6 +37,9 @@ public class EmployeeService {
     @Inject
     private RelationshipManager relMgr;
 
+    @Inject
+    private EmployeeRepository empRepo;
+
     public List<User> listUsers() {
         IdentityQuery<User> query = idm.createIdentityQuery(User.class);
         return query.getResultList();
@@ -45,11 +49,17 @@ public class EmployeeService {
         return idm.createIdentityQuery(User.class).setParameter(new AttributeParameter(EMPLOYEE_ID_ATTRIBUTE), employee.getId()).getResultList().get(0);
     }
 
+    public Employee getEmployeeByUsername(String username) {
+        Long employeeId = idm.createIdentityQuery(User.class).setParameter(User.LOGIN_NAME, username).getResultList().get(0).<Long>getAttribute(EMPLOYEE_ID_ATTRIBUTE).getValue();
+        return empRepo.findBy(employeeId);
+    }
+
     public boolean isUsernameAvailable(String username) {
         int resultCount = idm.createIdentityQuery(User.class).setParameter(User.LOGIN_NAME, username).getResultCount();
         return resultCount == 0;
     }
 
+    @RolesAllowed(ADMIN)
     public void registerEmployee(Employee emp, String username, String password, String... roles) {
         User user = new User();
         user.setLoginName(username);

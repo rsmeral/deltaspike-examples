@@ -16,24 +16,20 @@ import org.jboss.examples.deltaspike.expensetracker.data.ExpenseRepository;
 import org.jboss.examples.deltaspike.expensetracker.data.PurposeRepository;
 import org.jboss.examples.deltaspike.expensetracker.data.ReimbursementRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Expense;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
-import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
-import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.model.basic.Role;
+
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ADMIN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
 
 /**
  * Supplies initial data. Used instead of import.sql to support portability.
  */
 public class DemoInitializer {
-
-    @Inject
-    private EmployeeService empSvc;
 
     @Inject
     private EmployeeRepository empRepo;
@@ -48,24 +44,24 @@ public class DemoInitializer {
     private ReimbursementRepository reimbursementRepo;
 
     @Inject
-    private IdentityManager idm;
-
-    @Inject
     private ExpenseReportRepository expenseReportRepo;
 
     @Inject
     private ContextControl ctxCtl;
 
+    @Inject
+    private IDMInitializer idmInit;
+
     /*
      * DeltaSpike Servlet module fires an event when the ServletContext is
      * initialized, which happens at application deployment time and only once.
-     * This cane be used to initialize an application, similarly to using
+     * This can be used to initialize an application, similarly to using
      * @Startup/@Singleton/@PostConstruct.
      */
     public void initialize(@Observes @Initialized ServletContext ctx) {
         /*
          * At this time, only the application scope is available. We need to
-         * start additional scopes which are used by beans we intend to use, 
+         * start additional scopes which are used by beans we intend to use,
          * like the conversation-scoped EntityManager or the request-scoped
          * IdentityManager.
          */
@@ -73,25 +69,23 @@ public class DemoInitializer {
         ctxCtl.startContext(RequestScoped.class);
         ctxCtl.startContext(ConversationScoped.class);
 
-        for (String role : EmployeeRole.getAllRoles()) {
-            idm.add(new Role(role));
-        }
+        Employee admin = empRepo.save(new Employee("Admin", "Administrator", "admin@example.com", "123456789"));
+        Employee john = empRepo.save(new Employee("John", "Employee", "john@example.com", "987654321"));
+        Employee anna = empRepo.save(new Employee("Anna", "Accountant", "anna@example.com", "654321987"));
 
-        final Employee admin = new Employee("Admin", "Administrator", "admin@example.com", "123456789");
-        final Employee john = new Employee("John", "Employee", "john@example.com", "987654321");
-        final Employee anna = new Employee("Anna", "Accountant", "anna@example.com", "654321987");
+        idmInit.initializeRoles();
 
-        empSvc.registerEmployee(empRepo.saveAndFlush(admin), "admin", "admin", EMPLOYEE, ACCOUNTANT, ADMIN);
-        empSvc.registerEmployee(empRepo.saveAndFlush(john), "john", "john", EMPLOYEE);
-        empSvc.registerEmployee(empRepo.saveAndFlush(anna), "anna", "anna", EMPLOYEE, ACCOUNTANT);
+        idmInit.registerEmployee(admin, "admin", "admin", EMPLOYEE, ACCOUNTANT, ADMIN);
+        idmInit.registerEmployee(john, "john", "john", EMPLOYEE);
+        idmInit.registerEmployee(anna, "anna", "anna", EMPLOYEE, ACCOUNTANT);
 
-        final Purpose travel = purposeRepo.save(new Purpose("Travel", "Train, plane, public transport, taxi"));
-        final Purpose accomodation = purposeRepo.save(new Purpose("Accommodation", "Hotels"));
-        final Purpose food = purposeRepo.save(new Purpose("Food/Drinks", "Any meals"));
-        final Purpose fuel = purposeRepo.save(new Purpose("Fuel", "Gas, LPG, Electricity"));
+        // add data
+        Purpose travel = purposeRepo.save(new Purpose("Travel", "Train, plane, public transport, taxi"));
+        Purpose accomodation = purposeRepo.save(new Purpose("Accommodation", "Hotels"));
+        Purpose food = purposeRepo.save(new Purpose("Food/Drinks", "Any meals"));
 
         final ExpenseReport report = new ExpenseReport("GeeCon 2013", "Krakow, 3 days", john, anna, ReportStatus.SUBMITTED);
-        
+
         expenseReportRepo.save(report);
 
         expenseRepo.save(new Expense(food, null, new GregorianCalendar(2013, 4, 14).getTime(), BigDecimal.valueOf(25), report));
