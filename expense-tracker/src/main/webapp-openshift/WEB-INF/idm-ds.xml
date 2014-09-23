@@ -1,0 +1,21 @@
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+    <datasource jndi-name="java:jboss/datasources/IdentityDS" enabled="${mysql.enabled}" use-java-context="true" pool-name="IdentityDS" use-ccm="true">
+        <connection-url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/identity</connection-url>
+        <driver>mysql</driver>
+        <security>
+            <user-name>${env.OPENSHIFT_MYSQL_DB_USERNAME}</user-name>
+            <password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</password>
+        </security>
+        <validation>
+            <check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+            <background-validation>true</background-validation>
+            <background-validation-millis>60000</background-validation-millis>
+            <!--<validate-on-match>true</validate-on-match>-->
+        </validation>
+        <pool>
+            <flush-strategy>IdleConnections</flush-strategy>
+        </pool>
+    </datasource>
+</datasources>

@@ -17,13 +17,20 @@
         <version.picketlink.javaee.bom>2.6.0.Final</version.picketlink.javaee.bom>
         
         <version.compiler.plugin>3.1</version.compiler.plugin>
-        <version.war.plugin>2.1.1</version.war.plugin>
+        <version.war.plugin>2.3</version.war.plugin>
         
         <maven.compiler.target>1.6</maven.compiler.target>
         <maven.compiler.source>1.6</maven.compiler.source>
         
         <version.org.apache.deltaspike>1.0.2</version.org.apache.deltaspike>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>redhat-repository-techpreview</id>
+            <url>https://maven.repository.redhat.com/techpreview/all/</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -108,6 +115,7 @@
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
         
@@ -116,36 +124,42 @@
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-impl</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-bean-validation-module-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-bean-validation-module-impl</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jpa-module-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jpa-module-impl</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jsf-module-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
         
@@ -159,12 +173,14 @@
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-servlet-module-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-servlet-module-impl</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>runtime</scope>
         </dependency>
         
@@ -254,5 +270,51 @@
             </plugin>
         </plugins>
     </build>
+    
+    <profiles>
+        <profile>
+            <id>openshift</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <finalName>ROOT</finalName>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>**/persistence.xml</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources-openshift</directory>
+                    </resource>
+                </resources>
+                
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <webResources>
+                                <resource>
+                                    <directory>src/main/webapp/WEB-INF</directory>
+                                    <excludes>
+                                        <exclude>**/idm-ds.xml</exclude>
+                                    </excludes>
+                                </resource>
+                                
+                                <resource>
+                                    <filtering>true</filtering>
+                                    <directory>src/main/webapp-openshift/WEB-INF</directory>
+                                    <targetPath>WEB-INF</targetPath>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
