@@ -24,3 +24,11 @@ body {
 #globalMessages {
     padding: 8px;
 }
+
+.demoPanel p, .demoPanel ul {
+    font-size: 1.2em;
+}
+
+.demoPanel li {
+    padding: 5px 0;
+}

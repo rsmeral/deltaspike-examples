@@ -2,9 +2,26 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets" 
                 template="/resources/template/layout.xhtml"
-                xmlns:et="http://java.sun.com/jsf/composite/et">
+                xmlns:et="http://java.sun.com/jsf/composite/et"
+                xmlns:rich="http://richfaces.org/rich">
 
     <ui:define name="content">
         <et:loginForm id="login"/>
+
+        <rich:panel header="Demo" styleClass="demoPanel">
+            <h3>Login</h3>
+            <ul>
+                <li><b>Employee:</b>  john / john</li>
+                <li><b>Accountant:</b> anna / anna</li>
+                <li><b>Admin:</b> admin / admin</li>
+            </ul>
+
+            <h3>Application Workflow</h3>
+            <p>
+                The application allows employees to create expense reports and add expenses. An accountant can be assigned to a report and add reimbursements.
+                The employee submits the report, then the accountant either approves or rejects it. After that, the report can be settled.
+                Administrators can also manage employees and purposes.
+            </p>
+        </rich:panel>
     </ui:define>
 </ui:composition>

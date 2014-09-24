@@ -72,13 +72,6 @@
     <dependencies>
 
         <!-- EE APIs -->
-        
-        <dependency>
-            <groupId>org.jboss.spec.javax.ejb</groupId>
-            <artifactId>jboss-ejb-api_3.1_spec</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>

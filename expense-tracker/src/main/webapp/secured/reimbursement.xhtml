@@ -13,7 +13,7 @@
         <et:reportView report="#{reimbursementController.selected.report}" id="selectedReport" />
 
         <h:form id="reimbursementForm">
-            <rich:panel header="Expense">
+            <rich:panel header="Reimbursement">
                 <h:panelGrid columns="3" border="0">
                     <h:outputLabel value="Date:" for="date"/>
                     <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.reimbursementsEditable}" />
