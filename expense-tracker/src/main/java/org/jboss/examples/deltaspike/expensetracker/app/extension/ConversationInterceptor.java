@@ -50,8 +50,12 @@ public class ConversationInterceptor implements Serializable {
     }
 
     private Object conditionallyEndConversation(InvocationContext ctx, End end) throws Exception {
+        Class<? extends ViewConfig> current = currentView.get();
         Object result = ctx.proceed();
-        Class<? extends ViewConfig> returningTo = ((Class<? extends ViewConfig>)result);
+        Class<? extends ViewConfig> returningTo = ((Class<? extends ViewConfig>) result);
+        if (returningTo == null) {
+            returningTo = current;
+        }
         if (returningTo.equals(holder.getConversationInitiator())) {
             if (!conv.isTransient()) {
                 conv.end();
@@ -75,7 +79,7 @@ public class ConversationInterceptor implements Serializable {
     }
 
     /*
-     * Conversation initiator is the view that is current at the time of 
+     * Conversation initiator is the view that is current at the time of
      * interception.
      */
     @ConversationScoped

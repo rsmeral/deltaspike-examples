@@ -83,6 +83,7 @@ public class DemoInitializer {
         Purpose travel = purposeRepo.save(new Purpose("Travel", "Train, plane, public transport, taxi"));
         Purpose accomodation = purposeRepo.save(new Purpose("Accommodation", "Hotels"));
         Purpose food = purposeRepo.save(new Purpose("Food/Drinks", "Any meals"));
+        final Purpose fuel = purposeRepo.save(new Purpose("Fuel", "Gas, LPG, Electricity"));
 
         final ExpenseReport report = new ExpenseReport("GeeCon 2013", "Krakow, 3 days", john, anna, ReportStatus.SUBMITTED);
 

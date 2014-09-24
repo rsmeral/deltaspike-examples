@@ -5,9 +5,11 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
+import org.picketlink.annotations.PicketLink;
 import org.picketlink.authorization.annotations.RolesAllowed;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
@@ -60,6 +62,7 @@ public class EmployeeService {
     }
 
     @RolesAllowed(ADMIN)
+    @Transactional(qualifier = PicketLink.class)
     public void registerEmployee(Employee emp, String username, String password, String... roles) {
         User user = new User();
         user.setLoginName(username);
@@ -71,11 +74,13 @@ public class EmployeeService {
         setRoles(user, roles);
     }
 
+    @Transactional(qualifier = PicketLink.class)
     public void changePassword(Employee emp, String password) {
         User user = getUserForEmployee(emp);
         idm.updateCredential(user, new Password(password));
     }
 
+    @Transactional(qualifier = PicketLink.class)
     public void setRoles(Employee emp, String... roles) {
         setRoles(getUserForEmployee(emp), roles);
     }

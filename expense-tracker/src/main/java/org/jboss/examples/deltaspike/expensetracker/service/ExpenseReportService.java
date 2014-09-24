@@ -2,12 +2,13 @@ package org.jboss.examples.deltaspike.expensetracker.service;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.examples.deltaspike.expensetracker.app.exception.ApplicationException;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
+
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.picketlink.authorization.annotations.LoggedIn;
@@ -15,7 +16,7 @@ import org.picketlink.authorization.annotations.RolesAllowed;
 
 @LoggedIn
 @RequestScoped
-@Transactional
+//@Transactional
 public class ExpenseReportService {
 
     @Inject
@@ -55,7 +56,7 @@ public class ExpenseReportService {
         report.setAssignee(assignee);
         repo.save(report);
     }
-    
+
     @RolesAllowed(ACCOUNTANT)
     public void unassign(ExpenseReport report) throws ApplicationException {
         if (report == null) {

@@ -128,7 +128,7 @@ public class EmployeeController implements Serializable {
     }
 
     /*
-     * The password holder is separated to simplify validation. 
+     * The password holder is separated to simplify validation.
      */
     @Controller
     public static class PasswordHolder implements Serializable {
@@ -147,6 +147,7 @@ public class EmployeeController implements Serializable {
 
         private String passwordConfirmation;
 
+        @End
         public void changePassword(Employee employee, String password) {
             svc.changePassword(employee, password);
             msg.addInfo().passwordChanged();

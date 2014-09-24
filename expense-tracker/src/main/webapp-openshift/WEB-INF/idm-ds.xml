@@ -1,7 +1,7 @@
 <datasources xmlns="http://www.jboss.org/ironjacamar/schema"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
-    <datasource jndi-name="java:jboss/datasources/IdentityDS" enabled="${mysql.enabled}" use-java-context="true" pool-name="IdentityDS" use-ccm="true">
+    <datasource jndi-name="java:jboss/datasources/IdentityDS" enabled="true" use-java-context="true" pool-name="IdentityDS" use-ccm="true">
         <connection-url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/identity</connection-url>
         <driver>mysql</driver>
         <security>

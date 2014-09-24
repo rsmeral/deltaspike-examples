@@ -1,6 +1,6 @@
 package org.jboss.examples.deltaspike.expensetracker.app;
 
-import javax.ejb.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
@@ -8,9 +8,11 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.provider.BeanManagerProvider;
 import org.apache.deltaspike.core.util.metadata.builder.AnnotatedTypeBuilder;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
 import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
+import org.picketlink.annotations.PicketLink;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.model.basic.Role;
 
@@ -18,7 +20,8 @@ import org.picketlink.idm.model.basic.Role;
  * We need to make transactional calls to PicketLink methods, since we use a
  * container managed persistence context.
  */
-@Singleton
+@ApplicationScoped
+@Transactional(qualifier = PicketLink.class)
 public class IDMInitializer {
 
     public static final String USER_ADMIN = "admin";

@@ -2,11 +2,11 @@ package org.jboss.examples.deltaspike.expensetracker.app.resources;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.ConversationScoped;
-import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceUnit;
 import org.picketlink.annotations.PicketLink;
 
@@ -22,7 +22,7 @@ public class EntityManagerProducer {
 
     @Produces
     @PicketLink
-    @PersistenceContext(unitName = "identity")
+    @PersistenceContext(unitName = "identity", type = PersistenceContextType.EXTENDED)
     private EntityManager identityEm;
 
     /*
@@ -33,12 +33,6 @@ public class EntityManagerProducer {
     @ConversationScoped
     public EntityManager producePrimaryEm() {
         return primaryEmf.createEntityManager();
-    }
-
-    public void dispose(@Disposes EntityManager entityManager) {
-        if (entityManager.isOpen()) {
-            entityManager.close();
-        }
     }
 
 }

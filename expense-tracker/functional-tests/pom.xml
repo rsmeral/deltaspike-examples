@@ -12,6 +12,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
+        <version.org.apache.deltaspike>1.0.2</version.org.apache.deltaspike>
+        <version.richfaces-page-fragments>4.5.0.Alpha3</version.richfaces-page-fragments>
         
         <version.surefire.plugin>2.10</version.surefire.plugin>
 
@@ -20,6 +22,13 @@
         
         <testDeployment>${basedir}/../target/ds-expense-tracker.war</testDeployment>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>redhat-repository-techpreview</id>
+            <url>https://maven.repository.redhat.com/techpreview/all/</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
@@ -74,7 +83,7 @@
         <dependency>
             <groupId>org.richfaces</groupId>
             <artifactId>richfaces-page-fragments</artifactId>
-            <version>4.5.0.Alpha3</version>
+            <version>${version.richfaces-page-fragments}</version>
             <scope>test</scope>
         </dependency>
         
@@ -87,6 +96,7 @@
         <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>test</scope>
         </dependency>
 
