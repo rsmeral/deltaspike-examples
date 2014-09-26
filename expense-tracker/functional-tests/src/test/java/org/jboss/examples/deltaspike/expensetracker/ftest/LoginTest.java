@@ -1,23 +1,38 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest;
 
-import org.jboss.examples.deltaspike.expensetracker.ftest.util.ExpenseTrackerFunctionalTestBase;
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.page.InitialPage;
 import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.examples.deltaspike.expensetracker.ftest.pages.EmployeesPage;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.HomePage;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.LoginPage;
-import static org.junit.Assert.*;
+import org.jboss.examples.deltaspike.expensetracker.ftest.util.ExpenseTrackerFunctionalTestBase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
-import org.jboss.examples.deltaspike.expensetracker.ftest.pages.EmployeesPage;
+
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.MSG_BAD_LOGIN;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.MSG_NO_AUTH_ROLE;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.NAME_EMPLOYEE;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.PAGE_EMPLOYEES;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.PAGE_HOME;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.PAGE_LOGIN;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.USER_ADMIN;
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.USER_EMPLOYEE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class LoginTest extends ExpenseTrackerFunctionalTestBase {
 
     @Page
     private HomePage homePage;
+
+    @Test
+    public void dependencyVersionPresent(@InitialPage LoginPage loginPage) {
+        String dsVersionFromPom = System.getProperty("dsVersion");
+        assertEquals("Correct DS version should be displayed", dsVersionFromPom, loginPage.getDsVersion());
+    }
 
     @Test
     public void correctLoginWorks(@InitialPage LoginPage loginPage) {

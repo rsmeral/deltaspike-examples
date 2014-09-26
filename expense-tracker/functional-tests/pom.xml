@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
-        <version.org.apache.deltaspike>1.0.2</version.org.apache.deltaspike>
+        <version.org.apache.deltaspike>1.0.3</version.org.apache.deltaspike>
         <version.richfaces-page-fragments>4.5.0.Alpha3</version.richfaces-page-fragments>
         
         <version.surefire.plugin>2.10</version.surefire.plugin>
@@ -38,6 +38,7 @@
                 <version>${version.surefire.plugin}</version>
                 <configuration>
                     <systemPropertyVariables>
+                        <dsVersion>${version.org.apache.deltaspike}</dsVersion>
                         <testDeployment>${testDeployment}</testDeployment>
                     </systemPropertyVariables>
                 </configuration>
@@ -55,13 +56,13 @@
                 <scope>import</scope>
             </dependency>
             
-            <dependency>
+<!--            <dependency>
                 <groupId>org.jboss.bom.wfk</groupId>
                 <artifactId>jboss-javaee-6.0-with-deltaspike</artifactId>
                 <version>${version.jboss.bom.wfk}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
+            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

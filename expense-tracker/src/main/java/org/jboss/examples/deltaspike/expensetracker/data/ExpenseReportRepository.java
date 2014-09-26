@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import org.apache.deltaspike.data.api.EntityManagerConfig;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.QueryParam;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 import org.apache.deltaspike.data.spi.QueryInvocationContext;
+import org.jboss.examples.deltaspike.expensetracker.app.resources.MainEMResolver;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport_;
@@ -17,10 +19,11 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 
 @ApplicationScoped
 @Repository
+@EntityManagerConfig(entityManagerResolver = MainEMResolver.class)
 public abstract class ExpenseReportRepository implements EntityRepository<ExpenseReport, Long>, CriteriaSupport<ExpenseReport> {
 
     @Inject QueryInvocationContext ctx;
-    
+
     public abstract List<ExpenseReport> findByReporter(Employee reporter);
 
     public abstract List<ExpenseReport> findByAssignee(Employee assignee);

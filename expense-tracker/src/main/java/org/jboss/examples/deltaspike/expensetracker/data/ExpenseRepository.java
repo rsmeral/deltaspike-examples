@@ -3,9 +3,11 @@ package org.jboss.examples.deltaspike.expensetracker.data;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import org.apache.deltaspike.data.api.EntityManagerConfig;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
+import org.jboss.examples.deltaspike.expensetracker.app.resources.MainEMResolver;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Expense;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
@@ -14,6 +16,7 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.Expense_;
 
 @ApplicationScoped
 @Repository
+@EntityManagerConfig(entityManagerResolver = MainEMResolver.class)
 public abstract class ExpenseRepository implements EntityRepository<Expense, Long>, CriteriaSupport<Expense> {
 
     public abstract List<Expense> findByReport(ExpenseReport report);

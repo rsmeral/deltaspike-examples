@@ -20,6 +20,9 @@ public class TemplatePage {
     @FindBy(id = "toolbarForm:currentUserName")
     private WebElement currentUserName;
 
+    @FindBy(id = "dsVersion")
+    private WebElement dsVersion;
+
     public String getHeadingText() {
         return heading.getText();
     }
@@ -36,6 +39,10 @@ public class TemplatePage {
         return currentUserName.getAttribute("value");
     }
 
+    public String getDsVersion() {
+        return dsVersion.getText();
+    }
+
     public boolean isGlobalMessagePresent(String messageText) {
         for (MessageImpl msg : globalMessages.getItems()) {
             if (msg.getText().trim().equals(messageText)) {
@@ -44,4 +51,5 @@ public class TemplatePage {
         }
         return false;
     }
+
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:rich="http://richfaces.org/rich">
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:h="http://java.sun.com/jsf/html">
     <rich:panel id="footer">
-        Created with DeltaSpike 1.0, PicketLink 2.6, JSF 2.1, RichFaces 4.3
+        Created with DeltaSpike <h:outputText value="#{dependencies.getVersion(DELTASPIKE)}" id="dsVersion"/>, PicketLink 2.6, JSF 2.1, RichFaces 4.3
     </rich:panel>
 </ui:composition>

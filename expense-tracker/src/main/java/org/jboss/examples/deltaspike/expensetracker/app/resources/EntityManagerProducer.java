@@ -20,19 +20,23 @@ public class EntityManagerProducer {
     @PersistenceUnit(unitName = "primary")
     private EntityManagerFactory primaryEmf;
 
-    @Produces
-    @PicketLink
-    @PersistenceContext(unitName = "identity", type = PersistenceContextType.EXTENDED)
-    private EntityManager identityEm;
-
     /*
      * A conversation scoped entity manager avoids some trouble with transient
      * entity references and merging.
      */
     @Produces
+    @Main
     @ConversationScoped
     public EntityManager producePrimaryEm() {
         return primaryEmf.createEntityManager();
     }
+
+    /*
+     * EntityManager required by PicketLink's JPA identity store
+     */
+    @Produces
+    @PicketLink
+    @PersistenceContext(unitName = "identity", type = PersistenceContextType.EXTENDED)
+    private EntityManager identityEm;
 
 }

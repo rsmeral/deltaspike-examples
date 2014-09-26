@@ -10,13 +10,28 @@
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.show_sql" value="false" />
         </properties>
+        
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <class>org.jboss.examples.deltaspike.expensetracker.domain.model.Employee</class>
+        <class>org.jboss.examples.deltaspike.expensetracker.domain.model.Expense</class>
+        <class>org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport</class>
+        <class>org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose</class>
+        <class>org.jboss.examples.deltaspike.expensetracker.domain.model.Receipt</class>
+        <class>org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement</class>
+        
     </persistence-unit>
     
     <persistence-unit name="identity" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/IdentityDS</jta-data-source>
-        <!--        It's necessary to list all PicketLink entities and exclude unlisted,
-        otherwise PL would pick up all entities in the application -->
 
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="false" />
+        </properties>
+        
+        <!-- It's necessary to list all PicketLink entities and exclude unlisted,
+        otherwise PL would pick up all entities in the application -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <class>org.picketlink.idm.jpa.model.sample.simple.AbstractCredentialTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.AttributedTypeEntity</class>
@@ -28,10 +43,6 @@
         <class>org.picketlink.idm.jpa.model.sample.simple.RelationshipIdentityTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.RelationshipTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity</class>
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
-        <properties>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
-            <property name="hibernate.show_sql" value="false" />
-        </properties>
+        
     </persistence-unit>
 </persistence>

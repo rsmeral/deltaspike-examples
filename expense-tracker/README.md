@@ -21,6 +21,7 @@ Simple corporate expense tracking application.
   * (Method-name-based DSL)-based querying
   * Annotation-based querying using `@Query`
   * Criteria API integration
+  * Multiple entity managers, resolution using `@EntityManagerResolver`
  * Automatic tracking of date/author of last change in entities using `@ModifiedBy`, `@ModifiedOn`
  
 * JPA
@@ -36,6 +37,7 @@ Simple corporate expense tracking application.
 
 * Servlet
  * observing servlet events using CDI observers (`@Observes @Initialized ServletContext`)
+ * injection of web resources using `@InjectableResource(resourceProvider = WebResourceProvider.class)`
 
 * CdiControl
  * manually starting and stopping built-in CDI contexts using `ContextControl`
