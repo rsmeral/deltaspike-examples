@@ -16,7 +16,7 @@
                 <h:panelGrid columns="3" border="0">
                     <h:outputLabel value="Purpose:" for="purpose" />
                     <h:panelGroup>
-                        <h:selectOneMenu id="purpose" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not expenseReportController.expensesEditable}" converter="#{purposeConverter}">
+                        <h:selectOneMenu id="purpose" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not rules.canEditExpenses(selectedReport)}" converter="#{purposeConverter}">
                             <f:selectItems value="#{purposes}" var="p" itemValue="#{p}" itemLabel="#{p.name}" itemDescription="#{p.description}" />
                         </h:selectOneMenu>
                     </h:panelGroup>
@@ -27,20 +27,20 @@
                         <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" >
                             <f:selectItems value="#{expenseController.selected.report.receipts}" var="r" itemLabel="#{r.documentName}" itemValue="#{r}"/>
                         </h:selectOneMenu>
-                        <h:commandButton id="addReceiptBtn" action="#{receiptController.create()}" rendered="#{expenseReportController.expensesEditable}" value="Add receipt" immediate="true" />
+                        <h:commandButton id="addReceiptBtn" action="#{receiptController.create()}" rendered="#{rules.canEditExpenses(selectedReport)}" value="Add receipt" immediate="true" />
                     </h:panelGroup>
                     <rich:message for="receipt" id="receiptMessage"/>
 
                     <h:outputLabel value="Date:" for="date" />
-                    <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not expenseReportController.expensesEditable}"/>
+                    <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not rules.canEditExpenses(selectedReport)}"/>
                     <rich:message for="date" id="dateMessage" />
 
                     <h:outputLabel value="Value:" for="value" />
-                    <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not expenseReportController.expensesEditable}"/>
+                    <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not rules.canEditExpenses(selectedReport)}"/>
                     <rich:message for="value" id="valueMessage" />
 
                     <f:facet name="footer">
-                        <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{expenseReportController.expensesEditable}" id="saveBtn" />
+                        <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{rules.canEditExpenses(selectedReport)}" id="saveBtn" />
                         <h:commandButton action="#{expenseController.cancel()}" value="Cancel" immediate="true" id="cancelBtn" />
                     </f:facet>
                 </h:panelGrid>

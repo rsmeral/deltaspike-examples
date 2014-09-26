@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
@@ -17,7 +19,6 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
-import org.jboss.examples.deltaspike.expensetracker.domain.logic.Rules;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
@@ -46,15 +47,14 @@ public class ExpenseReportController implements Serializable {
     private ViewStack viewStack;
 
     @Inject
-    private Rules rules;
-
-    @Inject
     private JsfMessage<AppMessages> msg;
 
     @Inject
     @CurrentUser
     private Employee currentEmployee;
 
+    @Produces
+    @Named("selectedReport")
     private ExpenseReport selected;
 
     private List<ExpenseReport> list;
@@ -149,7 +149,7 @@ public class ExpenseReportController implements Serializable {
             return BigDecimal.ZERO;
         }
         BigDecimal reportExpensesTotal = repo.getReportExpensesTotal(report);
-        return reportExpensesTotal == null? BigDecimal.ZERO : reportExpensesTotal;
+        return reportExpensesTotal == null ? BigDecimal.ZERO : reportExpensesTotal;
     }
 
     public BigDecimal getReimbursementsTotal(ExpenseReport report) {
@@ -179,51 +179,8 @@ public class ExpenseReportController implements Serializable {
         return repo.findUnassigned();
     }
 
-    /*
-     * CONDITIONS
-     */
     public boolean isNew(ExpenseReport report) {
         return report.getId() == null;
-    }
-
-    public boolean isCanBeOpened() {
-        return rules.canUserEditReport(selected) && Rules.canBeOpened(selected);
-    }
-
-    public boolean isCanBeSubmitted() {
-        return rules.canUserEditReport(selected) && Rules.canBeSubmitted(selected) && Rules.isReporter(selected, currentEmployee);
-    }
-
-    public boolean isCanBeAssigned() {
-        return Rules.canBeAssigned(selected) && !Rules.isReporter(selected, currentEmployee);
-    }
-
-    public boolean isCanBeUnassigned() {
-        return rules.canUserEditReport(selected) && Rules.canBeUnassigned(selected) && Rules.isAssignee(selected, currentEmployee);
-    }
-
-    public boolean isCanBeRejected() {
-        return rules.canUserEditReport(selected) && Rules.canBeRejected(selected) && Rules.isAssignee(selected, currentEmployee);
-    }
-
-    public boolean isCanBeApproved() {
-        return rules.canUserEditReport(selected) && Rules.canBeApproved(selected) && Rules.isAssignee(selected, currentEmployee);
-    }
-
-    public boolean isCanBeSettled() {
-        return rules.canUserEditReport(selected) && Rules.canBeSettled(selected) && Rules.isAssignee(selected, currentEmployee);
-    }
-
-    public boolean isReportEditable() {
-        return rules.canUserEditReport(selected) && Rules.canReportDetailsBeEdited(selected) && Rules.isReporter(selected, currentEmployee);
-    }
-
-    public boolean isReimbursementsEditable() {
-        return rules.canUserEditReimbursements(selected) && Rules.canReimbursementsBeEdited(selected) && Rules.isAssignee(selected, currentEmployee);
-    }
-
-    public boolean isExpensesEditable() {
-        return rules.canUserEditExpenses(selected) && Rules.canExpensesBeEdited(selected) && Rules.isReporter(selected, currentEmployee);
     }
 
     /*
@@ -246,7 +203,7 @@ public class ExpenseReportController implements Serializable {
     }
 
     /*
-     *  Observe modification events to refresh report
+     * Observe modification events to refresh report
      */
     public void refreshReportOnModification(@Observes Modified event) {
         repo.refresh(selected);

@@ -13,6 +13,7 @@ Simple corporate expense tracking application.
 
 * Security
  * simple method-level authorization using `@Secures`, through [picketlink-deltaspike](https://github.com/picketlink/picketlink/tree/master/modules/deltaspike) integration module
+ * implementation of domain rules using `@Secures` and `@SecurityParameterBinding`
  * complex authorization using @Secured, AccessDecisionVoters
  * integration with an IDM framework ([PicketLink](https://github.com/picketlink))
 

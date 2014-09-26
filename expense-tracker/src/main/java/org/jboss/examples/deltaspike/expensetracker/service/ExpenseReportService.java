@@ -5,14 +5,23 @@ import javax.inject.Inject;
 import org.jboss.examples.deltaspike.expensetracker.app.exception.ApplicationException;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
+import org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation;
+import org.jboss.examples.deltaspike.expensetracker.domain.logic.Selected;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
-
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
-
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.picketlink.authorization.annotations.LoggedIn;
 import org.picketlink.authorization.annotations.RolesAllowed;
+
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.APPROVE;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.ASSIGN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.OPEN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.REJECT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SETTLE;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SUBMIT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.UNASSIGN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
 
 @LoggedIn
 @RequestScoped
@@ -26,13 +35,10 @@ public class ExpenseReportService {
     private AppMessages msg;
 
     @RolesAllowed(EMPLOYEE)
-    public void open(ExpenseReport report) throws ApplicationException {
+    @Operation(OPEN)
+    public void open(@Selected ExpenseReport report) throws ApplicationException {
         if (report == null) {
             throw new IllegalArgumentException();
-        }
-
-        if (!(report.getStatus() == null) && !(report.getStatus() == ReportStatus.REJECTED)) {
-            throw new ApplicationException(msg.reportCantBeReopened(report.getName()));
         }
 
         report.setStatus(ReportStatus.OPEN);
@@ -40,17 +46,10 @@ public class ExpenseReportService {
     }
 
     @RolesAllowed(ACCOUNTANT)
-    public void assign(ExpenseReport report, Employee assignee) throws ApplicationException {
+    @Operation(ASSIGN)
+    public void assign(@Selected ExpenseReport report, @Selected Employee assignee) throws ApplicationException {
         if (report == null || assignee == null) {
             throw new IllegalArgumentException();
-        }
-
-        if (report.getAssignee() != null) {
-            throw new ApplicationException(msg.reportAlreadyAssigned(report.getName()));
-        }
-
-        if (report.getReporter().equals(assignee)) {
-            throw new ApplicationException(msg.cantAssignReportToSelf());
         }
 
         report.setAssignee(assignee);
@@ -58,13 +57,10 @@ public class ExpenseReportService {
     }
 
     @RolesAllowed(ACCOUNTANT)
-    public void unassign(ExpenseReport report) throws ApplicationException {
+    @Operation(UNASSIGN)
+    public void unassign(@Selected ExpenseReport report) throws ApplicationException {
         if (report == null) {
             throw new IllegalArgumentException();
-        }
-
-        if (report.getAssignee() == null) {
-            throw new ApplicationException(msg.reportNotAssigned(report.getName()));
         }
 
         report.setAssignee(null);
@@ -72,14 +68,10 @@ public class ExpenseReportService {
     }
 
     @RolesAllowed(EMPLOYEE)
-    public void submit(ExpenseReport report) throws ApplicationException {
+    @Operation(SUBMIT)
+    public void submit(@Selected ExpenseReport report) throws ApplicationException {
         if (report == null) {
             throw new IllegalArgumentException();
-        }
-
-        ReportStatus status = report.getStatus();
-        if (status == ReportStatus.SUBMITTED || status == ReportStatus.APPROVED || status == ReportStatus.SETTLED) {
-            throw new ApplicationException(msg.reportAlreadySubmitted(report.getName()));
         }
 
         report.setStatus(ReportStatus.SUBMITTED);
@@ -87,12 +79,10 @@ public class ExpenseReportService {
     }
 
     @RolesAllowed(ACCOUNTANT)
-    public void reject(ExpenseReport report) throws ApplicationException {
+    @Operation(REJECT)
+    public void reject(@Selected ExpenseReport report) throws ApplicationException {
         if (report == null) {
             throw new IllegalArgumentException();
-        }
-        if (report.getAssignee() == null) {
-            throw new ApplicationException(msg.reportNotAssigned(report.getName()));
         }
 
         report.setStatus(ReportStatus.REJECTED);
@@ -100,12 +90,10 @@ public class ExpenseReportService {
     }
 
     @RolesAllowed(ACCOUNTANT)
-    public void approve(ExpenseReport report) throws ApplicationException {
+    @Operation(APPROVE)
+    public void approve(@Selected ExpenseReport report) throws ApplicationException {
         if (report == null) {
             throw new IllegalArgumentException();
-        }
-        if (report.getAssignee() == null) {
-            throw new ApplicationException(msg.reportNotAssigned(report.getName()));
         }
 
         report.setStatus(ReportStatus.APPROVED);
@@ -113,12 +101,10 @@ public class ExpenseReportService {
     }
 
     @RolesAllowed(ACCOUNTANT)
-    public void settle(ExpenseReport report) throws ApplicationException {
+    @Operation(SETTLE)
+    public void settle(@Selected ExpenseReport report) throws ApplicationException {
         if (report == null) {
             throw new IllegalArgumentException();
-        }
-        if (report.getStatus() != ReportStatus.APPROVED) {
-            throw new ApplicationException(msg.reportNotApproved(report.getName()));
         }
 
         report.setStatus(ReportStatus.SETTLED);

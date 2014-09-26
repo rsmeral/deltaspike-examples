@@ -4,20 +4,34 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.inject.Named;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
+import org.apache.deltaspike.security.api.authorization.Secures;
 import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import org.picketlink.authentication.event.LoggedInEvent;
+
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.APPROVE;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.ASSIGN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.REJECT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SETTLE;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SUBMIT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.UNASSIGN;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.*;
-import org.picketlink.authentication.event.LoggedInEvent;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.APPROVED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.OPEN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.REJECTED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.SETTLED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.SUBMITTED;
 
 /**
  * Contains state-transfer conditions and authorization rules for
  * ExpenseReports.
  */
 @SessionScoped
+@Named
 public class Rules implements Serializable {
 
     private Employee currentEmployee;
@@ -48,54 +62,48 @@ public class Rules implements Serializable {
     /*
      * STATE-BASED RULES
      */
-    public static boolean canBeOpened(ExpenseReport report) {
+    public static boolean isOpenable(@Selected ExpenseReport report) {
         return report.getStatus() == null || report.getStatus() == REJECTED;
     }
 
-    public static boolean canBeAssigned(ExpenseReport report) {
+    public static boolean isAssignable(ExpenseReport report) {
         return report.getStatus() == SUBMITTED && report.getAssignee() == null;
     }
 
-    public static boolean canBeUnassigned(ExpenseReport report) {
+    public static boolean isUnassignable(ExpenseReport report) {
         return report.getStatus() == SUBMITTED && report.getAssignee() != null;
     }
 
-    public static boolean canBeSubmitted(ExpenseReport report) {
+    public static boolean isSubmittable(ExpenseReport report) {
         return report.getStatus() == OPEN;
     }
 
-    public static boolean canBeRejected(ExpenseReport report) {
+    public static boolean isRejectable(ExpenseReport report) {
         return report.getStatus() == SUBMITTED;
     }
 
-    public static boolean canBeApproved(ExpenseReport report) {
+    public static boolean isApprovable(ExpenseReport report) {
         return report.getStatus() == SUBMITTED;
     }
 
-    public static boolean canBeSettled(ExpenseReport report) {
+    public static boolean isSettleable(ExpenseReport report) {
         return report.getStatus() == APPROVED;
     }
 
-    public static boolean canReportDetailsBeEdited(ExpenseReport report) {
+    public static boolean isReportDetailsEditable(ExpenseReport report) {
         return !(report.getStatus() == SETTLED);
     }
 
-    public static boolean canReimbursementsBeEdited(ExpenseReport report) {
+    public static boolean isReimbursementsEditable(ExpenseReport report) {
         return report.getStatus() == SUBMITTED;
     }
 
-    public static boolean canExpensesBeEdited(ExpenseReport report) {
+    public static boolean isExpensesEditable(ExpenseReport report) {
         return report.getStatus() == OPEN;
     }
 
     /*
      * AUTHORIZATION-BASED RULES
-     */
-    /**
-     * Report details can be edited by the reporter or the assignee.
-     *
-     * @param report
-     * @return
      */
     public boolean canUserEditReport(ExpenseReport report) {
         if (auth.isAdmin()) {
@@ -104,13 +112,6 @@ public class Rules implements Serializable {
         return currentEmployee.equals(report.getAssignee()) || currentEmployee.equals(report.getReporter());
     }
 
-    /**
-     * Reimbursements can be edited if the user is an accountant and the report
-     * is editable.
-     *
-     * @param report
-     * @return
-     */
     public boolean canUserEditReimbursements(ExpenseReport report) {
         if (auth.isAdmin()) {
             return true;
@@ -119,18 +120,68 @@ public class Rules implements Serializable {
                 && auth.hasRole(ACCOUNTANT);
     }
 
-    /**
-     * Reimbursements can be edited if the user is an employee and the report is
-     * editable.
-     *
-     * @param report
-     * @return
-     */
     public boolean canUserEditExpenses(ExpenseReport report) {
         if (auth.isAdmin()) {
             return true;
         }
         return canUserEditReport(report)
                 && auth.hasRole(EMPLOYEE);
+    }
+
+    /*
+     * COMPLEX RULES
+     */
+    @Secures
+    @Operation(Operation.Type.OPEN)
+    public boolean canBeOpened(@Selected ExpenseReport selected) {
+        return canUserEditReport(selected) && isOpenable(selected);
+    }
+
+    @Secures
+    @Operation(SUBMIT)
+    public boolean canBeSubmitted(@Selected ExpenseReport selected) {
+        return canUserEditReport(selected) && isSubmittable(selected) && isReporter(selected, currentEmployee);
+    }
+
+    @Secures
+    @Operation(ASSIGN)
+    public boolean canBeAssigned(@Selected ExpenseReport selected) {
+        return isAssignable(selected) && !isReporter(selected, currentEmployee);
+    }
+
+    @Secures
+    @Operation(UNASSIGN)
+    public boolean canBeUnassigned(@Selected ExpenseReport selected) {
+        return canUserEditReport(selected) && isUnassignable(selected) && isAssignee(selected, currentEmployee);
+    }
+
+    @Secures
+    @Operation(REJECT)
+    public boolean canBeRejected(@Selected ExpenseReport selected) {
+        return canUserEditReport(selected) && isRejectable(selected) && isAssignee(selected, currentEmployee);
+    }
+
+    @Secures
+    @Operation(APPROVE)
+    public boolean canBeApproved(@Selected ExpenseReport selected) {
+        return canUserEditReport(selected) && isApprovable(selected) && isAssignee(selected, currentEmployee);
+    }
+
+    @Secures
+    @Operation(SETTLE)
+    public boolean canBeSettled(@Selected ExpenseReport selected) {
+        return canUserEditReport(selected) && isSettleable(selected) && isAssignee(selected, currentEmployee);
+    }
+
+    public boolean canEditReport(ExpenseReport selected) {
+        return canUserEditReport(selected) && isReportDetailsEditable(selected) && isReporter(selected, currentEmployee);
+    }
+
+    public boolean canEditReimbursements(ExpenseReport selected) {
+        return canUserEditReimbursements(selected) && isReimbursementsEditable(selected) && isAssignee(selected, currentEmployee);
+    }
+
+    public boolean canEditExpenses(ExpenseReport selected) {
+        return canUserEditExpenses(selected) && isExpensesEditable(selected) && isReporter(selected, currentEmployee);
     }
 }

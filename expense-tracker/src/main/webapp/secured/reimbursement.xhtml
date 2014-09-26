@@ -16,15 +16,15 @@
             <rich:panel header="Reimbursement">
                 <h:panelGrid columns="3" border="0">
                     <h:outputLabel value="Date:" for="date"/>
-                    <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not expenseReportController.reimbursementsEditable}" />
+                    <rich:calendar value="#{reimbursementController.selected.date}" id="date" disabled="#{not rules.canEditReimbursements(selectedReport)}" />
                     <rich:message for="date" id="dateMessage" />
 
                     <h:outputLabel value="Value:" for="value" />
-                    <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not expenseReportController.reimbursementsEditable}"/>
+                    <h:inputText id="value" value="#{reimbursementController.selected.value}" label="Value" disabled="#{not rules.canEditReimbursements(selectedReport)}"/>
                     <rich:message for="value" id="valueMessage" />
 
                     <f:facet name="footer">
-                        <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{expenseReportController.reimbursementsEditable}" id="saveBtn"/>
+                        <h:commandButton action="#{reimbursementController.save()}" value="Save" rendered="#{rules.canEditReimbursements(selectedReport)}" id="saveBtn"/>
                         <h:commandButton action="#{reimbursementController.cancel()}" value="Cancel" immediate="true" id="cancelBtn" />
                     </f:facet>
                 </h:panelGrid>
