@@ -1,28 +1,24 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest;
 
-import org.jboss.examples.deltaspike.expensetracker.ftest.util.ExpenseTrackerFunctionalTestBase;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReportList;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReportListRow;
-import org.jboss.examples.deltaspike.expensetracker.ftest.pages.ExpensePage;
-import org.jboss.examples.deltaspike.expensetracker.ftest.pages.HomePage;
-import org.jboss.examples.deltaspike.expensetracker.ftest.pages.LoginPage;
-import org.jboss.examples.deltaspike.expensetracker.ftest.pages.ReimbursementPage;
-import org.jboss.examples.deltaspike.expensetracker.ftest.pages.ReportPage;
-import org.jboss.examples.deltaspike.expensetracker.ftest.pages.ReportsPage;
-import static org.junit.Assert.*;
+import org.jboss.examples.deltaspike.expensetracker.ftest.pages.*;
+import org.jboss.examples.deltaspike.expensetracker.ftest.util.ExpenseTrackerFunctionalTestBase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
+import static org.junit.Assert.*;
+
 /*
  * Tests in this class are sequenced only because adding a report is an
- * irreversible operation in the application. 
+ * irreversible operation in the application.
  */
 @RunWith(Arquillian.class)
 public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
@@ -45,7 +41,7 @@ public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
 
     @Page
     private LoginPage loginPage;
-    
+
     @Page
     private ReportsPage reportsPage;
 
@@ -59,6 +55,7 @@ public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
         assertTrue(homePage.getReportedByCurrentUser().advanced().isVisible());
         assertFalse(homePage.getAssignedToCurrentAccountant().advanced().isVisible());
         assertFalse(homePage.getUnassigned().advanced().isVisible());
+        assertFalse(homePage.getAllUnsettled().advanced().isVisible());
 
         assertEquals(1, homePage.getReportedByCurrentUser().getAllRows().size());
         assertReportInTable(homePage.getReportedByCurrentUser(), INIT_REPORT_NAME, INIT_REPORT_DESC, null, null, STATUS_SUBMITTED, null, NAME_ACCOUNTANT, INIT_REPORT_BALANCE);
@@ -188,7 +185,7 @@ public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
         // make sure the report that remains is the initial one
         assertEquals(1, homePage.getAssignedToCurrentAccountant().getAllRows().size());
         assertReportInTable(homePage.getAssignedToCurrentAccountant(), INIT_REPORT_NAME, INIT_REPORT_DESC, null, null, STATUS_SUBMITTED, NAME_EMPLOYEE, null, INIT_REPORT_BALANCE);
-        
+
         homePage.showAllAssigned();
         assertEquals(2, reportsPage.getReportsTable().getAllRows().size());
         assertReportInTable(reportsPage.getReportsTable(), INIT_REPORT_NAME, INIT_REPORT_DESC, null, null, STATUS_SUBMITTED, NAME_EMPLOYEE, NAME_ACCOUNTANT, null);

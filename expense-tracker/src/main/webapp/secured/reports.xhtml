@@ -3,16 +3,21 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/resources/template/layout.xhtml"
-                xmlns:et="http://java.sun.com/jsf/composite/et">
-    
+                xmlns:et="http://java.sun.com/jsf/composite/et"
+                xmlns:rich="http://richfaces.org/rich">
+
     <ui:define name="content">
+        <rich:panel header="${reportListHolder.listTitle}">
 
-        <h:form id="reportsForm">
-          
-            <et:reportList reports="#{expenseReportController.list}" id="list" />
+            <h:form id="reportsForm">
 
-            <h:commandButton action="#{expenseReportController.create()}" value="Create a report" id="createReportBtn"/>
-        </h:form>
+                <et:reportList reports="#{reportListHolder.query.resultList}" id="list" />
+
+                <h:panelGroup>
+                    <h:commandButton action="#{expenseReportController.create()}" value="Create a report" id="createReportBtn"/>
+                </h:panelGroup>
+            </h:form>
+        </rich:panel>
 
     </ui:define>
 </ui:composition>

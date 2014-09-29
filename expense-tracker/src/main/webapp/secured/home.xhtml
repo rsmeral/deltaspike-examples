@@ -3,11 +3,23 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich"
-                template="/resources/template/layout.xhtml"
-                xmlns:et="http://java.sun.com/jsf/composite/et">
+                xmlns:et="http://java.sun.com/jsf/composite/et"
+                template="/resources/template/layout.xhtml">
 
     <ui:define name="content">
 
+        <!--ALL REPORTS, SEEN BY ADMIN -->
+        <rich:panel header="All unsettled reports" rendered="#{idm.hasRole(ADMIN)}">
+            <h:form id="allUnsettledForm">
+
+                <et:reportList reports="#{expenseReportController.allUnsettled}" />
+
+                <h:panelGroup>
+                    <h:commandButton action="#{expenseReportController.showAllReports()}" value="Show all" id="showAllBtn" />
+                </h:panelGroup>
+            </h:form>
+        </rich:panel>
+        
         <!--UNSETTLED REPORTS FOR CURRENT EMPLOYEE -->
         <rich:panel header="Reported by me" rendered="#{idm.hasRole(EMPLOYEE)}">
             <h:form id="reportedByMeForm">

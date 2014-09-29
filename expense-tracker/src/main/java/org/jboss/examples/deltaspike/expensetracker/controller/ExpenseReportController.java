@@ -57,7 +57,8 @@ public class ExpenseReportController implements Serializable {
     @Named("selectedReport")
     private ExpenseReport selected;
 
-    private List<ExpenseReport> list;
+    @Inject
+    private ReportListHolder reportList;
 
     /*
      * OPERATIONS
@@ -131,13 +132,22 @@ public class ExpenseReportController implements Serializable {
 
     @Begin
     public Class<? extends ViewConfig> showAllReportedByCurrentEmployee() {
-        list = repo.findByReporter(currentEmployee);
+        reportList.setListTitle("All reported by " + currentEmployee.getFullName());
+        reportList.setQuery(repo.findByReporter(currentEmployee));
         return SecuredPages.Reports.class;
     }
 
     @Begin
     public Class<? extends ViewConfig> showAllAssignedToCurrentAccountant() {
-        list = repo.findByAssignee(currentEmployee);
+        reportList.setListTitle("All assigned to " + currentEmployee.getFullName());
+        reportList.setQuery(repo.findByAssignee(currentEmployee));
+        return SecuredPages.Reports.class;
+    }
+
+    @Begin
+    public Class<? extends ViewConfig> showAllReports() {
+        reportList.setListTitle("All reports");
+        reportList.setQuery(repo.findAllReports());
         return SecuredPages.Reports.class;
     }
 
@@ -179,6 +189,10 @@ public class ExpenseReportController implements Serializable {
         return repo.findUnassigned();
     }
 
+    public List<ExpenseReport> getAllUnsettled() {
+        return repo.findAllUnsettled();
+    }
+
     public boolean isNew(ExpenseReport report) {
         return report.getId() == null;
     }
@@ -192,14 +206,6 @@ public class ExpenseReportController implements Serializable {
 
     public void setSelected(ExpenseReport selected) {
         this.selected = selected;
-    }
-
-    public List<ExpenseReport> getList() {
-        return list;
-    }
-
-    public void setList(List<ExpenseReport> list) {
-        this.list = list;
     }
 
     /*

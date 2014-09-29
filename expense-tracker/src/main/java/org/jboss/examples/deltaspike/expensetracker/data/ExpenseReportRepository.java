@@ -8,6 +8,7 @@ import org.apache.deltaspike.data.api.EntityManagerConfig;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.QueryParam;
+import org.apache.deltaspike.data.api.QueryResult;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 import org.apache.deltaspike.data.spi.QueryInvocationContext;
@@ -22,11 +23,15 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 @EntityManagerConfig(entityManagerResolver = MainEMResolver.class)
 public abstract class ExpenseReportRepository implements EntityRepository<ExpenseReport, Long>, CriteriaSupport<ExpenseReport> {
 
-    @Inject QueryInvocationContext ctx;
+    @Inject
+    QueryInvocationContext ctx;
 
-    public abstract List<ExpenseReport> findByReporter(Employee reporter);
+    public abstract QueryResult<List<ExpenseReport>> findByReporter(Employee reporter);
 
-    public abstract List<ExpenseReport> findByAssignee(Employee assignee);
+    public abstract QueryResult<List<ExpenseReport>> findByAssignee(Employee assignee);
+
+    @Query("select e from ExpenseReport e")
+    public abstract QueryResult<List<ExpenseReport>> findAllReports();
 
     public List<ExpenseReport> findUnassigned() {
         return criteria()
@@ -40,6 +45,12 @@ public abstract class ExpenseReportRepository implements EntityRepository<Expens
     public abstract List<ExpenseReport> findByReporterAndStatus(Employee reporter, ReportStatus status);
 
     public abstract List<ExpenseReport> findByAssigneeAndStatus(Employee assignee, ReportStatus status);
+
+    public List<ExpenseReport> findAllUnsettled() {
+        return criteria()
+                .notEq(ExpenseReport_.status, ReportStatus.SETTLED)
+                .getResultList();
+    }
 
     public List<ExpenseReport> findAllUnsettledByReporter(Employee reporter) {
         return criteria()

@@ -4,10 +4,14 @@ import org.jboss.arquillian.graphene.page.Location;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReportList;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
+
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.PAGE_HOME;
 
 @Location(PAGE_HOME)
 public class HomePage extends TemplatePage {
+
+    @FindBy(id = "allUnsettledForm")
+    private ReportList allUnsettled;
 
     @FindBy(id = "reportedByMeForm")
     private ReportList reportedByCurrentUser;
@@ -23,6 +27,9 @@ public class HomePage extends TemplatePage {
 
     @FindBy(id = "reportedByMeForm:showAllBtn")
     private WebElement showAllReportedButton;
+
+    @FindBy(id = "allUnsettledForm:showAllBtn")
+    private WebElement showAllUnsettledButton;
 
     @FindBy(id = "assignedToMeForm:showAllBtn")
     private WebElement showAllAssignedButton;
@@ -59,6 +66,10 @@ public class HomePage extends TemplatePage {
         showAllAssignedButton.click();
     }
 
+    public void showAllUnsettled() {
+        showAllUnsettledButton.click();
+    }
+
     public ReportList getReportedByCurrentUser() {
         return reportedByCurrentUser;
     }
@@ -69,6 +80,10 @@ public class HomePage extends TemplatePage {
 
     public ReportList getUnassigned() {
         return unassigned;
+    }
+
+    public ReportList getAllUnsettled() {
+        return allUnsettled;
     }
 
 }
