@@ -24,10 +24,10 @@
 
                     <h:outputLabel value="Receipt:" for="receipt" />
                     <h:panelGroup>
-                        <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" >
-                            <f:selectItems value="#{expenseController.selected.report.receipts}" var="r" itemLabel="#{r.documentName}" itemValue="#{r}"/>
+                        <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" disabled="#{not rules.canEditReceipts(selectedReport)}" converter="#{receiptConverter}">
+                            <f:selectItems value="#{expenseReportController.reportReceipts}" var="r" itemLabel="#{r.documentName}" itemValue="#{r}" />
                         </h:selectOneMenu>
-                        <h:commandButton id="addReceiptBtn" action="#{receiptController.create()}" rendered="#{rules.canEditExpenses(selectedReport)}" value="Add receipt" immediate="true" />
+                        <h:commandButton id="addReceiptBtn" action="#{receiptController.create(expenseController.selected.report)}" rendered="#{rules.canEditReceipts(selectedReport)}" value="Add receipt" immediate="true" />
                     </h:panelGroup>
                     <rich:message for="receipt" id="receiptMessage"/>
 

@@ -10,21 +10,10 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import org.apache.deltaspike.cdise.api.ContextControl;
 import org.apache.deltaspike.core.api.lifecycle.Initialized;
-import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
-import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
-import org.jboss.examples.deltaspike.expensetracker.data.ExpenseRepository;
-import org.jboss.examples.deltaspike.expensetracker.data.PurposeRepository;
-import org.jboss.examples.deltaspike.expensetracker.data.ReimbursementRepository;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.Expense;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.Reimbursement;
-import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
+import org.jboss.examples.deltaspike.expensetracker.data.*;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.*;
 
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ADMIN;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.*;
 
 /**
  * Supplies initial data. Used instead of import.sql to support portability.

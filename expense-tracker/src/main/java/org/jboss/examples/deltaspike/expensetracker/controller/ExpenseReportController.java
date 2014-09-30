@@ -19,8 +19,10 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
+import org.jboss.examples.deltaspike.expensetracker.data.ReceiptRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.Receipt;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.jboss.examples.deltaspike.expensetracker.service.ExpenseReportService;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
@@ -38,6 +40,9 @@ public class ExpenseReportController implements Serializable {
     private ExpenseReportRepository repo;
 
     @Inject
+    private ReceiptRepository receiptRepo;
+
+    @Inject
     private ExpenseReportService svc;
 
     @Inject
@@ -47,7 +52,10 @@ public class ExpenseReportController implements Serializable {
     private ViewStack viewStack;
 
     @Inject
-    private JsfMessage<AppMessages> msg;
+    private JsfMessage<AppMessages> jsfMsg;
+
+    @Inject
+    private AppMessages msg;
 
     @Inject
     @CurrentUser
@@ -59,6 +67,8 @@ public class ExpenseReportController implements Serializable {
 
     @Inject
     private ReportListHolder reportList;
+
+    private boolean needRefresh = false;
 
     /*
      * OPERATIONS
@@ -87,41 +97,41 @@ public class ExpenseReportController implements Serializable {
 
     public Class<? extends ViewConfig> save() {
         repo.save(selected);
-        msg.addInfo().allChangesSaved();
+        jsfMsg.addInfo().allChangesSaved();
         return SecuredPages.Report.class;
     }
 
     @Begin
-    public Class<? extends ViewConfig> open() {
-        selected.setStatus(ReportStatus.OPEN);
+    public Class<? extends ViewConfig> open() throws ApplicationException {
+        svc.open(selected);
         return SecuredPages.Report.class;
     }
 
     @End
     public Class<? extends ViewConfig> submit() throws ApplicationException {
         svc.submit(selected);
-        msg.addInfo().reportSubmitted(selected.getName());
+        jsfMsg.addInfo().reportSubmitted(selected.getName());
         return viewStack.pop();
     }
 
     @End
     public Class<? extends ViewConfig> reject() throws ApplicationException {
         svc.reject(selected);
-        msg.addInfo().reportRejected(selected.getName());
+        jsfMsg.addInfo().reportRejected(selected.getName());
         return viewStack.pop();
     }
 
     @End
     public Class<? extends ViewConfig> approve() throws ApplicationException {
         svc.approve(selected);
-        msg.addInfo().reportApproved(selected.getName());
+        jsfMsg.addInfo().reportApproved(selected.getName());
         return viewStack.pop();
     }
 
     @End
     public Class<? extends ViewConfig> settle() throws ApplicationException {
         svc.settle(selected);
-        msg.addInfo().reportSettled(selected.getName());
+        jsfMsg.addInfo().reportSettled(selected.getName());
         return viewStack.pop();
     }
 
@@ -132,21 +142,21 @@ public class ExpenseReportController implements Serializable {
 
     @Begin
     public Class<? extends ViewConfig> showAllReportedByCurrentEmployee() {
-        reportList.setListTitle("All reported by " + currentEmployee.getFullName());
+        reportList.setListTitle(msg.allReportedBy(currentEmployee.getFullName()));
         reportList.setQuery(repo.findByReporter(currentEmployee));
         return SecuredPages.Reports.class;
     }
 
     @Begin
     public Class<? extends ViewConfig> showAllAssignedToCurrentAccountant() {
-        reportList.setListTitle("All assigned to " + currentEmployee.getFullName());
+        reportList.setListTitle(msg.allAssignedTo(currentEmployee.getFullName()));
         reportList.setQuery(repo.findByAssignee(currentEmployee));
         return SecuredPages.Reports.class;
     }
 
     @Begin
     public Class<? extends ViewConfig> showAllReports() {
-        reportList.setListTitle("All reports");
+        reportList.setListTitle(msg.allReports());
         reportList.setQuery(repo.findAllReports());
         return SecuredPages.Reports.class;
     }
@@ -212,6 +222,19 @@ public class ExpenseReportController implements Serializable {
      * Observe modification events to refresh report
      */
     public void refreshReportOnModification(@Observes Modified event) {
-        repo.refresh(selected);
+        needRefresh = true;
     }
+
+    public void doRefresh() {
+
+        if (needRefresh) {
+            repo.refresh(selected);
+            needRefresh = false;
+        }
+    }
+
+    public List<Receipt> getReportReceipts() {
+        return receiptRepo.findByReport(selected);
+    }
+
 }

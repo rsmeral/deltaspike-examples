@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.app.resources;
+package org.jboss.examples.deltaspike.expensetracker.data.resources;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

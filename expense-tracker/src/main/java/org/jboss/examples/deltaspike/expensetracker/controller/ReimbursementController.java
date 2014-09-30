@@ -36,14 +36,14 @@ public class ReimbursementController implements Serializable {
 
     @Inject
     private JsfMessage<AppMessages> msg;
-    
+
     @Inject
     @CurrentUser
     private Employee currentEmployee;
-    
+
     @Inject
     private Event<ExpenseReportController.Modified> reportModEvent;
-    
+
     private Reimbursement selected;
 
     @Begin
@@ -62,6 +62,7 @@ public class ReimbursementController implements Serializable {
 
     public void delete(Reimbursement reimbursement) {
         repo.remove(reimbursement);
+        reportModEvent.fire(new ExpenseReportController.Modified());
         msg.addInfo().itemDeleted();
     }
 

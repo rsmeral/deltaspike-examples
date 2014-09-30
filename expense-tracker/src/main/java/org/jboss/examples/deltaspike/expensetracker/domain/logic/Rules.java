@@ -10,21 +10,13 @@ import org.apache.deltaspike.security.api.authorization.Secures;
 import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
+import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 import org.picketlink.authentication.event.LoggedInEvent;
 
-import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.APPROVE;
-import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.ASSIGN;
-import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.REJECT;
-import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SETTLE;
-import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SUBMIT;
-import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.UNASSIGN;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.APPROVED;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.OPEN;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.REJECTED;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.SETTLED;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.SUBMITTED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.*;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.*;
 
 /**
  * Contains state-transfer conditions and authorization rules for
@@ -75,7 +67,7 @@ public class Rules implements Serializable {
     }
 
     public static boolean isSubmittable(ExpenseReport report) {
-        return report.getStatus() == OPEN;
+        return report.getStatus() == ReportStatus.OPEN;
     }
 
     public static boolean isRejectable(ExpenseReport report) {
@@ -99,7 +91,11 @@ public class Rules implements Serializable {
     }
 
     public static boolean isExpensesEditable(ExpenseReport report) {
-        return report.getStatus() == OPEN;
+        return report.getStatus() == ReportStatus.OPEN;
+    }
+
+    public static boolean isReceiptsEditable(ExpenseReport report) {
+        return report.getStatus() != SETTLED && report.getStatus() != REJECTED;
     }
 
     /*
@@ -126,6 +122,13 @@ public class Rules implements Serializable {
         }
         return canUserEditReport(report)
                 && auth.hasRole(EMPLOYEE);
+    }
+
+    public boolean canUserEditReceipts(ExpenseReport report) {
+        if (auth.isAdmin()) {
+            return true;
+        }
+        return canUserEditReport(report);
     }
 
     /*
@@ -183,5 +186,9 @@ public class Rules implements Serializable {
 
     public boolean canEditExpenses(ExpenseReport selected) {
         return canUserEditExpenses(selected) && isExpensesEditable(selected) && isReporter(selected, currentEmployee);
+    }
+
+    public boolean canEditReceipts(ExpenseReport selected) {
+        return canUserEditReceipts(selected) && isReceiptsEditable(selected);
     }
 }

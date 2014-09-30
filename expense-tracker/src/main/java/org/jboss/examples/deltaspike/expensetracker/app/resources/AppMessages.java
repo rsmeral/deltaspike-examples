@@ -48,6 +48,18 @@ public interface AppMessages {
     @MessageTemplate("{controller.reportSettled}")
     String reportSettled(String reportName);
 
+    @MessageTemplate("{controller.allReportedBy}")
+    String allReportedBy(String employeeName);
+
+    @MessageTemplate("{controller.allAssignedTo}")
+    String allAssignedTo(String employeeName);
+
+    @MessageTemplate("{controller.allReports}")
+    String allReports();
+
+    @MessageTemplate("{controller.expenseCoverageUpdated}")
+    String expenseCoverageUpdated(int numOfExpenses, String receiptName);
+
     @MessageTemplate("{service.reportIsAlreadyAssigned}")
     String reportAlreadyAssigned(String reportName);
 
@@ -74,5 +86,5 @@ public interface AppMessages {
 
     @MessageTemplate("{app.unknownError}")
     String unknownErrorOccurred();
-    
+
 }

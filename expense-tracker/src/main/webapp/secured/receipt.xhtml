@@ -2,27 +2,104 @@
 <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
                  xmlns:h="http://java.sun.com/jsf/html"
                  xmlns:ui="http://java.sun.com/jsf/facelets"
-                 template="/resources/template/layout.xhtml">
-    
+                 template="/resources/template/layout.xhtml"
+                 xmlns:et="http://java.sun.com/jsf/composite/et"
+                 xmlns:rich="http://richfaces.org/rich"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:a4j="http://richfaces.org/a4j">
+
     <ui:define name="content">
-        <ui:insert name="title"/>
-        <h:form id="form">
 
-            <h:messages id="error-messages" />
+        <et:reportView report="#{receiptController.selected.report}" id="selectedReport" />
 
-            <div>
-                <h:outputLabel value="Receipt:" for="fileUpload" />
+        <h:form id="receiptForm">
+            <rich:panel header="Receipt">
+                <h:panelGrid columns="2" border="0">
 
-                <div>
-                    TODO: add a file upload component
-                </div>
-            </div>
-            <div>
-                <div>
-                    <h:commandButton action="#{receiptController.save()}" value="Save" />
-                    <h:commandButton action="#{receiptController.cancel()}" value="Cancel" immediate="true" />
-                </div>
-            </div>
+                    <h:panelGroup>
+                        <rich:fileUpload id="file" 
+                                         rendered="#{rules.canEditReceipts(selectedReport) and receiptController.isNew(receiptController.selected)}"
+                                         fileUploadListener="#{uploadController.uploadListener}"
+                                         acceptedTypes="jpg"
+                                         maxFilesQuantity="1"
+                                         addLabel="Choose file"
+                                         immediateUpload="true"
+                                         listHeight="100px"
+                                         >
+                            <a4j:ajax event="uploadcomplete" execute="@none" render="nameNew,imageOutput" />
+                        </rich:fileUpload>
+                        <rich:message for="file" id="fileMessage" />
+
+                        <h:panelGrid columns="3" border="0">
+                            <h:outputLabel value="Name" for="name" />
+                            <h:inputText id="nameNew" value="#{uploadController.fileName}" label="Name" disabled="#{not rules.canEditReceipts(selectedReport) or not receiptController.isNew(receiptController.selected)}"  rendered="#{receiptController.isNew(receiptController.selected)}"/>
+                            <h:inputText id="nameStored" value="#{receiptController.selected.documentName}" label="Name" disabled="#{not rules.canEditReceipts(selectedReport) or not receiptController.isNew(receiptController.selected)}" rendered="#{not receiptController.isNew(receiptController.selected)}" />
+                            <rich:message for="name" id="nameMessage" />
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="3" border="0" rendered="#{not receiptController.isNew(receiptController.selected)}">
+                            <h:outputLabel value="Imported By" for="importedBy" />
+                            <h:outputText id="importedBy" value="#{receiptController.selected.importedBy.fullName}" />
+                            <rich:message for="importedBy" id="importedByMessage" />
+
+                            <h:outputLabel value="Import Date" for="importDate" />
+                            <h:outputText id="importDate" value="#{receiptController.selected.importDate}" converter="#{customDateTimeConverter}" />
+                            <rich:message for="importDate" id="importDateMessage" />
+                        </h:panelGrid>
+
+                        <h:commandButton action="#{receiptController.save()}" value="Save" rendered="#{rules.canEditReceipts(selectedReport) and receiptController.isNew(receiptController.selected)}"/>
+                        <h:commandButton action="#{receiptController.cancel()}" value="Cancel" immediate="true" rendered="#{receiptController.isNew(receiptController.selected)}" />
+                        <h:commandButton action="#{receiptController.cancel()}" value="Back" immediate="true" rendered="#{not receiptController.isNew(receiptController.selected)}" />
+                    </h:panelGroup>
+
+                    <a4j:outputPanel id="imageOutput">
+                        <a4j:mediaOutput rendered="#{receiptController.isNew(receiptController.selected) and not empty uploadController.data}"
+                                         id="imageNew"
+                                         element="img" 
+                                         mimeType="image/jpeg" 
+                                         createContent="#{uploadController.generateUploaded}"
+                                         value="#{null}"
+                                         style="height: 100px;" 
+                                         cacheable="false">
+                        </a4j:mediaOutput>
+                        <a4j:mediaOutput rendered="#{not receiptController.isNew(receiptController.selected)}"
+                                         id="imageStored"
+                                         element="img" 
+                                         mimeType="image/jpeg" 
+                                         createContent="#{uploadController.generateStored}"
+                                         value="#{receiptController.selected.id}"
+                                         style="height: 100px;" 
+                                         cacheable="false">
+                        </a4j:mediaOutput>
+                    </a4j:outputPanel>
+                </h:panelGrid>
+            </rich:panel>
+            <rich:panel header="Expenses" rendered="#{not receiptController.isNew(receiptController.selected)}">
+                <rich:dataTable value="#{receiptController.coverageMap}" var="entry" id="coveredExpensesTable">
+                    <rich:column id="covered">
+                        <f:facet name="header">Covered?</f:facet>
+                        <h:selectBooleanCheckbox value="#{entry.covered}" disabled="#{not rules.canEditExpenses(selectedReport)}" />
+                    </rich:column>
+                    <rich:column id="expenseDate">
+                        <f:facet name="header">Date</f:facet>
+                        <h:outputText value="#{entry.expense.date}" converter="#{customDateTimeConverter}" />
+                    </rich:column>
+                    <rich:column id="expensePurpose">
+                        <f:facet name="header">Purpose</f:facet>
+                        <h:outputText value="#{entry.expense.purpose.name}"/>
+                    </rich:column>
+                    <rich:column id="expenseValue">
+                        <f:facet name="header">Value</f:facet>
+                        <h:outputText value="#{entry.expense.value}">
+                            <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" />
+                        </h:outputText>
+                    </rich:column>
+                </rich:dataTable>
+
+                <h:panelGroup rendered="#{rules.canEditExpenses(selectedReport)}">
+                    <h:commandButton action="#{receiptController.updateCoverage()}" value="Update coverage" id="updateCoverageBtn"/> of selected expenses by this receipt
+                </h:panelGroup>
+            </rich:panel>
         </h:form>
     </ui:define>
 </ui:composition>

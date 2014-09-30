@@ -6,6 +6,10 @@
                 xmlns:rich="http://richfaces.org/rich"
                 template="/resources/template/layout.xhtml">
 
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{expenseReportController.doRefresh()}" />
+    </f:metadata>
+    
     <ui:define name="content">
         <h:form id="reportForm">
             <rich:panel header="Report">
@@ -47,9 +51,7 @@
                 <rich:dataTable value="#{selectedReport.reimbursements}" var="reimbursement" rendered="#{not empty selectedReport.reimbursements}" id="reimbursementsTable">
                     <rich:column id="date">
                         <f:facet name="header">Date</f:facet>
-                        <h:outputText value="#{reimbursement.date}">
-                            <f:convertDateTime pattern="MMM d, yyyy" />
-                        </h:outputText>
+                        <h:outputText value="#{reimbursement.date}" converter="#{customDateTimeConverter}" />
                     </rich:column>
 
                     <rich:column id="creator">
@@ -59,7 +61,9 @@
 
                     <rich:column id="value">
                         <f:facet name="header">Value</f:facet>
-                            #{reimbursement.value}
+                        <h:outputText value="#{reimbursement.value}">
+                            <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
+                        </h:outputText>
                     </rich:column>
 
                     <rich:column id="actions">
@@ -73,7 +77,7 @@
                             <rich:column>Reimbursements total:</rich:column>
                             <rich:column colspan="5" id="total">
                                 <h:outputText value="#{expenseReportController.getReimbursementsTotal(selectedReport)}">
-                                    <f:convertNumber maxFractionDigits="0"/>
+                                    <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
                                 </h:outputText>
                             </rich:column>
                         </rich:columnGroup>
@@ -93,9 +97,7 @@
 
                     <rich:column id="date">
                         <f:facet name="header">Date</f:facet>
-                        <h:outputText value="#{expense.date}">
-                            <f:convertDateTime pattern="MMM d, yyyy" />
-                        </h:outputText>
+                        <h:outputText value="#{expense.date}" converter="#{customDateTimeConverter}" />
                     </rich:column>
 
                     <rich:column id="purpose">
@@ -105,14 +107,16 @@
 
                     <rich:column id="receipt">
                         <f:facet name="header">Receipt</f:facet>
-                        <h:commandLink action="#{receiptController.show(expense.receipt)}">
+                        <h:commandLink action="#{receiptController.edit(expense.receipt)}">
                             #{expense.receipt.documentName}
                         </h:commandLink>
                     </rich:column>
 
                     <rich:column id="value">
                         <f:facet name="header">Value</f:facet>
-                            #{expense.value}
+                        <h:outputText value="#{expense.value}">
+                            <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
+                        </h:outputText>
                     </rich:column>
 
                     <rich:column id="actions">
@@ -126,7 +130,7 @@
                             <rich:column>Expenses total:</rich:column>
                             <rich:column colspan="5" id="total">
                                 <h:outputText value="#{expenseReportController.getExpensesTotal(selectedReport)}">
-                                    <f:convertNumber maxFractionDigits="0"/>
+                                    <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
                                 </h:outputText>
                             </rich:column>
                         </rich:columnGroup>
@@ -138,12 +142,46 @@
             </rich:panel>
 
         </h:form>
-        
+
         <rich:panel header="Report Balance">
             <h:outputText value="#{expenseReportController.getReportTotal(selectedReport)}" id="reportBalance">
-                <f:convertNumber maxFractionDigits="0"/>
+                <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
             </h:outputText>
         </rich:panel>
+
+        <h:form id="receiptsForm">
+            <!-- RECEIPTS -->
+            <rich:panel header="Receipts" rendered="#{not expenseReportController.isNew(selectedReport)}">
+                <rich:dataTable value="#{expenseReportController.reportReceipts}" rendered="#{not empty selectedReport.receipts}" var="receipt" id="receiptsTable">
+
+                    <rich:column id="name">
+                        <f:facet name="header">Name</f:facet>                        
+                            #{receipt.documentName}
+                    </rich:column>
+
+                    <rich:column id="importDate">
+                        <f:facet name="header">Import Date</f:facet>
+                        <h:outputText value="#{receipt.importDate}" converter="#{customDateTimeConverter}" />
+                    </rich:column>
+
+                    <rich:column id="importedBy">
+                        <f:facet name="header">Imported By</f:facet>
+                            #{receipt.importedBy.fullName}
+                    </rich:column>
+
+                    <rich:column id="actions">
+                        <f:facet name="header">Action</f:facet>
+                        <h:commandButton action="#{receiptController.edit(receipt)}" rendered="#{rules.canEditReceipts(selectedReport)}" value="Show" id="show" />
+                        <h:commandButton action="#{receiptController.delete(receipt)}" rendered="#{rules.canEditReceipts(selectedReport)}" value="Delete" id="delete" />
+                    </rich:column>
+
+                </rich:dataTable>
+                <h:panelGroup rendered="#{rules.canEditReceipts(selectedReport)}">
+                    <h:commandButton action="#{receiptController.create(selectedReport)}" value="Add Receipt" id="addReceiptBtn"/>
+                </h:panelGroup>
+            </rich:panel>
+
+        </h:form>
 
         <h:form id="actionsForm">
             <rich:panel header="Report actions" rendered="#{not expenseReportController.isNew(selectedReport)}">

@@ -12,7 +12,7 @@ import org.apache.deltaspike.data.api.QueryResult;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 import org.apache.deltaspike.data.spi.QueryInvocationContext;
-import org.jboss.examples.deltaspike.expensetracker.app.resources.MainEMResolver;
+import org.jboss.examples.deltaspike.expensetracker.data.resources.MainEMResolver;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport_;

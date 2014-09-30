@@ -17,7 +17,7 @@ public class Expense extends Transaction implements Serializable {
     @NotNull
     private Purpose purpose;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne()
     private Receipt receipt;
 
     public Expense() {
@@ -28,7 +28,7 @@ public class Expense extends Transaction implements Serializable {
         this.purpose = purpose;
         this.receipt = receipt;
     }
-    
+
     public Long getId() {
         return id;
     }

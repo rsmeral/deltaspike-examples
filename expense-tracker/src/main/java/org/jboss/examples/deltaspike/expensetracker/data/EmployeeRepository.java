@@ -6,7 +6,7 @@ import org.apache.deltaspike.data.api.EntityManagerConfig;
 import org.apache.deltaspike.data.api.EntityManagerDelegate;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
-import org.jboss.examples.deltaspike.expensetracker.app.resources.MainEMResolver;
+import org.jboss.examples.deltaspike.expensetracker.data.resources.MainEMResolver;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 
 @ApplicationScoped

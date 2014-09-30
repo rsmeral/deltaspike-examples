@@ -2,10 +2,13 @@ package org.jboss.examples.deltaspike.expensetracker.domain.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import org.apache.deltaspike.data.api.audit.CreatedOn;
+import org.apache.deltaspike.data.impl.audit.AuditEntityListener;
 
 @Entity
+@EntityListeners(AuditEntityListener.class)
 public class Receipt implements Serializable {
 
     @Id
@@ -22,21 +25,22 @@ public class Receipt implements Serializable {
     public Receipt() {
     }
 
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @CreatedOn
     private Date importDate;
 
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @NotNull
     private Employee importedBy;
 
     @Lob
     private byte[] document;
 
-    @NotNull
     private String documentName;
-    
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+
+    @OneToMany(mappedBy = "receipt")
+    private List<Expense> expenses;
+
+    @ManyToOne(optional = false)
     private ExpenseReport report;
 
     public Long getId() {
@@ -77,6 +81,23 @@ public class Receipt implements Serializable {
 
     public void setDocumentName(String documentName) {
         this.documentName = documentName;
+    }
+
+
+    public ExpenseReport getReport() {
+        return report;
+    }
+
+    public void setReport(ExpenseReport report) {
+        this.report = report;
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
     }
 
     @Override

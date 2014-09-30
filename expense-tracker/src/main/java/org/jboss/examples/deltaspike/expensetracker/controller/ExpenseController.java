@@ -34,7 +34,7 @@ public class ExpenseController implements Serializable {
 
     @Inject
     private JsfMessage<AppMessages> msg;
-    
+
     @Inject
     private Event<ExpenseReportController.Modified> reportModEvent;
 
@@ -55,6 +55,7 @@ public class ExpenseController implements Serializable {
 
     public void delete(Expense expense) {
         repo.remove(expense);
+        reportModEvent.fire(new ExpenseReportController.Modified());
         msg.addInfo().itemDeleted();
     }
 

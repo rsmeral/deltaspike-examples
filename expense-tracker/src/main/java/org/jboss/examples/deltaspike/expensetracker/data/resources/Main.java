@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.expensetracker.app.resources;
+package org.jboss.examples.deltaspike.expensetracker.data.resources;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

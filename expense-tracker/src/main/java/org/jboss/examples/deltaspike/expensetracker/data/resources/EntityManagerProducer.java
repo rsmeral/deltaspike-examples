@@ -1,13 +1,10 @@
-package org.jboss.examples.deltaspike.expensetracker.app.resources;
+package org.jboss.examples.deltaspike.expensetracker.data.resources;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.*;
 import org.picketlink.annotations.PicketLink;
 
 /**
@@ -28,6 +25,13 @@ public class EntityManagerProducer {
     @Main
     @ConversationScoped
     public EntityManager producePrimaryEm() {
+        return primaryEmf.createEntityManager();
+    }
+
+    @Produces
+    @Receipts
+    @SessionScoped
+    public EntityManager produceReceiptsEm() {
         return primaryEmf.createEntityManager();
     }
 
