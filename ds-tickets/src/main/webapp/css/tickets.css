@@ -56,3 +56,8 @@ input {
 * {
 	font-size: 18px;
 }
+
+.selectedDate {
+	color: green;
+	font-weight: bold;
+}

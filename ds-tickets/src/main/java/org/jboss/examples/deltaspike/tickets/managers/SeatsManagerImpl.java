@@ -12,7 +12,7 @@ import org.jboss.examples.deltaspike.tickets.repositories.TicketRepository;
 import org.jboss.examples.deltaspike.tickets.util.Utils;
 
 @Model
-public class SeatsManagerImpl implements SeatsManager {
+public class SeatsManagerImpl {
 
     @Inject
     private TicketRepository ticketRepository;

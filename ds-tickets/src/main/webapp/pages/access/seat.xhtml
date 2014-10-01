@@ -29,10 +29,10 @@
 	<div class="main_box">
 		<p class="title">Train tickets reservation system</p>
 		<p>
-			<b>From: <i>#{lineDtoAccess.departure}</i> to: <i>#{lineDtoAccess.arrival}</i></b>
+			<b id="fromToLabel">From: <i>#{lineDtoAccess.departure}</i> to: <i>#{lineDtoAccess.arrival}</i></b>
 		</p>
 		<p>
-			<b>On: <i>#{utils.formatDate(ticketDtoAccess.busDto.date)}</i></b>
+			<b id="onDateLabel">On: <i>#{utils.formatDate(ticketDtoAccess.busDto.date)}</i></b>
 		</p>
 		<h2>Please choose seat(s)</h2>
 
@@ -50,9 +50,9 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td align="right" height="80px"><h:commandButton styleClass="commandButton"
+						<td align="right" height="80px"><h:commandButton id="backButton" styleClass="commandButton"
 								immediate="true" action="#{navigationManager.backToDate()}" value="Back" /> <h:commandButton
-								styleClass="commandButton" immediate="true" action="#{navigationManager.submitSeats()}"
+								id="submitButton" styleClass="commandButton" immediate="true" action="#{navigationManager.submitSeats()}"
 								value="Submit" type="submit" /></td>
 					</tr>
 				</h:form>

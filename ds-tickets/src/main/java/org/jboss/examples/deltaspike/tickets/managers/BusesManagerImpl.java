@@ -12,7 +12,7 @@ import org.jboss.examples.deltaspike.tickets.model.dto.Produced;
 import org.jboss.examples.deltaspike.tickets.repositories.BusReporitory;
 
 @Model
-public class BusesManagerImpl implements BusesManager {
+public class BusesManagerImpl {
 
     @Inject
     private BusReporitory busReporitory;

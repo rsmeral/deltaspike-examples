@@ -36,25 +36,26 @@
 		<h2>Please select bus line are you looking for</h2>
 
 		<h:form>
-			<h:commandButton action="#{appInitializer.initialize()}" value="initialize DB"
+			<h:commandButton id="initializeButton" action="#{appInitializer.initialize()}" value="initialize DB"
 				rendered="#{!appInitializer.isInitialized()}" />
+			<h:commandButton id="showAllOrdersButton" action="#{navigationManager.toListAllOrders()}"
+				value="Show All Orders" />
 		</h:form>
 
 		<table class="main_table">
 			<tbody>
 				<tr>
 					<td>
-						<p>Select station of departure:</p> <h:form>
-							<h:selectOneMenu required="true" id="departureSelection" value="#{lineDtoAccess.departure}"
-								onchange="submit()">
+						<p>Select station of departure:</p> <h:form id="departureSelection">
+							<h:selectOneMenu required="true" value="#{lineDtoAccess.departure}" onchange="submit()">
 								<f:selectItem itemValue="" />
 								<f:selectItems value="#{lineManagerImpl.allDepartures}" var="departure" />
 							</h:selectOneMenu>
 						</h:form>
 					</td>
 					<td>
-						<p>Select station of arrival:</p> <h:form>
-							<h:selectOneMenu required="true" id="arrivalSelection" disabled="#{lineDtoAccess.departure==null}"
+						<p>Select station of arrival:</p> <h:form id="arrivalSelection">
+							<h:selectOneMenu required="true" disabled="#{lineDtoAccess.departure==null}"
 								value="#{lineDtoAccess.arrival}" onchange="submit()">
 								<f:selectItem itemValue="" />
 								<f:selectItems value="#{lineManagerImpl.getAllArrivals(lineDtoAccess.departure)}" var="arrival" />
@@ -65,8 +66,8 @@
 				<tr>
 					<td></td>
 					<td align="right" height="80px"><h:form>
-							<h:commandButton styleClass="commandButton" immediate="true" disabled="#{lineDtoAccess.arrival==null}"
-								action="#{navigationManager.submitBusLine()}" value="Next" />
+							<h:commandButton id="nextButton" styleClass="commandButton" immediate="true"
+								disabled="#{lineDtoAccess.arrival==null}" action="#{navigationManager.submitBusLine()}" value="Next" />
 						</h:form></td>
 				</tr>
 			</tbody>

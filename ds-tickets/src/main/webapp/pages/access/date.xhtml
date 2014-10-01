@@ -29,17 +29,16 @@
 	<div class="main_box">
 		<p class="title">Bus tickets reservation system</p>
 		<h2>Please choose the date of the departure:</h2>
-		
-		<h:dataTable styleClass="main_table" value="#{busesManagerImpl.buses}" var="bus">
+
+		<h:dataTable id="datesTable" styleClass="main_table" value="#{busesManagerImpl.buses}" var="bus">
 
 			<h:column>
 				<f:facet name="header">
-					<b>From: <i>#{lineDtoAccess.departure}</i> to: <i>#{lineDtoAccess.arrival}</i></b>
+					<b id="fromToLabel">From: <i>#{lineDtoAccess.departure}</i> to: <i>#{lineDtoAccess.arrival}</i></b>
 				</f:facet>
 				<h:form>
 					<br />
-					<h:commandLink value="#{utils.formatDate(bus.date)}"
-						action="#{navigationManager.createTicket(bus)}" />
+					<h:commandLink value="#{utils.formatDate(bus.date)}" action="#{navigationManager.createTicket(bus)}" />
 				</h:form>
 			</h:column>
 
@@ -47,7 +46,8 @@
 		</h:dataTable>
 		<div align="right" style="margin-right: 50px" height="80px">
 			<h:form>
-				<h:commandButton styleClass="commandButton" immediate="true" action="#{navigationManager.backToBusLine()}" value="Back" />
+				<h:commandButton id="backButton" styleClass="commandButton" immediate="true"
+					action="#{navigationManager.backToBusLine()}" value="Back" />
 			</h:form>
 		</div>
 	</div>

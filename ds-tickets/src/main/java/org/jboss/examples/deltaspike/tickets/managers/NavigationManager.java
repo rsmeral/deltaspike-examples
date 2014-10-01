@@ -102,10 +102,21 @@ public class NavigationManager {
     }
 
     public Class<? extends ViewConfig> order() {
-        Long orderId = orderRepository.save(orderDto).getId();
+        /*
+         * System.err.println("called order");
+         * 
+         * try {
+         * Thread.sleep(5000);
+         * } catch (InterruptedException e) {
+         * // TODO Auto-generated catch block
+         * e.printStackTrace();
+         * }
+         */
 
-        navigationParameterContext.addPageParameter("orderId", orderId);
-        navigationParameterContext.addPageParameter("price", orderDto.getToPay());
+        OrderDto savedOrder = orderRepository.save(orderDto);
+
+        navigationParameterContext.addPageParameter("orderId", savedOrder.getId());
+        navigationParameterContext.addPageParameter("price", savedOrder.getToPay());
         groupManager.resetBusLine();
 
         return Pages.Ordered.class;
@@ -125,5 +136,9 @@ public class NavigationManager {
 
     public Class<? extends ViewConfig> toSinglePage() {
         return Pages.Group.SinglePage.class;
+    }
+
+    public Class<? extends ViewConfig> toListAllOrders() {
+        return Pages.Orders.class;
     }
 }

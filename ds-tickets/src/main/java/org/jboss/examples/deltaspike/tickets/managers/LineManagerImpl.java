@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.jboss.examples.deltaspike.tickets.repositories.LineReporitory;
 
 @Model
-public class LineManagerImpl implements LineManager {
+public class LineManagerImpl {
 
     @Inject
     private LineReporitory lineReporitory;

@@ -31,30 +31,33 @@ public class AppInitializer implements Serializable {
     @Inject
     private TicketRepository ticketRepository;
 
-    private static boolean initialized = false;
+    private static Boolean initialized = false;
 
     public AppInitializer() {
     }
 
     @InitView
     public void initialize() {
-        if (initialized) {
-            return;
-        }
-        System.err.println("initialized!!!!!!!!!!");
+        synchronized (initialized) {
+            if (initialized) {
+                return;
+            }
+            System.err.println("initialized!!!!!!!!!!");
 
-        createLine("Paris", "Prague", 900);
-        createLine("Prague", "Paris", 900);
-        // createLine("Paris", "Lisboa", 800);
-        // createLine("Lisboa", "Paris", 800);
-        // createLine("Roma", "Paris", 700);
-        // createLine("Paris", "Roma", 700);
-        // createLine("Paris", "Berlin", 900);
-        // createLine("Berlin", "Paris", 900);
-        // createLine("Oslo", "Paris", 1300);
-        // createLine("Berlin", "Oslo", 1200);
-        // createLine("Oslo", "Lisboa", 1800);
-        initialized = true;
+            createLine("Paris", "Prague", 900);
+            createLine("Prague", "Paris", 900);
+            // createLine("Paris", "Lisboa", 800);
+            // createLine("Lisboa", "Paris", 800);
+            // createLine("Roma", "Paris", 700);
+            // createLine("Paris", "Roma", 700);
+            // createLine("Paris", "Berlin", 900);
+            // createLine("Berlin", "Paris", 900);
+            // createLine("Oslo", "Paris", 1300);
+            // createLine("Berlin", "Oslo", 1200);
+            // createLine("Oslo", "Lisboa", 1800);
+            initialized = true;
+
+        }
     }
 
     private Line createLine(String departure, String arrival, int price) {

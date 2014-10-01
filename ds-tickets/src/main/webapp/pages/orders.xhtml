@@ -26,19 +26,59 @@
 
 <h:body>
 	<ds:windowId />
-	<f:metadata>
-        <f:viewParam name="orderId" value="orderId" />
-        <f:viewParam name="price" value="orderPrice" />
-    </f:metadata>
-    
 	<div class="main_box">
 		<p class="title">Bus tickets reservation system</p>
-		<h2>Thank you</h2>
+		<h2>All orders:</h2>
 
+		<h:dataTable id="orders" value="#{orderManagerImpl.getAllOrders()}" var="order">
+			<h:column>
+				<h3>Order ID: <i>#{order.id}</i></h3>
 
-		<div align="right" style="margin: 10px;">
-			<b id="toPayAndIdLabel" style="margin-right: 50px;">Please pay: <h:outputLabel id="priceLabel" value="#{price}" /> for the order: <h:outputLabel id="orderIdLabel" value="#{orderId}" /></b>
-		</div>
+				<h:dataTable id="overviewTable" value="#{order.ticketsDto}" var="orderItem" styleClass="order-table"
+					headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
+
+					<h:column>
+						<!-- column header -->
+						<f:facet name="header">Ticket No</f:facet>
+    				#{order.ticketsDto.indexOf(orderItem) + 1} 
+    			</h:column>
+
+					<h:column>
+						<f:facet name="header">Departure</f:facet>
+    				#{orderItem.busDto.lineDto.departure}  
+    			</h:column>
+
+					<h:column>
+						<f:facet name="header">Arrival</f:facet>
+    				#{orderItem.busDto.lineDto.arrival} 
+    			</h:column>
+
+					<h:column>
+						<f:facet name="header">Departure Date</f:facet>
+    				#{utils.formatDate(orderItem.busDto.date)} 
+    			</h:column>
+
+					<h:column>
+						<f:facet name="header">Seat</f:facet>
+    				#{orderItem.seatNumber}
+    			</h:column>
+
+					<h:column>
+						<f:facet name="header">First Class Surcharge</f:facet>
+    				 #{orderItem.isInFirstClass() ? 'yes' : 'no'}
+    			</h:column>
+
+					<h:column>
+						<f:facet name="header">price</f:facet>
+    				 #{orderItem.busDto.lineDto.price * (orderItem.isInFirstClass() ? 1.5 : 1.0)}
+    			</h:column>
+				</h:dataTable>
+
+				<div align="right">
+					<b id="toPayLabel" style="margin-right: 80px; margin: 50px;">To pay: <h:outputLabel id="priceLabel" value="#{order.toPay}"/></b>
+				</div>
+			</h:column>
+		</h:dataTable>
 
 
 		<div align="right" style="margin-right: 50px" height="80px">

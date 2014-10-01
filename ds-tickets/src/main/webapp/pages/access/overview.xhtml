@@ -30,7 +30,7 @@
 		<p class="title">Bus tickets reservation system</p>
 		<h2>Order overview:</h2>
 
-		<h:dataTable value="#{orderDtoAccess.ticketsDto}" var="orderItem" styleClass="order-table"
+		<h:dataTable id="overviewTable" value="#{orderDtoAccess.ticketsDto}" var="orderItem" styleClass="order-table"
 			headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
 
 			<h:column>
@@ -71,16 +71,17 @@
 		</h:dataTable>
 
 		<div align="right">
-			<b style="margin-right: 80px; margin: 50px;">To pay: #{orderDtoAccess.toPay}</b>
+			<b id="toPayLabel" style="margin-right: 80px; margin: 50px;">To pay: <h:outputLabel id="priceLabel"
+					value="#{orderDtoAccess.toPay}" /></b>
 		</div>
 
 
 		<div align="right" style="margin-right: 50px" height="80px">
 			<h:form>
-				<h:commandButton styleClass="commandButton" style="margin-right: 10px;" immediate="true"
+				<h:commandButton id="backButton" styleClass="commandButton" style="margin-right: 10px;"
 					action="#{navigationManager.backToSeat()}" value="Back" />
-				<h:commandButton styleClass="commandButton" immediate="true"
-					action="#{navigationManager.order()}" value="Order" />
+				<h:commandButton id="orderButton" styleClass="commandButton" action="#{navigationManager.order()}"
+					value="Order" type="submit" />
 				<ds:preventDoubleSubmit />
 			</h:form>
 		</div>

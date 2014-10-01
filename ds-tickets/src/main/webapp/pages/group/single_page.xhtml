@@ -40,22 +40,21 @@
 				rendered="#{!appInitializer.isInitialized()}" />
 		</h:form>
 
-		<table class="main_table">
+		<table id="busLinePart" class="main_table">
 			<tbody>
 				<tr>
-					<td>
+					<td id="departureSelection">
 						<p>Select station of departure:</p> <h:form>
-							<h:selectOneMenu required="true" id="departureSelection" value="#{lineDtoGroup.departure}"
-								onchange="submit()">
+							<h:selectOneMenu required="true" value="#{lineDtoGroup.departure}" onchange="submit()">
 								<f:selectItem itemValue="" />
 								<f:selectItems value="#{lineManagerImpl.allDepartures}" var="departure" />
 							</h:selectOneMenu>
 						</h:form>
 					</td>
-					<td>
+					<td id="arrivalSelection">
 						<p>Select station of arrival:</p> <h:form>
-							<h:selectOneMenu required="true" id="arrivalSelection" disabled="#{lineDtoGroup.departure==null}"
-								value="#{lineDtoGroup.arrival}" onchange="submit()">
+							<h:selectOneMenu required="true" disabled="#{lineDtoGroup.departure==null}" value="#{lineDtoGroup.arrival}"
+								onchange="submit()">
 								<f:selectItem itemValue="" />
 								<f:selectItems value="#{lineManagerImpl.getAllArrivals(lineDtoGroup.departure)}" var="arrival" />
 							</h:selectOneMenu>
@@ -64,7 +63,7 @@
 				</tr>
 				<tr>
 					<td></td>
-					<h:form id="busLinePart">
+					<h:form>
 						<td align="right" height="80px"><h:commandButton styleClass="commandButton"
 								disabled="#{lineDtoGroup.departure==null}" action="#{groupManager.resetBusLine()}" value="Reset" /></td>
 					</h:form>
@@ -73,36 +72,38 @@
 		</table>
 
 
-		<h:body id="datePart" rendered="#{lineDtoGroup.arrival != null}">
-			<h2>Please choose the date of the departure:</h2>
+		<h:body rendered="#{lineDtoGroup.arrival != null}">
+			<div id="datePart">
+				<h2>Please choose the date of the departure:</h2>
 
-			<h:dataTable styleClass="main_table" value="#{busesManagerImpl.buses}" var="bus">
+				<h:dataTable styleClass="main_table" value="#{busesManagerImpl.buses}" var="bus">
 
-				<h:column>
-					<f:facet name="header">
-						<b>Dates:</b>
-					</f:facet>
+					<h:column>
+						<f:facet name="header">
+							<b>Dates:</b>
+						</f:facet>
+						<h:form>
+							<br />
+							<h:commandLink value="#{utils.formatDate(bus.date)}" action="#{navigationManager.createTicket(bus)}"
+								styleClass="#{bus.id == ticketDtoGroup.busDto.id ? 'selectedDate' : ''}" />
+						</h:form>
+					</h:column>
+
+
+				</h:dataTable>
+				<div align="right" style="margin-right: 50px" height="80px">
 					<h:form>
-						<br />
-						<h:commandLink value="#{utils.formatDate(bus.date)}" action="#{navigationManager.createTicket(bus)}"
-							style="#{bus.id == ticketDtoGroup.busDto.id ? 'color: green; font-weight: bold;' : ''}" />
+						<h:commandButton styleClass="commandButton" action="#{groupManager.resetDate()}" value="Reset"
+							disabled="#{ticketDtoGroup.busDto==null}" />
 					</h:form>
-				</h:column>
-
-
-			</h:dataTable>
-			<div align="right" style="margin-right: 50px" height="80px">
-				<h:form>
-					<h:commandButton styleClass="commandButton" action="#{groupManager.resetDate()}" value="Reset"
-						disabled="#{ticketDtoGroup.busDto==null}" />
-				</h:form>
+				</div>
 			</div>
 		</h:body>
 
-		<h:body id="seatsPart" rendered="#{ticketDtoGroup.busDto!=null}">
+		<h:body rendered="#{ticketDtoGroup.busDto!=null}">
 			<h2>Please choose seat(s)</h2>
 
-			<table class="main_table">
+			<table id="seatsPart" class="main_table">
 				<tbody>
 					<h:form id="selectSeatsForm">
 						<tr>
@@ -171,14 +172,15 @@
 			</h:dataTable>
 
 			<div align="right">
-				<b style="margin-right: 80px; margin: 50px;">To pay: #{orderDtoGroup.toPay}</b>
+				<b id="toPayLabel" style="margin-right: 80px; margin: 50px;">To pay: <h:outputLabel id="priceLabel"
+						value="#{orderDtoGroup.toPay}" />
+				</b>
 			</div>
 
 
 			<div align="right" style="margin-right: 50px" height="80px">
 				<h:form>
-					<h:commandButton styleClass="commandButton" immediate="true" action="#{navigationManager.order()}"
-						value="Order" />
+					<h:commandButton styleClass="commandButton" action="#{navigationManager.order()}" value="Order" type="submit" />
 					<ds:preventDoubleSubmit />
 				</h:form>
 			</div>

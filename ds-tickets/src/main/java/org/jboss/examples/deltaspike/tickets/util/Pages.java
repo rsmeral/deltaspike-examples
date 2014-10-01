@@ -39,4 +39,7 @@ public interface Pages extends ViewConfig {
     public class Ordered implements Pages {
     };
 
+    public class Orders implements Pages {
+    };
+
 }
