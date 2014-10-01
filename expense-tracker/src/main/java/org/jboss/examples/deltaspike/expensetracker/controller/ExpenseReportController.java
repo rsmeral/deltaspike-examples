@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -44,9 +43,6 @@ public class ExpenseReportController implements Serializable {
 
     @Inject
     private ExpenseReportService svc;
-
-    @Inject
-    private FacesContext faces;
 
     @Inject
     private ViewStack viewStack;

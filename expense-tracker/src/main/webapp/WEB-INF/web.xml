@@ -19,9 +19,9 @@
         <param-value>true</param-value>
     </context-param>
     
-    <error-page>
-        <exception-type>org.jboss.weld.context.NonexistentConversationException</exception-type>
-        <location>/login.jsf</location>
-    </error-page>
+    <context-param>
+        <param-name>org.richfaces.skin</param-name>
+        <param-value>blueSky</param-value>
+    </context-param>
 
 </web-app>
