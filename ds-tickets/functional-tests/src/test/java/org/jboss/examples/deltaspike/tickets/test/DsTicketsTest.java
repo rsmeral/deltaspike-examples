@@ -109,12 +109,7 @@ public class DsTicketsTest extends DsTicketsAbstractTest {
     public void orderTickets() {
 
         Order order = new Order("Prague", "Paris", "2015-07-26 08:00", accessSeats);
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
         double toPay = checkOverview(order, TICKET_ROWS, PRICE_TO_PAY_LABEL);
         orders.put(orderAndCheck(toPay), order);
     }
