@@ -18,20 +18,22 @@ Simple corporate expense tracking application.
  * integration with an IDM framework ([PicketLink](https://github.com/picketlink))
 
 * Data 
- * Entity repositories
+ * entity repositories
   * (Method-name-based DSL)-based querying
-  * Annotation-based querying using `@Query`
-  * Criteria API integration
-  * Multiple entity managers, resolution using `@EntityManagerResolver`
- * Automatic tracking of date/author of last change in entities using `@ModifiedBy`, `@ModifiedOn`
+  * annotation-based querying using `@Query`
+  * criteria API integration
+  * multiple entity managers, resolution using `@EntityManagerResolver`
+ * automatic tracking of date/author of last change in entities using `@ModifiedBy`, `@ModifiedOn`
  
 * JPA
  * declarative transaction management in CDI beans using `@Transactional`
 
 * JSF
- * Type-safe view configuration and navigation using `ViewConfig`, `@View`, `@Folder`, `@ViewMetaData`
+ * type-safe view configuration and navigation using `ViewConfig`, `@View`, `@Folder`, `@ViewMetaData`
  * security integration: authorization of access to views using `@Secured` and `AccessDecisionVoter`s
  * view lifecycle callbacks: `@PreRenderView`, `@PostRenderView` and `@ViewControllerRef`, `@ViewRef`
+ * add messages from a `@MessageBundle` to JSF context using the `JsfMessage<T>` API
+ * automatic redirection of exceptions to a designated error view using `DefaultErrorView`
 
 * BeanValidation
  * custom CDI-enabled `ConstraintValidator` using `CDIAwareConstraintValidatorFactory`

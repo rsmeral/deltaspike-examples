@@ -18,11 +18,17 @@ public class ReceiptConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        if ("".equals(value)) {
+            return null;
+        }
         return repo.findBy(Long.valueOf(value));
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
+        if (value == null) {
+            return "";
+        }
         return ((Receipt) value).getId().toString();
     }
 

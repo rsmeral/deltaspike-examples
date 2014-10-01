@@ -2,16 +2,17 @@ package org.jboss.examples.deltaspike.expensetracker.domain.logic;
 
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
+import javax.interceptor.InvocationContext;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.apache.deltaspike.security.api.authorization.Secures;
 import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
-import org.picketlink.authentication.event.LoggedInEvent;
 
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
@@ -22,32 +23,42 @@ import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operatio
  * Contains state-transfer conditions and authorization rules for
  * ExpenseReports.
  */
-@SessionScoped
 @Named
+@SessionScoped
+@AdminAllowed
 public class Rules implements Serializable {
 
-    private Employee currentEmployee;
+    /*
+     * Short circuit the rules to always return true for admin role.
+     */
+    @AdminAllowed
+    @Interceptor
+    public static class AdminInterceptor implements Serializable {
 
-    public Rules() {
-    }
+        @Inject
+        private Authorizations auth;
 
-    @Inject
-    public Rules(@CurrentUser Employee employee) {
-        this.currentEmployee = employee;
-    }
-
-    public void setCurrentEmployee(@Observes LoggedInEvent event, @CurrentUser Employee employee) {
-        this.currentEmployee = employee;
+        @AroundInvoke
+        public Object invoke(InvocationContext ctx) throws Exception {
+            if (auth.isAdmin()) {
+                return true;
+            }
+            return ctx.proceed();
+        }
     }
 
     @Inject
     private Authorizations auth;
 
-    public static boolean isAssignee(ExpenseReport report, Employee employee) {
+    @Inject
+    @CurrentUser
+    private Employee currentEmployee;
+
+    private static boolean isAssignee(ExpenseReport report, Employee employee) {
         return employee.equals(report.getAssignee());
     }
 
-    public static boolean isReporter(ExpenseReport report, Employee employee) {
+    private static boolean isReporter(ExpenseReport report, Employee employee) {
         return employee.equals(report.getReporter());
     }
 
@@ -102,32 +113,20 @@ public class Rules implements Serializable {
      * AUTHORIZATION-BASED RULES
      */
     public boolean canUserEditReport(ExpenseReport report) {
-        if (auth.isAdmin()) {
-            return true;
-        }
         return currentEmployee.equals(report.getAssignee()) || currentEmployee.equals(report.getReporter());
     }
 
     public boolean canUserEditReimbursements(ExpenseReport report) {
-        if (auth.isAdmin()) {
-            return true;
-        }
         return canUserEditReport(report)
                 && auth.hasRole(ACCOUNTANT);
     }
 
     public boolean canUserEditExpenses(ExpenseReport report) {
-        if (auth.isAdmin()) {
-            return true;
-        }
         return canUserEditReport(report)
                 && auth.hasRole(EMPLOYEE);
     }
 
     public boolean canUserEditReceipts(ExpenseReport report) {
-        if (auth.isAdmin()) {
-            return true;
-        }
         return canUserEditReport(report);
     }
 

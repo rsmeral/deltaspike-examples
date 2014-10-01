@@ -8,7 +8,6 @@
     
     <ui:define name="content">
         <h:form id="purposesForm">
-            <h2>Purposes</h2>
             <rich:dataTable value="#{purposes}" var="p">
                 <rich:column>
                     <f:facet name="header">Name</f:facet>
@@ -23,7 +22,7 @@
                 <rich:column>
                     <f:facet name="header">Action</f:facet>
                     <h:commandButton action="#{purposeController.edit(p)}" value="Edit" id="editPurposeBtn" />
-                    <h:commandButton action="#{purposeController.delete(p)}" value="Delete" id="deletePurposeBtn"/>
+                    <h:commandButton action="#{purposeController.delete(p)}" value="Delete" id="deletePurposeBtn" disabled="#{not purposeController.canDeletePurpose(p)}" />
                 </rich:column>
             </rich:dataTable>
 

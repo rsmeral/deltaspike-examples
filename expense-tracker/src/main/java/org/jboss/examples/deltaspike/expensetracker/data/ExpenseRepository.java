@@ -26,6 +26,8 @@ public abstract class ExpenseRepository implements EntityRepository<Expense, Lon
 
     }
 
+    public abstract List<Expense> findByPurpose(Purpose purpose);
+
     public abstract List<Expense> findByReceipt(Receipt receipt);
 
     @Query("select e from Expense e where report=:report and (receipt=:receipt or receipt=null) order by receipt")

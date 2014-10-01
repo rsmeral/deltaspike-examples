@@ -8,7 +8,6 @@
 
     <ui:define name="content">
         <h:form rendered="#{idm.hasRole(ADMIN)}" id="employeesForm">
-            <h2>Employees</h2>
             <rich:dataTable value="#{employeeController.allEmployees}" var="e" id="employeesTable">
                 <rich:column id="employeeUsername">
                     <f:facet name="header">Username</f:facet>

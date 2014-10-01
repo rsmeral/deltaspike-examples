@@ -10,6 +10,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.Begin;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.data.ExpenseRepository;
 import org.jboss.examples.deltaspike.expensetracker.data.PurposeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Purpose;
 import org.jboss.examples.deltaspike.expensetracker.view.SecuredPages;
@@ -22,6 +23,9 @@ public class PurposeController implements Serializable {
 
     @Inject
     private PurposeRepository repo;
+
+    @Inject
+    private ExpenseRepository expenseRepo;
 
     @Inject
     private FacesContext faces;
@@ -45,10 +49,14 @@ public class PurposeController implements Serializable {
         selected = purpose;
         return SecuredPages.Purpose.class;
     }
-    
+
     public void delete(Purpose purpose) {
         repo.remove(purpose);
         msg.addInfo().itemDeleted();
+    }
+
+    public boolean canDeletePurpose(Purpose purpose) {
+        return expenseRepo.findByPurpose(purpose).isEmpty();
     }
 
     public Class<? extends ViewConfig> save() {

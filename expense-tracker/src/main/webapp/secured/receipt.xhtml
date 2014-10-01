@@ -22,10 +22,9 @@
                                          fileUploadListener="#{uploadController.uploadListener}"
                                          acceptedTypes="jpg"
                                          maxFilesQuantity="1"
-                                         addLabel="Choose file"
+                                         addLabel="Choose file (JPG)"
                                          immediateUpload="true"
-                                         listHeight="100px"
-                                         >
+                                         listHeight="100px">
                             <a4j:ajax event="uploadcomplete" execute="@none" render="nameNew,imageOutput" />
                         </rich:fileUpload>
                         <rich:message for="file" id="fileMessage" />

@@ -162,6 +162,10 @@ public class ReceiptController implements Serializable {
         }
     }
 
+    /*
+     * This is session scoped due to a4j:mediaOutput which doesn't append
+     * conversation ID and can't access conversation scope.
+     */
     @Named
     @SessionScoped
     public static class UploadController implements Serializable {
