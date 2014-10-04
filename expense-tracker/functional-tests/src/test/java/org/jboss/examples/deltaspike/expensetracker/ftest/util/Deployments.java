@@ -1,7 +1,6 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest.util;
 
 import java.io.File;
-import org.jboss.examples.deltaspike.expensetracker.ftest.util.TimestampConverter;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -15,7 +14,7 @@ public class Deployments {
     public static WebArchive defaultDeployment() {
         return ShrinkWrap.createFromZipFile(WebArchive.class, new File(TEST_DEPLOYMENT));
     }
-    
+
     /*
      * Sets the project stage to IntegrationTest, changes dates to timestamps.
      */
@@ -23,6 +22,7 @@ public class Deployments {
         return ShrinkWrap.create(JavaArchive.class, "test-tools.jar")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsManifestResource("apache-deltaspike.properties")
-                .addClass(TimestampConverter.class);
+                .addClass(TimestampConverter.class)
+                .addClass(TestCurrencyConverter.class);
     }
 }

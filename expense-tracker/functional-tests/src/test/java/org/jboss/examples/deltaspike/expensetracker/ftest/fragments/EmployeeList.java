@@ -1,11 +1,14 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest.fragments;
 
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
+import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.EmployeeList.Row;
+import org.openqa.selenium.WebElement;
 import org.richfaces.fragment.common.NullFragment;
 import org.richfaces.fragment.dataTable.RichFacesDataTable;
 
-public class EmployeeList extends RichFacesDataTable<NullFragment, EmployeesListRow, NullFragment> {
+public class EmployeeList extends RichFacesDataTable<NullFragment, Row, NullFragment> {
 
-    public EmployeesListRow getEmployeeByUsername(String username) {
+    public Row getEmployeeByUsername(String username) {
         if (advanced().isNoData()) {
             return null;
         }
@@ -14,7 +17,7 @@ public class EmployeeList extends RichFacesDataTable<NullFragment, EmployeesList
             return null;
         }
 
-        for (EmployeesListRow row : getAllRows()) {
+        for (Row row : getAllRows()) {
             if (username.equals(row.getUsername().getText())) {
                 return row;
             }
@@ -22,6 +25,44 @@ public class EmployeeList extends RichFacesDataTable<NullFragment, EmployeesList
 
         return null;
 
+    }
+
+    public static class Row {
+
+        @FindByJQuery(value = "td[id$='employeeUsername']")
+        private WebElement username;
+
+        @FindByJQuery(value = "td[id$='employeeName']")
+        private WebElement name;
+
+        @FindByJQuery(value = "td[id$='employeeEmail']")
+        private WebElement email;
+
+        @FindByJQuery(value = "td[id$='employeeBankAccount']")
+        private WebElement bankAccount;
+
+        @FindByJQuery(value = "input[id$='editEmployeeBtn']")
+        private WebElement editEmployeeLink;
+
+        public WebElement getUsername() {
+            return username;
+        }
+
+        public WebElement getName() {
+            return name;
+        }
+
+        public WebElement getEmail() {
+            return email;
+        }
+
+        public WebElement getBankAccount() {
+            return bankAccount;
+        }
+
+        public void editEmployee() {
+            editEmployeeLink.click();
+        }
     }
 
 }

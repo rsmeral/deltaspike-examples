@@ -29,26 +29,24 @@
                         </rich:fileUpload>
                         <rich:message for="file" id="fileMessage" />
 
-                        <h:panelGrid columns="3" border="0">
+                        <h:panelGrid columns="2" border="0">
                             <h:outputLabel value="Name" for="name" />
-                            <h:inputText id="nameNew" value="#{uploadController.fileName}" label="Name" disabled="#{not rules.canEditReceipts(selectedReport) or not receiptController.isNew(receiptController.selected)}"  rendered="#{receiptController.isNew(receiptController.selected)}"/>
-                            <h:inputText id="nameStored" value="#{receiptController.selected.documentName}" label="Name" disabled="#{not rules.canEditReceipts(selectedReport) or not receiptController.isNew(receiptController.selected)}" rendered="#{not receiptController.isNew(receiptController.selected)}" />
-                            <rich:message for="name" id="nameMessage" />
+                            <h:panelGroup>
+                                <h:inputText id="nameNew" value="#{uploadController.fileName}" label="Name" disabled="#{not rules.canEditReceipts(selectedReport)}"  rendered="#{receiptController.isNew(receiptController.selected)}"/>
+                                <h:outputText id="nameStored" value="#{receiptController.selected.documentName}" rendered="#{not receiptController.isNew(receiptController.selected)}" />
+                                <rich:message for="nameNew" id="nameMessage" />
+                            </h:panelGroup>
+
+                            <h:outputLabel value="Imported By" for="importedBy" rendered="#{not receiptController.isNew(receiptController.selected)}" />
+                            <h:outputText id="importedBy" value="#{receiptController.selected.importedBy.fullName}" rendered="#{not receiptController.isNew(receiptController.selected)}"/>
+
+                            <h:outputLabel value="Import Date" for="importDate" rendered="#{not receiptController.isNew(receiptController.selected)}"/>
+                            <h:outputText id="importDate" value="#{receiptController.selected.importDate}" converter="#{customDateTimeConverter}" rendered="#{not receiptController.isNew(receiptController.selected)}"/>
                         </h:panelGrid>
 
-                        <h:panelGrid columns="3" border="0" rendered="#{not receiptController.isNew(receiptController.selected)}">
-                            <h:outputLabel value="Imported By" for="importedBy" />
-                            <h:outputText id="importedBy" value="#{receiptController.selected.importedBy.fullName}" />
-                            <rich:message for="importedBy" id="importedByMessage" />
-
-                            <h:outputLabel value="Import Date" for="importDate" />
-                            <h:outputText id="importDate" value="#{receiptController.selected.importDate}" converter="#{customDateTimeConverter}" />
-                            <rich:message for="importDate" id="importDateMessage" />
-                        </h:panelGrid>
-
-                        <h:commandButton action="#{receiptController.save()}" value="Save" rendered="#{rules.canEditReceipts(selectedReport) and receiptController.isNew(receiptController.selected)}"/>
-                        <h:commandButton action="#{receiptController.cancel()}" value="Cancel" immediate="true" rendered="#{receiptController.isNew(receiptController.selected)}" />
-                        <h:commandButton action="#{receiptController.cancel()}" value="Back" immediate="true" rendered="#{not receiptController.isNew(receiptController.selected)}" />
+                        <h:commandButton action="#{receiptController.save()}" id="saveBtn" value="Save" rendered="#{rules.canEditReceipts(selectedReport) and receiptController.isNew(receiptController.selected)}"/>
+                        <h:commandButton action="#{receiptController.cancel()}" id="cancelBtn" value="Cancel" immediate="true" rendered="#{receiptController.isNew(receiptController.selected)}" />
+                        <h:commandButton action="#{receiptController.cancel()}" id="backBtn" value="Back" immediate="true" rendered="#{not receiptController.isNew(receiptController.selected)}" />
                     </h:panelGroup>
 
                     <a4j:outputPanel id="imageOutput">
@@ -59,39 +57,48 @@
                                          createContent="#{uploadController.generateUploaded}"
                                          value="#{null}"
                                          style="height: 100px;" 
-                                         cacheable="false">
+                                         cacheable="false"
+                                         styleClass="receiptImage">
                         </a4j:mediaOutput>
+
                         <a4j:mediaOutput rendered="#{not receiptController.isNew(receiptController.selected)}"
-                                         id="imageStored"
-                                         element="img" 
+                                         id="imageStoredLink"
+                                         element="a" 
                                          mimeType="image/jpeg" 
                                          createContent="#{uploadController.generateStored}"
                                          value="#{receiptController.selected.id}"
-                                         style="height: 100px;" 
-                                         cacheable="false">
+                                         cacheable="false"
+                                         fileName="#{receiptController.selected.documentName}.jpg">
+                            <a4j:mediaOutput rendered="#{not receiptController.isNew(receiptController.selected)}"
+                                             id="imageStored"
+                                             element="img" 
+                                             mimeType="image/jpeg" 
+                                             createContent="#{uploadController.generateStored}"
+                                             value="#{receiptController.selected.id}"
+                                             style="height: 100px;"
+                                             cacheable="false"
+                                             styleClass="receiptImage" />
                         </a4j:mediaOutput>
                     </a4j:outputPanel>
                 </h:panelGrid>
             </rich:panel>
             <rich:panel header="Expenses" rendered="#{not receiptController.isNew(receiptController.selected)}">
                 <rich:dataTable value="#{receiptController.coverageMap}" var="entry" id="coveredExpensesTable">
-                    <rich:column id="covered">
+                    <rich:column>
                         <f:facet name="header">Covered?</f:facet>
-                        <h:selectBooleanCheckbox value="#{entry.covered}" disabled="#{not rules.canEditExpenses(selectedReport)}" />
+                        <h:selectBooleanCheckbox value="#{entry.covered}" id="covered" disabled="#{not rules.canEditExpenses(selectedReport)}" />
                     </rich:column>
-                    <rich:column id="expenseDate">
+                    <rich:column>
                         <f:facet name="header">Date</f:facet>
-                        <h:outputText value="#{entry.expense.date}" converter="#{customDateTimeConverter}" />
+                        <h:outputText value="#{entry.expense.date}" id="expenseDate" converter="#{customDateTimeConverter}" />
                     </rich:column>
-                    <rich:column id="expensePurpose">
+                    <rich:column>
                         <f:facet name="header">Purpose</f:facet>
-                        <h:outputText value="#{entry.expense.purpose.name}"/>
+                        <h:outputText value="#{entry.expense.purpose.name}" id="expensePurpose"/>
                     </rich:column>
-                    <rich:column id="expenseValue">
+                    <rich:column>
                         <f:facet name="header">Value</f:facet>
-                        <h:outputText value="#{entry.expense.value}">
-                            <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="0" />
-                        </h:outputText>
+                        <h:outputText value="#{entry.expense.value}" id="expenseValue" converter="#{currencyConverter}" />
                     </rich:column>
                 </rich:dataTable>
 

@@ -17,6 +17,7 @@ import org.jboss.examples.deltaspike.expensetracker.app.extension.Controller;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.End;
 import org.jboss.examples.deltaspike.expensetracker.app.extension.ViewStack;
 import org.jboss.examples.deltaspike.expensetracker.app.resources.AppMessages;
+import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.data.ExpenseReportRepository;
 import org.jboss.examples.deltaspike.expensetracker.data.ReceiptRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
@@ -40,6 +41,9 @@ public class ExpenseReportController implements Serializable {
 
     @Inject
     private ReceiptRepository receiptRepo;
+
+    @Inject
+    private EmployeeRepository employeeRepo;
 
     @Inject
     private ExpenseReportService svc;
@@ -136,6 +140,9 @@ public class ExpenseReportController implements Serializable {
         return viewStack.pop();
     }
 
+    /*
+     * REPORT LISTS
+     */
     @Begin
     public Class<? extends ViewConfig> showAllReportedByCurrentEmployee() {
         reportList.setListTitle(msg.allReportedBy(currentEmployee.getFullName()));
@@ -200,7 +207,7 @@ public class ExpenseReportController implements Serializable {
     }
 
     public boolean isNew(ExpenseReport report) {
-        return report.getId() == null;
+        return report == null || report.getId() == null;
     }
 
     /*
@@ -212,6 +219,13 @@ public class ExpenseReportController implements Serializable {
 
     public void setSelected(ExpenseReport selected) {
         this.selected = selected;
+    }
+
+    /*
+     * ASSIGNEE AUTOCOMPLETE
+     */
+    public List<Employee> suggestEmployee(String namePart) {
+        return employeeRepo.findByPartOfName("%" + namePart + "%");
     }
 
     /*

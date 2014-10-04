@@ -1,16 +1,17 @@
 package org.jboss.examples.deltaspike.expensetracker.ftest.pages;
 
+import java.text.ParseException;
 import java.util.Date;
 import org.jboss.arquillian.graphene.GrapheneElement;
 import org.jboss.arquillian.graphene.page.Location;
-import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ExpenseList;
+import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReceiptList;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReimbursementList;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.richfaces.fragment.common.NullFragment;
-import org.richfaces.fragment.dataTable.RichFacesDataTable;
 import org.richfaces.fragment.inplaceInput.RichFacesInplaceInput;
+
+import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 
 @Location(PAGE_REPORT)
 public class ReportPage extends TemplatePage {
@@ -56,6 +57,13 @@ public class ReportPage extends TemplatePage {
 
     @FindBy(id = "expensesForm:addExpenseBtn")
     private GrapheneElement addExpenseBtn;
+
+    // Receipts
+    @FindBy(id = "receiptsForm:receiptsTable")
+    private ReceiptList receiptsTable;
+
+    @FindBy(id = "expensesForm:addReceiptBtn")
+    private GrapheneElement addReceiptBtn;
 
     // Report balance
     @FindBy(id = "reportBalance")
@@ -121,15 +129,19 @@ public class ReportPage extends TemplatePage {
         reportDescription.sendKeys(desc);
     }
 
-    public RichFacesDataTable<NullFragment, ReimbursementList.Row, ReimbursementList.Footer> getReimbursementsTable() {
+    public ReimbursementList getReimbursementsTable() {
         return reimbursementsTable;
     }
 
-    public RichFacesDataTable<NullFragment, ExpenseList.Row, ExpenseList.Footer> getExpensesTable() {
+    public ExpenseList getExpensesTable() {
         return expensesTable;
     }
 
-    public Long getReportBalance() {
+    public ReceiptList getReceiptsTable() {
+        return receiptsTable;
+    }
+
+    public Long getReportBalance() throws ParseException {
         return Long.valueOf(reportBalance.getText());
     }
 
@@ -146,6 +158,10 @@ public class ReportPage extends TemplatePage {
     }
 
     public void addExpense() {
+        addExpenseBtn.click();
+    }
+
+    public void addReceipt() {
         addExpenseBtn.click();
     }
 

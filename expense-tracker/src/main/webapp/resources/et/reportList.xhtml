@@ -62,9 +62,7 @@
 
             <rich:column rendered="#{not cc.attrs.hideBalance}" id="reportBalance">
                 <f:facet name="header">Balance</f:facet>
-                <h:outputText value="#{expenseReportController.getReportTotal(report)}">
-                    <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
-                </h:outputText>
+                <h:outputText value="#{expenseReportController.getReportTotal(report)}" converter="#{currencyConverter}" />
             </rich:column>
 
         </rich:dataTable>

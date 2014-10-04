@@ -1,5 +1,7 @@
 package org.jboss.examples.deltaspike.expensetracker.app.exception;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -54,6 +56,7 @@ public class ExceptionHandlers {
         msg.addError().unknownErrorOccurred();
         // need this to keep messages between redirects
         faces.getExternalContext().getFlash().setKeepMessages(true);
+        Logger.getLogger(ExceptionHandlers.class.getName()).log(Level.SEVERE, "Handled exception", evt.getException());
         view.navigateTo(DefaultErrorView.class);
         evt.handled();
     }

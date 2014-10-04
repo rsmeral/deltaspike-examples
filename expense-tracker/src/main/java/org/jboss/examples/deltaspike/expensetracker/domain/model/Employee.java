@@ -1,6 +1,5 @@
 package org.jboss.examples.deltaspike.expensetracker.domain.model;
 
-import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -8,11 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
-public class Employee implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Employee extends BaseEntity {
 
     @Size(min = 2, max = 50)
     @Pattern(regexp = "[A-Z][a-z]*")
@@ -47,14 +42,6 @@ public class Employee implements Serializable {
         this.bankAccount = bankAccount;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -81,33 +68,6 @@ public class Employee implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Employee other = (Employee) obj;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", bankAccount=" + bankAccount + '}';
     }
 
 }

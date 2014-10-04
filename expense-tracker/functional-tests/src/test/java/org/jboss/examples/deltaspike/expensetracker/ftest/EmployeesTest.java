@@ -5,13 +5,17 @@ import java.text.MessageFormat;
 import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
+import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.EmployeeList;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.EmployeesPage;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.HomePage;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
-import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.EmployeesListRow;
+
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.EmployeePage;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.LoginPage;
 
@@ -97,13 +101,13 @@ public class EmployeesTest extends ExpenseTrackerFunctionalTestBase {
         homePage.getToolbar().goToEmployees();
         assertEquals(3, employeesPage.getEmployeesTable().getAllRows().size());
 
-        EmployeesListRow employee = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_EMPLOYEE);
+        EmployeeList.Row employee = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_EMPLOYEE);
         assertEquals(NAME_EMPLOYEE, employee.getName().getText());
 
-        EmployeesListRow admin = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_ADMIN);
+        EmployeeList.Row admin = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_ADMIN);
         assertEquals(NAME_ADMIN, admin.getName().getText());
 
-        EmployeesListRow accountant = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_ACCOUNTANT);
+        EmployeeList.Row accountant = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_ACCOUNTANT);
         assertEquals(NAME_ACCOUNTANT, accountant.getName().getText());
     }
 
@@ -113,7 +117,7 @@ public class EmployeesTest extends ExpenseTrackerFunctionalTestBase {
         login(USER_ADMIN, USER_ADMIN);
 
         homePage.getToolbar().goToEmployees();
-        EmployeesListRow employee = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_EMPLOYEE);
+        EmployeeList.Row employee = employeesPage.getEmployeesTable().getEmployeeByUsername(USER_EMPLOYEE);
         employee.editEmployee();
         assertTrue(getLocation().contains(PAGE_EMPLOYEE));
 

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * Money transaction.
  */
 @MappedSuperclass
-public class Transaction {
+public class Transaction extends BaseEntity {
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -34,7 +34,7 @@ public class Transaction {
         this.value = value;
         this.report = report;
     }
-    
+
     public ExpenseReport getReport() {
         return report;
     }
@@ -57,40 +57,5 @@ public class Transaction {
 
     public void setValue(BigDecimal value) {
         this.value = value;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + (this.date != null ? this.date.hashCode() : 0);
-        hash = 73 * hash + (this.value != null ? this.value.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Transaction other = (Transaction) obj;
-        if (this.date != other.date && (this.date == null || !this.date.equals(other.date))) {
-            return false;
-        }
-        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{"
-                + "date=" + date
-                + ", value=" + value
-                + //                ", report=" + report +
-                '}';
     }
 }

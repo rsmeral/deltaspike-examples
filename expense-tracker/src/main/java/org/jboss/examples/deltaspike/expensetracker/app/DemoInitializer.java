@@ -1,5 +1,6 @@
 package org.jboss.examples.deltaspike.expensetracker.app;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 import javax.enterprise.context.ConversationScoped;
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import org.apache.deltaspike.cdise.api.ContextControl;
 import org.apache.deltaspike.core.api.lifecycle.Initialized;
+import org.apache.deltaspike.core.api.resourceloader.InjectableResource;
 import org.jboss.examples.deltaspike.expensetracker.data.*;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.*;
 
@@ -36,7 +38,14 @@ public class DemoInitializer {
     private ExpenseReportRepository expenseReportRepo;
 
     @Inject
+    private ReceiptRepository receiptRepo;
+
+    @Inject
     private ContextControl ctxCtl;
+
+    @Inject
+    @InjectableResource(location = "hotel-x-invoice.jpg")
+    private InputStream receiptStream;
 
     @Inject
     private IDMInitializer idmInit;
@@ -47,7 +56,7 @@ public class DemoInitializer {
      * This can be used to initialize an application, similarly to using
      * @Startup/@Singleton/@PostConstruct.
      */
-    public void initialize(@Observes @Initialized ServletContext ctx) {
+    public void initialize(@Observes @Initialized ServletContext ctx) throws Exception {
         /*
          * At this time, only the application scope is available. We need to
          * start additional scopes which are used by beans we intend to use,
@@ -78,10 +87,14 @@ public class DemoInitializer {
 
         expenseReportRepo.save(report);
 
+        byte[] receiptBytes = readStreamToByteArray(receiptStream);
+
+        Receipt receipt = receiptRepo.save(new Receipt(new GregorianCalendar(2014, 6, 15).getTime(), john, receiptBytes, "Hotel X invoice", report));
+
         expenseRepo.save(new Expense(food, null, new GregorianCalendar(2013, 4, 14).getTime(), BigDecimal.valueOf(25), report));
         expenseRepo.save(new Expense(food, null, new GregorianCalendar(2013, 4, 15).getTime(), BigDecimal.valueOf(20), report));
         expenseRepo.save(new Expense(food, null, new GregorianCalendar(2013, 4, 16).getTime(), BigDecimal.valueOf(20), report));
-        expenseRepo.save(new Expense(accomodation, null, new GregorianCalendar(2013, 4, 16).getTime(), BigDecimal.valueOf(100), report));
+        expenseRepo.save(new Expense(accomodation, receipt, new GregorianCalendar(2013, 4, 16).getTime(), BigDecimal.valueOf(100), report));
         expenseRepo.save(new Expense(travel, null, new GregorianCalendar(2013, 4, 14).getTime(), BigDecimal.valueOf(45), report));
         expenseRepo.save(new Expense(travel, null, new GregorianCalendar(2013, 4, 16).getTime(), BigDecimal.valueOf(50), report));
 
@@ -90,6 +103,21 @@ public class DemoInitializer {
         ctxCtl.stopContext(ConversationScoped.class);
         ctxCtl.stopContext(RequestScoped.class);
         ctxCtl.stopContext(SessionScoped.class);
+    }
+
+    private byte[] readStreamToByteArray(InputStream is) throws Exception {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        int nRead;
+        byte[] data = new byte[16384];
+
+        while ((nRead = is.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+        }
+
+        buffer.flush();
+
+        return buffer.toByteArray();
     }
 
 }

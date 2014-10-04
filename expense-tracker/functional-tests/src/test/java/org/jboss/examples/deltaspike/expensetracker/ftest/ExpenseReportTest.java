@@ -7,7 +7,6 @@ import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReportList;
-import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.ReportListRow;
 import org.jboss.examples.deltaspike.expensetracker.ftest.pages.*;
 import org.jboss.examples.deltaspike.expensetracker.ftest.util.ExpenseTrackerFunctionalTestBase;
 import org.junit.Test;
@@ -47,7 +46,7 @@ public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
 
     @Test
     @InSequence(1)
-    public void initialDataPresent() {
+    public void initialDataPresent() throws Exception {
         login(USER_EMPLOYEE, USER_EMPLOYEE);
 
         final String REPORT_NAME = INIT_REPORT_NAME;
@@ -64,7 +63,7 @@ public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
 
     @Test
     @InSequence(2)
-    public void reportCreation() {
+    public void reportCreation() throws Exception {
         login(USER_EMPLOYEE, USER_EMPLOYEE);
 
         // Save basic details
@@ -132,7 +131,7 @@ public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
 
     @Test
     @InSequence(3)
-    public void reportWorkflow() {
+    public void reportWorkflow() throws Exception {
         login(USER_EMPLOYEE, USER_EMPLOYEE);
 
         homePage.getReportedByCurrentUser().getReportByName(NEW_REPORT_NAME).editReport();
@@ -192,12 +191,12 @@ public class ExpenseReportTest extends ExpenseTrackerFunctionalTestBase {
         assertReportInTable(reportsPage.getReportsTable(), NEW_REPORT_NAME, NEW_REPORT_DESC, null, null, STATUS_SETTLED, NAME_EMPLOYEE, NAME_ACCOUNTANT, null);
     }
 
-    private static void assertReportInTable(ReportList table, String name, String desc, String lastChangedBy, Date lastChangeDate, String status, String reporter, String assignee, Long balance) {
+    private static void assertReportInTable(ReportList table, String name, String desc, String lastChangedBy, Date lastChangeDate, String status, String reporter, String assignee, Long balance) throws Exception {
         if (name == null) {
             fail("Can't assert null report");
         }
 
-        ReportListRow report = table.getReportByName(name);
+        ReportList.Row report = table.getReportByName(name);
 
         if (desc != null) {
             assertEquals(desc, report.getDesc());

@@ -15,7 +15,7 @@
         <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
         <version.jboss.bom.eap>6.2.0-redhat-1</version.jboss.bom.eap>
         <version.picketlink.javaee.bom>2.6.0.Final</version.picketlink.javaee.bom>
-        
+                
         <version.compiler.plugin>3.1</version.compiler.plugin>
         <version.war.plugin>2.3</version.war.plugin>
         <version.resources.plugin>2.6</version.resources.plugin>

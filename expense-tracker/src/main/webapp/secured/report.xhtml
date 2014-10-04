@@ -21,6 +21,13 @@
                     <h:outputText value="#{selectedReport.status}" id="reportStatus" />
 
                     <h:outputLabel for="reportAssignee" value="Assignee" />
+                    <!-- Should become available in RF 4.5 -->
+<!--                    <rich:select
+                        autocomplete="#{expenseReportController.suggestEmployee}" 
+                        value="#{selectedReport.assignee}" 
+                        mode="cachedAjax" 
+                        rendered="#{idm.hasRole(ADMIN)}" 
+                        id="employeeSuggest" />-->
                     <h:outputText value="#{selectedReport.assignee.fullName}" id="reportAssignee" />
 
                     <h:outputLabel for="reportReporter" value="Reporter" />
@@ -61,9 +68,7 @@
 
                     <rich:column id="value">
                         <f:facet name="header">Value</f:facet>
-                        <h:outputText value="#{reimbursement.value}">
-                            <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
-                        </h:outputText>
+                        <h:outputText value="#{reimbursement.value}" converter="#{currencyConverter}" />
                     </rich:column>
 
                     <rich:column id="actions">
@@ -76,9 +81,7 @@
                         <rich:columnGroup>
                             <rich:column>Reimbursements total:</rich:column>
                             <rich:column colspan="5" id="total">
-                                <h:outputText value="#{expenseReportController.getReimbursementsTotal(selectedReport)}">
-                                    <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
-                                </h:outputText>
+                                <h:outputText value="#{expenseReportController.getReimbursementsTotal(selectedReport)}" converter="#{currencyConverter}" />
                             </rich:column>
                         </rich:columnGroup>
                     </f:facet>
@@ -114,9 +117,7 @@
 
                     <rich:column id="value">
                         <f:facet name="header">Value</f:facet>
-                        <h:outputText value="#{expense.value}">
-                            <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
-                        </h:outputText>
+                        <h:outputText value="#{expense.value}" converter="#{currencyConverter}" />
                     </rich:column>
 
                     <rich:column id="actions">
@@ -129,9 +130,7 @@
                         <rich:columnGroup>
                             <rich:column>Expenses total:</rich:column>
                             <rich:column colspan="5" id="total">
-                                <h:outputText value="#{expenseReportController.getExpensesTotal(selectedReport)}">
-                                    <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
-                                </h:outputText>
+                                <h:outputText value="#{expenseReportController.getExpensesTotal(selectedReport)}" converter="#{currencyConverter}" />
                             </rich:column>
                         </rich:columnGroup>
                     </f:facet>
@@ -144,9 +143,7 @@
         </h:form>
 
         <rich:panel header="Report Balance">
-            <h:outputText value="#{expenseReportController.getReportTotal(selectedReport)}" id="reportBalance">
-                <f:convertNumber maxFractionDigits="0" currencySymbol="$" type="currency"/>
-            </h:outputText>
+            <h:outputText value="#{expenseReportController.getReportTotal(selectedReport)}" id="reportBalance" converter="#{currencyConverter}" />
         </rich:panel>
 
         <h:form id="receiptsForm">

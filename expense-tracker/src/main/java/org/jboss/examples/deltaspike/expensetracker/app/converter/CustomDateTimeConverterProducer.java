@@ -11,7 +11,7 @@ import org.apache.deltaspike.core.api.exclude.Exclude;
 import org.apache.deltaspike.core.api.projectstage.ProjectStage;
 
 @Exclude(ifProjectStage = ProjectStage.IntegrationTest.class)
-public class DateTimeConverterProducer {
+public class CustomDateTimeConverterProducer {
 
     @Inject
     @ConfigProperty(name = "dateTimePattern")
@@ -20,11 +20,12 @@ public class DateTimeConverterProducer {
     @Produces
     @ApplicationScoped
     @Named("customDateTimeConverter")
-    public Converter produceConverter() {
+    public Converter produce() {
         return new DateTimeConverter() {
             {
                 setPattern(dateTimePattern);
             }
+
         };
     }
 

@@ -8,10 +8,12 @@ public class TestConstants {
     public static final String NAME_EMPLOYEE_FIRST = "John";
     public static final String NAME_EMPLOYEE_LAST = "Employee";
     public static final String NAME_EMPLOYEE = NAME_EMPLOYEE_FIRST + " " + NAME_EMPLOYEE_LAST;
-    
+
     public static final String INIT_REPORT_NAME = "GeeCon 2013";
     public static final String INIT_REPORT_DESC = "Krakow, 3 days";
     public static final Long INIT_REPORT_BALANCE = -110l;
+
+    public static final String INIT_RECEIPT_NAME = "Hotel X invoice";
 
     public static final String USER_ACCOUNTANT = "anna";
     public static final String NAME_ACCOUNTANT = "Anna Accountant";
@@ -48,14 +50,14 @@ public class TestConstants {
     public static final String MSG_REPORT_SUBMITTED = "Report ''{0}'' submitted";
     public static final String MSG_REPORT_APPROVED = "Report ''{0}'' approved";
     public static final String MSG_REPORT_SETTLED = "Report ''{0}'' settled";
-    
+
     public static final String STATUS_SUBMITTED = "SUBMITTED";
     public static final String STATUS_OPEN = "OPEN";
     public static final String STATUS_SETTLED = "SETTLED";
-    
+
     public static final String PURPOSE_ACCOMODATION = "Accommodation";
     public static final String PURPOSE_FUEL = "Fuel";
-    
+
     public static final String UNASSIGNED = "Unassigned";
     public static final String REPORTED_BY = "Reported by";
     public static final String ASSIGNED_TO = "Assigned to";

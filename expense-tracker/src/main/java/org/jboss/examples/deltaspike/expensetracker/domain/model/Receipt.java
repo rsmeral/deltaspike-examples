@@ -1,6 +1,5 @@
 package org.jboss.examples.deltaspike.expensetracker.domain.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -9,17 +8,14 @@ import org.apache.deltaspike.data.impl.audit.AuditEntityListener;
 
 @Entity
 @EntityListeners(AuditEntityListener.class)
-public class Receipt implements Serializable {
+public class Receipt extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    public Receipt(Date importDate, Employee importedBy, byte[] document, String documentName) {
+    public Receipt(Date importDate, Employee importedBy, byte[] document, String documentName, ExpenseReport report) {
         this.importDate = importDate;
         this.importedBy = importedBy;
         this.document = document;
         this.documentName = documentName;
+        this.report = report;
     }
 
     public Receipt() {
@@ -42,14 +38,6 @@ public class Receipt implements Serializable {
 
     @ManyToOne(optional = false)
     private ExpenseReport report;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Date getImportDate() {
         return importDate;
@@ -100,36 +88,4 @@ public class Receipt implements Serializable {
         this.expenses = expenses;
     }
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Receipt)) {
-            return false;
-        }
-
-        Receipt receipt = (Receipt) o;
-
-        if (getId() != null ? !getId().equals(receipt.getId()) : receipt.getId() != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Receipt{"
-                + "id=" + getId()
-                + ", importDate=" + getImportDate()
-                + ", importedBy=" + getImportedBy()
-                + ", documentName='" + getDocumentName() + '\''
-                + '}';
-    }
 }

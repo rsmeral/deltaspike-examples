@@ -32,3 +32,8 @@ body {
 .demoPanel li {
     padding: 5px 0;
 }
+
+.receiptImage {
+    border: 1px solid #cccccc;
+    padding: 3px;
+}
