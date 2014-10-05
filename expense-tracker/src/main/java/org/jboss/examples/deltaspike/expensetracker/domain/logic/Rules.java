@@ -14,10 +14,18 @@ import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ExpenseReport;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus;
 
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.APPROVE;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.ASSIGN;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.REJECT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SETTLE;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.SUBMIT;
+import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.UNASSIGN;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ACCOUNTANT;
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.EMPLOYEE;
-import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.*;
-import static org.jboss.examples.deltaspike.expensetracker.domain.logic.Operation.Type.*;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.APPROVED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.REJECTED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.SETTLED;
+import static org.jboss.examples.deltaspike.expensetracker.domain.model.ReportStatus.SUBMITTED;
 
 /**
  * Contains state-transfer conditions and authorization rules for
@@ -65,7 +73,7 @@ public class Rules implements Serializable {
     /*
      * STATE-BASED RULES
      */
-    public static boolean isOpenable(@Selected ExpenseReport report) {
+    public static boolean isOpenable(ExpenseReport report) {
         return report.getStatus() == null || report.getStatus() == REJECTED;
     }
 

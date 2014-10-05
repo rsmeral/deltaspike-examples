@@ -46,6 +46,9 @@ public abstract class BaseEntity implements Serializable {
         return true;
     }
 
+    /*
+     * An example of how not to implement a solid dynamic toString method.
+     */
     @Override
     public String toString() {
         List<String> attrList = new ArrayList<String>();
