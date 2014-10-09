@@ -3,9 +3,11 @@ package org.jboss.examples.deltaspike.expensetracker.service;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.Employee;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
@@ -33,6 +35,9 @@ public class EmployeeService {
 
     public static final String EMPLOYEE_ID_ATTRIBUTE = "employeeId";
 
+    @Inject
+    private Event<Authorizations.Modified> authModifiedEvent;
+    
     @Inject
     private IdentityManager idm;
 
@@ -83,6 +88,7 @@ public class EmployeeService {
     @Transactional(qualifier = PicketLink.class)
     public void setRoles(Employee emp, String... roles) {
         setRoles(getUserForEmployee(emp), roles);
+        authModifiedEvent.fire(new Authorizations.Modified());
     }
 
     private void setRoles(IdentityType identity, String... roles) {
@@ -95,8 +101,7 @@ public class EmployeeService {
         }
     }
 
-    public List<String> getRoles(Employee employee) {
-        User user = getUserForEmployee(employee);
+    public List<String> getRoles(User user) {
         List<String> result = new ArrayList<String>();
         for (String role : EmployeeRole.getAllRoles()) {
             if (BasicModel.hasRole(relMgr, user, BasicModel.getRole(idm, role))) {
@@ -104,5 +109,10 @@ public class EmployeeService {
             }
         }
         return result;
+    }
+    
+    public List<String> getRoles(Employee employee) {
+        User user = getUserForEmployee(employee);
+        return getRoles(user);
     }
 }

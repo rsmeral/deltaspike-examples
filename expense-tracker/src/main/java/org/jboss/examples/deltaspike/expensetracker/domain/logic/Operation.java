@@ -1,5 +1,6 @@
 package org.jboss.examples.deltaspike.expensetracker.domain.logic;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import org.apache.deltaspike.security.api.authorization.SecurityBindingType;
@@ -14,6 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @SecurityBindingType
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
+@Inherited
 public @interface Operation {
 
     public enum Type {

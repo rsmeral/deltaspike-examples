@@ -6,10 +6,14 @@
                  xmlns:et="http://java.sun.com/jsf/composite/et"
                  xmlns:rich="http://richfaces.org/rich"
                  xmlns:f="http://java.sun.com/jsf/core"
-                 xmlns:a4j="http://richfaces.org/a4j">
+                 xmlns:a4j="http://richfaces.org/a4j"
+                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="content">
-
+        <c:set var="canEditReceipts" value="#{rules.canEditReceipts(expenseReportController.selected)}" scope="request" />
+        <c:set var="canEditExpenses" value="#{rules.canEditExpenses(expenseReportController.selected)}" scope="request" />
+        <c:set var="isReceiptNew" value="#{receiptController.isNew(receiptController.selected)}" scope="request" />
+        
         <et:reportView report="#{receiptController.selected.report}" id="selectedReport" />
 
         <h:form id="receiptForm">
@@ -18,7 +22,7 @@
 
                     <h:panelGroup>
                         <rich:fileUpload id="file" 
-                                         rendered="#{rules.canEditReceipts(selectedReport) and receiptController.isNew(receiptController.selected)}"
+                                         rendered="#{canEditReceipts and isReceiptNew}"
                                          fileUploadListener="#{uploadController.uploadListener}"
                                          acceptedTypes="jpg"
                                          maxFilesQuantity="1"
@@ -32,25 +36,25 @@
                         <h:panelGrid columns="2" border="0">
                             <h:outputLabel value="Name" for="name" />
                             <h:panelGroup>
-                                <h:inputText id="nameNew" value="#{uploadController.fileName}" label="Name" disabled="#{not rules.canEditReceipts(selectedReport)}"  rendered="#{receiptController.isNew(receiptController.selected)}"/>
-                                <h:outputText id="nameStored" value="#{receiptController.selected.documentName}" rendered="#{not receiptController.isNew(receiptController.selected)}" />
+                                <h:inputText id="nameNew" value="#{uploadController.fileName}" label="Name" disabled="#{not canEditReceipts}"  rendered="#{isReceiptNew}"/>
+                                <h:outputText id="nameStored" value="#{receiptController.selected.documentName}" rendered="#{not isReceiptNew}" />
                                 <rich:message for="nameNew" id="nameMessage" />
                             </h:panelGroup>
 
-                            <h:outputLabel value="Imported By" for="importedBy" rendered="#{not receiptController.isNew(receiptController.selected)}" />
-                            <h:outputText id="importedBy" value="#{receiptController.selected.importedBy.fullName}" rendered="#{not receiptController.isNew(receiptController.selected)}"/>
+                            <h:outputLabel value="Imported By" for="importedBy" rendered="#{not isReceiptNew}" />
+                            <h:outputText id="importedBy" value="#{receiptController.selected.importedBy.fullName}" rendered="#{not isReceiptNew}"/>
 
-                            <h:outputLabel value="Import Date" for="importDate" rendered="#{not receiptController.isNew(receiptController.selected)}"/>
-                            <h:outputText id="importDate" value="#{receiptController.selected.importDate}" converter="#{customDateTimeConverter}" rendered="#{not receiptController.isNew(receiptController.selected)}"/>
+                            <h:outputLabel value="Import Date" for="importDate" rendered="#{not isReceiptNew}"/>
+                            <h:outputText id="importDate" value="#{receiptController.selected.importDate}" converter="#{customDateTimeConverter}" rendered="#{not isReceiptNew}"/>
                         </h:panelGrid>
 
-                        <h:commandButton action="#{receiptController.save()}" id="saveBtn" value="Save" rendered="#{rules.canEditReceipts(selectedReport) and receiptController.isNew(receiptController.selected)}"/>
-                        <h:commandButton action="#{receiptController.cancel()}" id="cancelBtn" value="Cancel" immediate="true" rendered="#{receiptController.isNew(receiptController.selected)}" />
-                        <h:commandButton action="#{receiptController.cancel()}" id="backBtn" value="Back" immediate="true" rendered="#{not receiptController.isNew(receiptController.selected)}" />
+                        <h:commandButton action="#{receiptController.save()}" id="saveBtn" value="Save" rendered="#{canEditReceipts and isReceiptNew}"/>
+                        <h:commandButton action="#{receiptController.cancel()}" id="cancelBtn" value="Cancel" immediate="true" rendered="#{isReceiptNew}" />
+                        <h:commandButton action="#{receiptController.cancel()}" id="backBtn" value="Back" immediate="true" rendered="#{not isReceiptNew}" />
                     </h:panelGroup>
 
                     <a4j:outputPanel id="imageOutput">
-                        <a4j:mediaOutput rendered="#{receiptController.isNew(receiptController.selected) and not empty uploadController.data}"
+                        <a4j:mediaOutput rendered="#{isReceiptNew and not empty uploadController.data}"
                                          id="imageNew"
                                          element="img" 
                                          mimeType="image/jpeg" 
@@ -61,7 +65,7 @@
                                          styleClass="receiptImage">
                         </a4j:mediaOutput>
 
-                        <a4j:mediaOutput rendered="#{not receiptController.isNew(receiptController.selected)}"
+                        <a4j:mediaOutput rendered="#{not isReceiptNew}"
                                          id="imageStoredLink"
                                          element="a" 
                                          mimeType="image/jpeg" 
@@ -69,7 +73,7 @@
                                          value="#{receiptController.selected.id}"
                                          cacheable="false"
                                          fileName="#{receiptController.selected.documentName}.jpg">
-                            <a4j:mediaOutput rendered="#{not receiptController.isNew(receiptController.selected)}"
+                            <a4j:mediaOutput rendered="#{not isReceiptNew}"
                                              id="imageStored"
                                              element="img" 
                                              mimeType="image/jpeg" 
@@ -82,11 +86,11 @@
                     </a4j:outputPanel>
                 </h:panelGrid>
             </rich:panel>
-            <rich:panel header="Expenses" rendered="#{not receiptController.isNew(receiptController.selected)}">
+            <rich:panel header="Expenses" rendered="#{not isReceiptNew}">
                 <rich:dataTable value="#{receiptController.coverageMap}" var="entry" id="coveredExpensesTable">
                     <rich:column>
                         <f:facet name="header">Covered?</f:facet>
-                        <h:selectBooleanCheckbox value="#{entry.covered}" id="covered" disabled="#{not rules.canEditExpenses(selectedReport)}" />
+                        <h:selectBooleanCheckbox value="#{entry.covered}" id="covered" disabled="#{not canEditExpenses}" />
                     </rich:column>
                     <rich:column>
                         <f:facet name="header">Date</f:facet>
@@ -102,7 +106,7 @@
                     </rich:column>
                 </rich:dataTable>
 
-                <h:panelGroup rendered="#{rules.canEditExpenses(selectedReport)}">
+                <h:panelGroup rendered="#{canEditExpenses}">
                     <h:commandButton action="#{receiptController.updateCoverage()}" value="Update coverage" id="updateCoverageBtn"/> of selected expenses by this receipt
                 </h:panelGroup>
             </rich:panel>

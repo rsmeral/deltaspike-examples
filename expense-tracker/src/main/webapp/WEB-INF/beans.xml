@@ -5,7 +5,6 @@
     
     <interceptors>
         <class>org.jboss.examples.deltaspike.expensetracker.app.extension.ConversationInterceptor</class>
-        <class>org.jboss.examples.deltaspike.expensetracker.domain.logic.Rules$AdminInterceptor</class>
         <class>org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor</class>
         <class>org.apache.deltaspike.security.impl.extension.SecurityInterceptor</class>
     </interceptors>

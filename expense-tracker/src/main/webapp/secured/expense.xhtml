@@ -5,10 +5,13 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:et="http://java.sun.com/jsf/composite/et"
-                template="/resources/template/layout.xhtml">
+                template="/resources/template/layout.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="content">
-
+        <c:set var="canEditExpenses" value="#{rules.canEditExpenses(expenseReportController.selected)}" scope="request" />
+        <c:set var="canEditReceipts" value="#{rules.canEditReceipts(expenseReportController.selected)}" scope="request" />
+        
         <et:reportView report="#{expenseController.selected.report}" id="selectedReport" />
 
         <h:form id="expenseForm">
@@ -16,7 +19,7 @@
                 <h:panelGrid columns="3" border="0">
                     <h:outputLabel value="Purpose:" for="purpose" />
                     <h:panelGroup>
-                        <h:selectOneMenu id="purpose" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not rules.canEditExpenses(selectedReport)}" converter="#{purposeConverter}">
+                        <h:selectOneMenu id="purpose" label="Purpose" value="#{expenseController.selected.purpose}" disabled="#{not canEditExpenses}" converter="#{purposeConverter}">
                             <f:selectItems value="#{purposes}" var="p" itemValue="#{p}" itemLabel="#{p.name}" itemDescription="#{p.description}" />
                         </h:selectOneMenu>
                     </h:panelGroup>
@@ -24,24 +27,24 @@
 
                     <h:outputLabel value="Receipt:" for="receipt" />
                     <h:panelGroup>
-                        <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" disabled="#{not rules.canEditReceipts(selectedReport)}" converter="#{receiptConverter}">
+                        <h:selectOneMenu id="receipt" label="Receipt" value="#{expenseController.selected.receipt}" disabled="#{not canEditReceipts}" converter="#{receiptConverter}">
                             <f:selectItem value="#{null}" itemLabel="" itemValue="#{null}" noSelectionOption="true" />
                             <f:selectItems value="#{expenseReportController.reportReceipts}" var="r" itemLabel="#{r.documentName}" itemValue="#{r}" />
                         </h:selectOneMenu>
-                        <h:commandButton id="addReceiptBtn" action="#{receiptController.create(expenseController.selected.report)}" rendered="#{rules.canEditReceipts(selectedReport)}" value="Add receipt" immediate="true" />
+                        <h:commandButton id="addReceiptBtn" action="#{receiptController.create(expenseController.selected.report)}" rendered="#{canEditReceipts}" value="Add receipt" immediate="true" />
                     </h:panelGroup>
                     <rich:message for="receipt" id="receiptMessage"/>
 
                     <h:outputLabel value="Date:" for="date" />
-                    <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not rules.canEditExpenses(selectedReport)}"/>
+                    <rich:calendar value="#{expenseController.selected.date}" id="date" disabled="#{not canEditExpenses}"/>
                     <rich:message for="date" id="dateMessage" />
 
                     <h:outputLabel value="Value:" for="value" />
-                    <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not rules.canEditExpenses(selectedReport)}"/>
+                    <h:inputText id="value" value="#{expenseController.selected.value}" label="Value"  disabled="#{not canEditExpenses}"/>
                     <rich:message for="value" id="valueMessage" />
 
                     <f:facet name="footer">
-                        <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{rules.canEditExpenses(selectedReport)}" id="saveBtn" />
+                        <h:commandButton action="#{expenseController.save()}" value="Save" rendered="#{canEditExpenses}" id="saveBtn" />
                         <h:commandButton action="#{expenseController.cancel()}" value="Cancel" immediate="true" id="cancelBtn" />
                     </f:facet>
                 </h:panelGrid>

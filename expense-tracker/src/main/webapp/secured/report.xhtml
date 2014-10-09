@@ -4,46 +4,53 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:rich="http://richfaces.org/rich"
-                template="/resources/template/layout.xhtml">
+                template="/resources/template/layout.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <f:metadata>
         <f:event type="preRenderView" listener="#{expenseReportController.doRefresh()}" />
     </f:metadata>
     
     <ui:define name="content">
+        <c:set var="canEditReport" value="#{rules.canEditReport(expenseReportController.selected)}" scope="request" />
+        <c:set var="canEditReimbursements" value="#{rules.canEditReimbursements(expenseReportController.selected)}" scope="request" />
+        <c:set var="canEditExpenses" value="#{rules.canEditExpenses(expenseReportController.selected)}" scope="request" />
+        <c:set var="canEditReceipts" value="#{rules.canEditReceipts(expenseReportController.selected)}" scope="request" />
+        <c:set var="isReportNew" value="#{expenseReportController.isNew(expenseReportController.selected)}" scope="request" />
+        
         <h:form id="reportForm">
             <rich:panel header="Report">
                 <h:panelGrid id="reportPanel" columns="2" border="0">
                     <h:outputLabel for="reportName" value="Name" />
-                    <rich:inplaceInput value="#{selectedReport.name}" disabled="#{not rules.canEditReport(selectedReport)}" defaultLabel="Name" id="reportName" />
+                    <rich:inplaceInput value="#{expenseReportController.selected.name}" disabled="#{not canEditReport}" defaultLabel="Name" id="reportName" />
 
                     <h:outputLabel for="reportStatus" value="Status" />
-                    <h:outputText value="#{selectedReport.status}" id="reportStatus" />
+                    <h:outputText value="#{expenseReportController.selected.status}" id="reportStatus" />
 
                     <h:outputLabel for="reportAssignee" value="Assignee" />
                     <!-- Should become available in RF 4.5 -->
 <!--                    <rich:select
                         autocomplete="#{expenseReportController.suggestEmployee}" 
-                        value="#{selectedReport.assignee}" 
+                        value="#{expenseReportController.selected.assignee}" 
                         mode="cachedAjax" 
-                        rendered="#{idm.hasRole(ADMIN)}" 
+                        rendered="#{idm.admin}" 
                         id="employeeSuggest" />-->
-                    <h:outputText value="#{selectedReport.assignee.fullName}" id="reportAssignee" />
+                    <h:outputText value="#{expenseReportController.selected.assignee.fullName}" id="reportAssignee" />
 
                     <h:outputLabel for="reportReporter" value="Reporter" />
-                    <h:outputText value="#{selectedReport.reporter.fullName}" id="reportReporter" />
+                    <h:outputText value="#{expenseReportController.selected.reporter.fullName}" id="reportReporter" />
 
                     <h:outputLabel for="reportDescription" value="Description" />
-                    <h:inputTextarea value="#{selectedReport.description}" id="reportDescription" disabled="#{not rules.canEditReport(selectedReport)}" />
+                    <h:inputTextarea value="#{expenseReportController.selected.description}" id="reportDescription" disabled="#{not canEditReport}" />
 
                     <h:outputLabel for="reportLastChange" value="Last changed" />
                     <h:panelGroup id="reportLastChange">
-                        <h:outputText value="#{selectedReport.lastChangeDate}" converter="#{customDateTimeConverter}" id="reportLastChangeDate"/> by 
-                        <h:outputText value="#{selectedReport.lastChangedBy.fullName}" id="reportLastChangeBy"/>
+                        <h:outputText value="#{expenseReportController.selected.lastChangeDate}" converter="#{customDateTimeConverter}" id="reportLastChangeDate"/> by 
+                        <h:outputText value="#{expenseReportController.selected.lastChangedBy.fullName}" id="reportLastChangeBy"/>
                     </h:panelGroup>
 
                     <f:facet name="footer">
-                        <h:panelGroup rendered="#{rules.canEditReport(selectedReport)}">
+                        <h:panelGroup rendered="#{canEditReport}">
                             <h:commandButton value="Save" action="#{expenseReportController.save()}" id="saveBtn"/>
                             <h:commandButton value="Cancel" action="#{expenseReportController.cancel()}" immediate="true" id="cancelBtn"/>
                         </h:panelGroup>
@@ -54,8 +61,9 @@
 
         <h:form id="reimbursementsForm">
             <!-- REIMBURSEMENTS -->
-            <rich:panel header="Reimbursements" rendered="#{not expenseReportController.isNew(selectedReport)}">
-                <rich:dataTable value="#{selectedReport.reimbursements}" var="reimbursement" rendered="#{not empty selectedReport.reimbursements}" id="reimbursementsTable">
+            <rich:panel header="Reimbursements" rendered="#{not isReportNew}">
+                <ui:param name="reportReimbursements" value="#{expenseReportController.selected.reimbursements}" />
+                <rich:dataTable value="#{reportReimbursements}" var="reimbursement" rendered="#{not empty reportReimbursements}" id="reimbursementsTable">
                     <rich:column id="date">
                         <f:facet name="header">Date</f:facet>
                         <h:outputText value="#{reimbursement.date}" converter="#{customDateTimeConverter}" />
@@ -73,30 +81,30 @@
 
                     <rich:column id="actions">
                         <f:facet name="header">Action</f:facet>
-                        <h:commandButton action="#{reimbursementController.edit(reimbursement)}" rendered="#{rules.canEditReimbursements(selectedReport)}" id="edit" value="Edit" />
-                        <h:commandButton action="#{reimbursementController.delete(reimbursement)}" rendered="#{rules.canEditReimbursements(selectedReport)}" id="delete" value="Delete" />
+                        <h:commandButton action="#{reimbursementController.edit(reimbursement)}" rendered="#{canEditReimbursements}" id="edit" value="Edit" />
+                        <h:commandButton action="#{reimbursementController.delete(reimbursement)}" rendered="#{canEditReimbursements}" id="delete" value="Delete" />
                     </rich:column>
 
                     <f:facet name="footer">
                         <rich:columnGroup>
                             <rich:column>Reimbursements total:</rich:column>
                             <rich:column colspan="5" id="total">
-                                <h:outputText value="#{expenseReportController.getReimbursementsTotal(selectedReport)}" converter="#{currencyConverter}" />
+                                <h:outputText value="#{expenseReportController.getReimbursementsTotal(expenseReportController.selected)}" converter="#{currencyConverter}" />
                             </rich:column>
                         </rich:columnGroup>
                     </f:facet>
                 </rich:dataTable>
 
-                <h:panelGroup rendered="#{rules.canEditReimbursements(selectedReport)}">
-                    <h:commandButton action="#{reimbursementController.create(selectedReport)}" value="Add reimbursement" id="addReimbursementBtn"/>
+                <h:panelGroup rendered="#{canEditReimbursements}">
+                    <h:commandButton action="#{reimbursementController.create(expenseReportController.selected)}" value="Add reimbursement" id="addReimbursementBtn"/>
                 </h:panelGroup>
             </rich:panel>
         </h:form>
 
         <h:form id="expensesForm">
             <!-- EXPENSES -->
-            <rich:panel header="Expenses" rendered="#{not expenseReportController.isNew(selectedReport)}">
-                <rich:dataTable value="#{selectedReport.expenses}" rendered="#{not empty selectedReport.expenses}" var="expense"  id="expensesTable">
+            <rich:panel header="Expenses" rendered="#{not isReportNew}">
+                <rich:dataTable value="#{expenseReportController.selected.expenses}" rendered="#{not empty expenseReportController.selected.expenses}" var="expense"  id="expensesTable">
 
                     <rich:column id="date">
                         <f:facet name="header">Date</f:facet>
@@ -122,34 +130,34 @@
 
                     <rich:column id="actions">
                         <f:facet name="header">Action</f:facet>
-                        <h:commandButton action="#{expenseController.edit(expense)}" rendered="#{rules.canEditExpenses(selectedReport)}" value="Edit" id="edit" />
-                        <h:commandButton action="#{expenseController.delete(expense)}" rendered="#{rules.canEditExpenses(selectedReport)}" value="Delete" id="delete" />
+                        <h:commandButton action="#{expenseController.edit(expense)}" rendered="#{canEditExpenses}" value="Edit" id="edit" />
+                        <h:commandButton action="#{expenseController.delete(expense)}" rendered="#{canEditExpenses}" value="Delete" id="delete" />
                     </rich:column>
 
                     <f:facet name="footer">
                         <rich:columnGroup>
                             <rich:column>Expenses total:</rich:column>
                             <rich:column colspan="5" id="total">
-                                <h:outputText value="#{expenseReportController.getExpensesTotal(selectedReport)}" converter="#{currencyConverter}" />
+                                <h:outputText value="#{expenseReportController.getExpensesTotal(expenseReportController.selected)}" converter="#{currencyConverter}" />
                             </rich:column>
                         </rich:columnGroup>
                     </f:facet>
                 </rich:dataTable>
-                <h:panelGroup rendered="#{rules.canEditExpenses(selectedReport)}">
-                    <h:commandButton action="#{expenseController.create(selectedReport)}" value="Add Expense" id="addExpenseBtn"/>
+                <h:panelGroup rendered="#{canEditExpenses}">
+                    <h:commandButton action="#{expenseController.create(expenseReportController.selected)}" value="Add Expense" id="addExpenseBtn"/>
                 </h:panelGroup>
             </rich:panel>
 
         </h:form>
 
         <rich:panel header="Report Balance">
-            <h:outputText value="#{expenseReportController.getReportTotal(selectedReport)}" id="reportBalance" converter="#{currencyConverter}" />
+            <h:outputText value="#{expenseReportController.getReportTotal(expenseReportController.selected)}" id="reportBalance" converter="#{currencyConverter}" />
         </rich:panel>
 
         <h:form id="receiptsForm">
             <!-- RECEIPTS -->
-            <rich:panel header="Receipts" rendered="#{not expenseReportController.isNew(selectedReport)}">
-                <rich:dataTable value="#{expenseReportController.reportReceipts}" rendered="#{not empty selectedReport.receipts}" var="receipt" id="receiptsTable">
+            <rich:panel header="Receipts" rendered="#{not isReportNew}">
+                <rich:dataTable value="#{expenseReportController.reportReceipts}" rendered="#{not empty expenseReportController.reportReceipts}" var="receipt" id="receiptsTable">
 
                     <rich:column id="name">
                         <f:facet name="header">Name</f:facet>                        
@@ -168,31 +176,31 @@
 
                     <rich:column id="actions">
                         <f:facet name="header">Action</f:facet>
-                        <h:commandButton action="#{receiptController.edit(receipt)}" rendered="#{rules.canEditReceipts(selectedReport)}" value="Show" id="show" />
-                        <h:commandButton action="#{receiptController.delete(receipt)}" rendered="#{rules.canEditReceipts(selectedReport)}" value="Delete" id="delete" />
+                        <h:commandButton action="#{receiptController.edit(receipt)}" rendered="#{canEditReceipts}" value="Show" id="show" />
+                        <h:commandButton action="#{receiptController.delete(receipt)}" rendered="#{canEditReceipts}" value="Delete" id="delete" />
                     </rich:column>
 
                 </rich:dataTable>
-                <h:panelGroup rendered="#{rules.canEditReceipts(selectedReport)}">
-                    <h:commandButton action="#{receiptController.create(selectedReport)}" value="Add Receipt" id="addReceiptBtn"/>
+                <h:panelGroup rendered="#{canEditReceipts}">
+                    <h:commandButton action="#{receiptController.create(expenseReportController.selected)}" value="Add Receipt" id="addReceiptBtn"/>
                 </h:panelGroup>
             </rich:panel>
 
         </h:form>
 
         <h:form id="actionsForm">
-            <rich:panel header="Report actions" rendered="#{not expenseReportController.isNew(selectedReport)}">
+            <rich:panel header="Report actions" rendered="#{not isReportNew}">
                 <!-- Reporter options -->
-                <h:commandButton action="#{expenseReportController.open()}" rendered="#{rules.canBeOpened(selectedReport)}" value="Reopen" id="reopen" />
-                <h:commandButton action="#{expenseReportController.submit()}" rendered="#{rules.canBeSubmitted(selectedReport)}" value="Submit" id="submit" />
+                <h:commandButton action="#{expenseReportController.open()}" rendered="#{rules.canBeOpened(expenseReportController.selected)}" value="Reopen" id="reopen" />
+                <h:commandButton action="#{expenseReportController.submit()}" rendered="#{rules.canBeSubmitted(expenseReportController.selected)}" value="Submit" id="submit" />
 
                 <!-- Assignee options -->
                 <h:panelGroup>
-                    <h:commandButton action="#{expenseReportController.assign(currentEmployee)}" rendered="#{rules.canBeAssigned(selectedReport)}" value="Assign to me" id="assignToMe" />
-                    <h:commandButton action="#{expenseReportController.unassign()}" rendered="#{rules.canBeUnassigned(selectedReport)}" value="Unassign" id="unassign" />
-                    <h:commandButton action="#{expenseReportController.reject()}" rendered="#{rules.canBeRejected(selectedReport)}" value="Reject" id="reject" />
-                    <h:commandButton action="#{expenseReportController.approve()}" rendered="#{rules.canBeApproved(selectedReport)}" value="Approve" id="approve" />
-                    <h:commandButton action="#{expenseReportController.settle()}" rendered="#{rules.canBeSettled(selectedReport)}" value="Settle" id="settle" />
+                    <h:commandButton action="#{expenseReportController.assign(currentEmployee)}" rendered="#{rules.canBeAssigned(expenseReportController.selected)}" value="Assign to me" id="assignToMe" />
+                    <h:commandButton action="#{expenseReportController.unassign()}" rendered="#{rules.canBeUnassigned(expenseReportController.selected)}" value="Unassign" id="unassign" />
+                    <h:commandButton action="#{expenseReportController.reject()}" rendered="#{rules.canBeRejected(expenseReportController.selected)}" value="Reject" id="reject" />
+                    <h:commandButton action="#{expenseReportController.approve()}" rendered="#{rules.canBeApproved(expenseReportController.selected)}" value="Approve" id="approve" />
+                    <h:commandButton action="#{expenseReportController.settle()}" rendered="#{rules.canBeSettled(expenseReportController.selected)}" value="Settle" id="settle" />
                 </h:panelGroup>
 
             </rich:panel>

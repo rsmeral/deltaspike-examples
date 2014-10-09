@@ -1,15 +1,17 @@
 package org.jboss.examples.deltaspike.expensetracker.app.security;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole;
-import org.picketlink.Identity;
-import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.RelationshipManager;
-import org.picketlink.idm.model.basic.BasicModel;
-import org.picketlink.idm.model.basic.Role;
+import org.jboss.examples.deltaspike.expensetracker.service.EmployeeService;
+import org.picketlink.authentication.event.LoggedInEvent;
+import org.picketlink.idm.model.basic.User;
 
 /**
  * This is a utility bean that may be used by the view layer to determine
@@ -18,23 +20,48 @@ import org.picketlink.idm.model.basic.Role;
 @Named("idm")
 @SessionScoped
 public class Authorizations implements Serializable {
-
+    
+    /*
+     * Dummy used as event payload.
+     */
+    public static class Modified {
+    }
+    
     @Inject
-    private Identity identity;
-
+    private EmployeeService empSvc;
+    
     @Inject
-    private IdentityManager identityManager;
-
-    @Inject
-    private RelationshipManager relationshipManager;
-
+    @CurrentUser
+    private User currentUser;
+    
+    private Set<String> currentRoles;
+    
+    private boolean isAdmin;
+    
+    public Authorizations() {
+        currentRoles = new HashSet<String>();
+    }
+    
+    public void refreshOnModification(@Observes Modified event) {
+        refreshRoles();
+    }
+    
+    public void setOnLogin(@Observes LoggedInEvent event) {
+        refreshRoles();
+    }
+    
+    private void refreshRoles() {
+        currentRoles.clear();
+        currentRoles.addAll(empSvc.getRoles(currentUser));
+        isAdmin = currentRoles.contains(EmployeeRole.ADMIN);
+    }
+    
     public boolean isAdmin() {
-        return hasRole(EmployeeRole.ADMIN);
+        return isAdmin;
     }
 
     public boolean hasRole(String roleName) {
-        Role role = BasicModel.getRole(this.identityManager, roleName);
-        return BasicModel.hasRole(this.relationshipManager, this.identity.getAccount(), role);
+        return currentRoles.contains(roleName);
     }
 
     public boolean hasAnyRole(String... roleNames) {

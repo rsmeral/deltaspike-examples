@@ -6,27 +6,30 @@
                 xmlns:rich="http://richfaces.org/rich"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:et="http://java.sun.com/jsf/composite/et"
-                template="/resources/template/layout.xhtml">
+                template="/resources/template/layout.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="content">
-        <rich:panel header="Password" rendered="#{not employeeController.newEmployee}">
+        <c:set var="isNewEmployee" value="#{employeeController.newEmployee}" scope="request" />
+        
+        <rich:panel header="Password" rendered="#{not isNewEmployee}">
             <et:passwordForm id="changePassword" />
         </rich:panel>
         <h:form id="employeeForm">
             <rich:panel header="User">
                 <h:panelGrid id="userPanel" columns="3" border="0">
                     <h:outputLabel value="Username:" for="username" />
-                    <h:inputText value="#{employeeController.username}" label="Username" id="username" disabled="#{not employeeController.newEmployee}"/>
+                    <h:inputText value="#{employeeController.username}" label="Username" id="username" disabled="#{not isNewEmployee}"/>
                     <rich:message for="username" id="usernameMessage" />
 
                     <h:outputLabel value="Roles:" for="roles"/>
-                    <h:selectManyListbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.hasRole(ADMIN)}" >
+                    <h:selectManyListbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.admin}" >
                         <f:selectItems value="#{roles}" />
                     </h:selectManyListbox>
                     <rich:message for="roles" id="rolesMessage" />
                 </h:panelGrid>
 
-                <et:passwordForm inline="#{true}" rendered="#{employeeController.newEmployee}" id="newPassword"/>
+                <et:passwordForm inline="#{true}" rendered="#{isNewEmployee}" id="newPassword"/>
 
             </rich:panel>
 

@@ -9,7 +9,7 @@
     <ui:define name="content">
 
         <!--ALL REPORTS, SEEN BY ADMIN -->
-        <rich:panel header="All unsettled reports" rendered="#{idm.hasRole(ADMIN)}">
+        <rich:panel header="All unsettled reports" rendered="#{idm.admin}">
             <h:form id="allUnsettledForm">
 
                 <et:reportList reports="#{expenseReportController.allUnsettled}" />

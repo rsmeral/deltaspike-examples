@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
@@ -61,8 +59,6 @@ public class ExpenseReportController implements Serializable {
     @CurrentUser
     private Employee currentEmployee;
 
-    @Produces
-    @Named("selectedReport")
     private ExpenseReport selected;
 
     @Inject
