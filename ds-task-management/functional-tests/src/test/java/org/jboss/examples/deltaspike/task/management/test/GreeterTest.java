@@ -9,6 +9,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -23,6 +24,7 @@ import static org.junit.Assert.*;
 
 @RunAsClient
 @RunWith(Arquillian.class)
+@Ignore
 public class GreeterTest {
 
     @FindBy(id = "message")

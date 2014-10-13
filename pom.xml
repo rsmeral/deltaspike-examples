@@ -26,6 +26,8 @@
                 <module>ds-passwd/functional-tests</module>
                 <module>mbeanTranslator/functional-tests</module>
                 <module>expense-tracker/functional-tests</module>
+                <module>ds-task-management/functional-tests</module>
+                <module>ds-tickets/functional-tests</module>
             </modules>
         </profile>
         
