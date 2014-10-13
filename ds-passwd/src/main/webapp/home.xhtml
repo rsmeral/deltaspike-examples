@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
                 template="WEB-INF/template.xhtml">
 
     <ui:define name="content">
         <h3>User output from injectable resource:</h3>
-        <h:dataTable value="#{backingBean.users}" var="u">
+        <h:dataTable value="#{backingBean.users}" var="u" id="usersTable">
 
             <h:column>
                 <f:facet name="header">User name</f:facet>
-                #{u.name}
+                <h:outputText id="name" value="#{u.name}" />
             </h:column>
 
             <h:column>
                 <f:facet name="header">User Id</f:facet>
-                #{u.uid}
+                <h:outputText id="uid" value="#{u.uid}" />
             </h:column>
 
             <h:column>
                 <f:facet name="header">User Group Id</f:facet>
-                #{u.gid}
+                <h:outputText id="gid" value="#{u.gid}" />
             </h:column>
 
             <h:column>
                 <f:facet name="header">User's home</f:facet>
-                #{u.homedir}
+                <h:outputText id="home" value="#{u.homedir}" />
             </h:column>
 
             <h:column>
                 <f:facet name="header">User description</f:facet>
-                #{u.description}
+                <h:outputText id="desc" value="#{u.description}" />
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">User shell</f:facet>
+                <h:outputText id="shell" value="#{u.shell}" />
             </h:column>
 
         </h:dataTable>
-
 
     </ui:define>
 </ui:composition>

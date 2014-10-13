@@ -5,19 +5,20 @@ package org.jboss.examples.deltaspike.dsPasswd;
  */
 public class User {
 
-    private String name;
-    private int uid;
-    private int gid;
-    private String homedir;
-    private String description;
+    private final String name;
+    private final int uid;
+    private final int gid;
+    private final String homedir;
+    private final String description;
+    private final String shell;
 
-    public User(String name, int uid, int gid, String homedir, String description){
+    public User(String name, int uid, int gid, String homedir, String description, String shell){
         this.name = name;
         this.uid = uid;
         this.gid = gid;
         this.homedir = homedir;
         this.description = description;
-
+        this.shell = shell;
     }
 
     public String getDescription() {
@@ -38,6 +39,10 @@ public class User {
 
     public String getHomedir() {
         return homedir;
+    }
+
+    public String getShell() {
+        return shell;
     }
 
 }
