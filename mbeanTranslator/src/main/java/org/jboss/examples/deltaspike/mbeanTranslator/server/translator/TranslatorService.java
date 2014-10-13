@@ -1,21 +1,21 @@
-package org.jboss.examples.deltaspike.mbeanTranslator;
+package org.jboss.examples.deltaspike.mbeanTranslator.server.translator;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.message.Message;
 import org.apache.deltaspike.core.api.message.MessageContext;
-import org.jboss.examples.deltaspike.mbeanTranslator.messages.Custom;
-import org.jboss.examples.deltaspike.mbeanTranslator.messages.CustomLocaleResolver;
-import org.jboss.examples.deltaspike.mbeanTranslator.messages.CustomMessageInterpolator;
-import org.jboss.examples.deltaspike.mbeanTranslator.messages.InternationalMessages;
+import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.Custom;
+import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.CustomMessageInterpolator;
+import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.CustomLocaleResolver;
+import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.InternationalMessages;
 
 /**
  * @author Tomas Remes
  */
 @RequestScoped
-public class Translator {
+public class TranslatorService implements Translator {
 
-    private final String MESSAGE_SOURCE = "org.jboss.examples.deltaspike.mbeanTranslator.messages.InternationalMessages";
+    private final String MESSAGE_SOURCE = "org.jboss.examples.deltaspike.mbeanTranslator.server.messages.InternationalMessages";
 
     @Inject
     MessageContext messageContext;
@@ -31,6 +31,7 @@ public class Translator {
     @Custom
     CustomMessageInterpolator interpolator;
 
+    @Override
     public String translate(String messageText) {
 
         Message message = messageContext.messageSource(MESSAGE_SOURCE)
@@ -39,7 +40,7 @@ public class Translator {
 
         message = message.template("{" + messageText.toLowerCase().trim() + "}");
 
-        if (message.toString() != "") {
+        if (!"".equals(message.toString())) {
             return message.toString();
         } else {
             return this.messages.unknownText();

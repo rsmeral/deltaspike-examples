@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.messages;
+package org.jboss.examples.deltaspike.mbeanTranslator.server.messages;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

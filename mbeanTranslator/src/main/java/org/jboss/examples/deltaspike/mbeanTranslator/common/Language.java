@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.messages;
+package org.jboss.examples.deltaspike.mbeanTranslator.common;
 
 /**
  * @author Tomas Remes
@@ -12,10 +12,10 @@ public enum Language {
         return value;
     }
 
-    private String value;
+    private final String value;
 
-    private Language(String value){
-        this.value=value;
+    private Language(String value) {
+        this.value = value;
     }
 
 }

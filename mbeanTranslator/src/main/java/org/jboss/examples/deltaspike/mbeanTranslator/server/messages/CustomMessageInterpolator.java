@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.messages;
+package org.jboss.examples.deltaspike.mbeanTranslator.server.messages;
 
 import javax.inject.Inject;
 import java.io.Serializable;

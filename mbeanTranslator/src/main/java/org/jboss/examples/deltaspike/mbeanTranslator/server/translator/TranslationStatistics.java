@@ -16,24 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jboss.examples.deltaspike.mbeanTranslator;
+package org.jboss.examples.deltaspike.mbeanTranslator.server.translator;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import org.apache.deltaspike.core.api.jmx.JmxManaged;
 import org.apache.deltaspike.core.api.jmx.MBean;
-import org.jboss.examples.deltaspike.mbeanTranslator.messages.Language;
+import org.jboss.examples.deltaspike.mbeanTranslator.common.Language;
 
 @ApplicationScoped
 @MBean(description = "Manages statistics of language translations.")
-public class TranslationStatisticsMBean {
+public class TranslationStatistics {
 
     private int translations = 0;
     private int frenchTranslations = 0;
     private int germanTranslations = 0;
-
-    @Inject
-    Translator translator;
 
     @JmxManaged(description = "Number of all translations.")
     public int getTranslations() {
@@ -58,19 +54,17 @@ public class TranslationStatisticsMBean {
         return Math.round(percentage);
     }
 
-    public String passToTranslator(String text, Language lang) {
-
+    public void addTranslation(Language lang) {
         translations++;
         if (lang.equals(Language.GERMAN)) {
             germanTranslations++;
         } else {
             frenchTranslations++;
         }
-
-        return translator.translate(text);
     }
 
-    public void reset(){
+    @JmxManaged(description = "Resets the statistics.")
+    public void reset() {
         translations = 0;
         frenchTranslations = 0;
         germanTranslations = 0;

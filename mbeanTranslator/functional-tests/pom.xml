@@ -12,12 +12,22 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
+        <version.org.apache.deltaspike>1.0.3</version.org.apache.deltaspike>
         
         <version.surefire.plugin>2.10</version.surefire.plugin>
 
         <maven.compiler.target>1.6</maven.compiler.target>
         <maven.compiler.source>1.6</maven.compiler.source>
+        
+        <testDeployment>${basedir}/../target/mbeanTranslator.war</testDeployment>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>redhat-repository-techpreview</id>
+            <url>https://maven.repository.redhat.com/techpreview/all/</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
@@ -25,6 +35,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${version.surefire.plugin}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <testDeployment>${testDeployment}</testDeployment>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
         </plugins>
     </build>

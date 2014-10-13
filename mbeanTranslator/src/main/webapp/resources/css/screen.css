@@ -46,3 +46,8 @@ span.invalid {
     padding-left: 3px;
     color: red;
 }
+
+span.hint {
+    color: #666666;
+    font-style: italic;
+}
