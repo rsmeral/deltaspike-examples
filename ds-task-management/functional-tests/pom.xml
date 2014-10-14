@@ -29,6 +29,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>redhat-repository-techpreview</id>
+            <url>https://maven.repository.redhat.com/techpreview/all/</url>
+        </repository>
+    </repositories>
+    
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -36,10 +36,9 @@
 
 	<repositories>
 		<repository>
-			<id>wfk2-brew-repository</id>
-			<name>JBoss WFK Brew Repository</name>
-			<url>http://download.eng.bos.redhat.com/brewroot/repos/jb-wfk-2-rhel-6-build/latest/maven</url>
-		</repository>
+            <id>redhat-repository-techpreview</id>
+            <url>https://maven.repository.redhat.com/techpreview/all/</url>
+        </repository>
 	</repositories>
 
 	<dependencyManagement>

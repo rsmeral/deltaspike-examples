@@ -19,6 +19,13 @@
 		<maven.compiler.source>1.6</maven.compiler.source>
 	</properties>
 
+    <repositories>
+        <repository>
+            <id>redhat-repository-techpreview</id>
+            <url>https://maven.repository.redhat.com/techpreview/all/</url>
+        </repository>
+    </repositories>
+    
 	<build>
 		<plugins>
 			<plugin>
