@@ -31,15 +31,12 @@ public class AdminDecisionVoter implements AccessDecisionVoter {
     @Inject
     private FacesContext faces;
 
+    @Inject
+    private LoggedInDecisionVoter loggedInVoter;
+
     public Set<SecurityViolation> checkPermission(AccessDecisionVoterContext accessDecisionVoterContext) {
 
-        if (!loginController.isUserLoggedIn()) {
-
-            faces.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have to login !!!", null));
-            faces.getExternalContext().getFlash().setKeepMessages(true);
-
-            viewNavigationHandler.navigateTo(Pages.Login.class);
-        }
+        loggedInVoter.checkPermission(accessDecisionVoterContext);
 
         if (!user.isAdministator()) {
 

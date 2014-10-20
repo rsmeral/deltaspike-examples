@@ -12,7 +12,7 @@
 
 		<ui:define name="content">
 
-			<h:dataTable value="#{userManagerImpl.getAllTasks()}" var="taskItem" styleClass="tasks-table"
+			<h:dataTable id="myTaskTable" value="#{userManagerImpl.getAllTasks()}" var="taskItem" styleClass="tasks-table"
 				headerClass="tasks-table-header" rowClasses="tasks-table-odd-row,tasks-table-even-row">
 
 				<h:column>

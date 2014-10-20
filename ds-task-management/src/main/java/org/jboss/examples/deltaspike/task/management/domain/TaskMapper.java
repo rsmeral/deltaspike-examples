@@ -15,7 +15,8 @@ public class TaskMapper extends SimpleQueryInOutMapperBase<TaskEntity, Task> {
         user.setLogin(entity.getUserEntity().getLogin());
 
         Task task = new Task(entity.getName(), entity.getDescription(), user, entity.getDeadline(),
-            entity.getFinishDate());
+            entity.isFinished());
+        task.setFinishDate(entity.getFinishDate());
         task.setId(entity.getId());
 
         return task;
@@ -32,7 +33,7 @@ public class TaskMapper extends SimpleQueryInOutMapperBase<TaskEntity, Task> {
         entity.setUserEntity(userEntity);
 
         entity.setDeadline(dto.getDeadline());
-        entity.setFinishDate(dto.getFinishDate());
+        entity.setFinished(dto.isFinished());
 
         return entity;
     }

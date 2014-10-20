@@ -34,16 +34,18 @@ public class TaskEntity implements Serializable {
     @ModifiedOn
     private Date finishDate;
 
+    private boolean finished;
+
     public TaskEntity() {
     }
 
-    public TaskEntity(String name, String description, UserEntity userEntity, Date deadline, Date finishDate) {
+    public TaskEntity(String name, String description, UserEntity userEntity, Date deadline, boolean finished) {
         super();
         this.name = name;
         this.description = description;
         this.userEntity = userEntity;
         this.deadline = deadline;
-        this.finishDate = finishDate;
+        this.finished = finished;
     }
 
     public String getName() {
@@ -93,4 +95,13 @@ public class TaskEntity implements Serializable {
     public void setId(Long id) {
         Id = id;
     }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
 }

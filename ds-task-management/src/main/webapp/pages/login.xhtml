@@ -14,17 +14,17 @@
 
 			<h:form style="vertical-align: middle; text-align: center;" id="loginForm">
 
-				<div class="loginRow">
+				<div  id="loginRowName" class="loginRow">
 					<h:outputLabel for="name" value="Username" styleClass="loginLabel" />
 					<h:inputText id="name" value="#{loginCredentials.login}" />
 				</div>
 
-				<div class="loginRow">
+				<div id="loginRowPassword" class="loginRow">
 					<h:outputLabel for="password" value="Password" styleClass="loginLabel" />
 					<h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true" />
 				</div>
 
-				<div class="loginRow"></div>
+				<br />
 
 				<div class="buttons">
 					<h:commandButton id="login" value="Login" action="#{loginController.login}" styleClass="loginButton" />

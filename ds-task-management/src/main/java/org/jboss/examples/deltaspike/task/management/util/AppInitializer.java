@@ -2,7 +2,6 @@ package org.jboss.examples.deltaspike.task.management.util;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -16,7 +15,7 @@ import org.jboss.examples.deltaspike.task.management.repositories.TaskRepository
 import org.jboss.examples.deltaspike.task.management.repositories.UserRepository;
 
 @Model
-@ViewRef(config=Pages.Login.class)
+@ViewRef(config = Pages.Login.class)
 public class AppInitializer implements Serializable {
 
     private static final long serialVersionUID = 7671809179577471311L;
@@ -45,21 +44,21 @@ public class AppInitializer implements Serializable {
         final User admin = new User("admin", "Admin", "Adminovic", true, "admin123");
         userRepository.save(admin);
 
-        taskRepository.save(new Task("Create user", "create new dummy user with name John", admin, calendar.getTime(), null));
+        taskRepository.save(new Task("Create user", "create new dummy user with name John", admin, calendar.getTime(), false));
         calendar.set(2015, 4, 10, 8, 0);
-        taskRepository.save(new Task("Delete user", "try to delete any user", admin, calendar.getTime(), null));
+        taskRepository.save(new Task("Delete user", "try to delete any user", admin, calendar.getTime(), false));
         calendar.set(2015, 3, 10, 8, 0);
-        taskRepository.save(new Task("Login", "try to login into this system", admin, calendar.getTime(), new Date()));
+        taskRepository.save(new Task("Login", "try to login into this system", admin, calendar.getTime(), false));
 
         User user = new User("user", "User", "Userovic", false, "user123");
         userRepository.save(user);
 
         calendar.set(2015, 1, 2, 8, 0);
         taskRepository.save(new Task("Login", "Try to login into the system and look at all options", user, calendar.getTime(),
-            null));
+            false));
         calendar.set(2015, 2, 20, 8, 0);
         taskRepository.save(new Task("Hack the system", "try to create new task - this should not be possible", user, calendar
-            .getTime(), null));
+            .getTime(), false));
 
         initialized = true;
     }

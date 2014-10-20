@@ -28,15 +28,15 @@
 			</div>
 
 			<div>
-				<h:outputText id="taskDescribtionLabel" styleClass="create-task-label" value="Describtion:" />
-				<h:outputText id="taskDescribtion" value="#{task.description}" />
+				<h:outputText id="taskDescriptionLabel" styleClass="create-task-label" value="Description:" />
+				<h:outputText id="taskDescription" value="#{task.description}" />
 				<br />
 				<br />
 			</div>
 
 			<div>
 				<h:outputText id="taskDeadlineLabel" styleClass="create-task-label" value="Deadline:" />
-				<h:outputText id="datepicker" styleClass="datepicker" value="#{task.deadline}" />
+				<h:outputText id="taskDeadline" styleClass="datepicker" value="#{utils.formatShortDate(task.deadline)}" />
 				<br />
 				<br />
 			</div>

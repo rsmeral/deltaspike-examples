@@ -19,18 +19,19 @@ public class Task implements Serializable {
     private User user;
     private Date deadline;
     private Date finishDate;
+    private boolean finished;
 
     public Task() {
         user = new User();
     }
 
-    public Task(String name, String description, User user, Date deadline, Date finishDate) {
+    public Task(String name, String description, User user, Date deadline, boolean finished) {
         super();
         this.name = name;
         this.description = description;
         this.user = user;
         this.deadline = deadline;
-        this.finishDate = finishDate;
+        this.finished = finished;
     }
 
     public String getName() {
@@ -79,6 +80,14 @@ public class Task implements Serializable {
 
     public void setId(Long id) {
         Id = id;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
 }

@@ -28,14 +28,14 @@
 <h:body>
 	<ds:windowId />
 	<div class="main_box">
-		<p class="title">
+		<p id="pagetitle" class="title">
 			<ui:insert name="pageTitle">DeltaSpike Task Management System</ui:insert>
 		</p>
 
-		<h:outputLabel value="User: #{user.name} #{user.surname}"
+		<h:outputLabel id="currentUser" value="User: #{user.name} #{user.surname}"
 			rendered="#{loginController.isUserLoggedIn()}" />
 
-		<div style="width: 100%; background-color: #7da5ff;">
+		<div id="buttonbar" style="width: 100%; background-color: #7da5ff;">
 			<h:form>
 				<h:commandButton action="#{appInitializer.initialize()}" styleClass="main-command-button"
 					style="background-color: red;" rendered="#{!appInitializer.isInitialized()}"

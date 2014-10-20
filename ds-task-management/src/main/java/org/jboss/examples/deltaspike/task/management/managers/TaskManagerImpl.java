@@ -1,7 +1,5 @@
 package org.jboss.examples.deltaspike.task.management.managers;
 
-import java.util.Date;
-
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
@@ -31,8 +29,7 @@ public class TaskManagerImpl {
     }
 
     public void finishTask(Task t) {
-        t.setFinishDate(new Date());
+        t.setFinished(true);
         taskRepository.save(t);
-        Task findBy = taskRepository.findBy(t.getId());
     }
 }

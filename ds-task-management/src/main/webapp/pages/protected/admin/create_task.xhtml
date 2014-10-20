@@ -22,7 +22,7 @@
 		<ui:define name="pageTitle">
 		DeltaSpike Task Management System - Create Task</ui:define>
 		<ui:define name="content">
-			<h:form style="margin-left: 50px;">
+			<h:form id="newTaskForm" style="margin-left: 50px;">
 				<ds:preventDoubleSubmit />
 				<div>
 					<h:outputText id="taskNameLabel" styleClass="create-task-label" value="Task name:" />
@@ -41,11 +41,11 @@
 				</div>
 
 				<div style="height: 100px; margin-top: 10px;">
-					<h:outputText id="taskDescribtionLabel" styleClass="create-task-label"
-						style=" float: left; width: 100px;" value="Describtion:" />
-					<h:inputTextarea id="taskDescribtion" style="width: 400px;" value="#{task.description}"
+					<h:outputText id="taskDescriptionLabel" styleClass="create-task-label"
+						style=" float: left; width: 100px;" value="Description:" />
+					<h:inputTextarea id="taskDescription" style="width: 400px;" value="#{task.description}"
 						required="true" requiredMessage="Value is required" />
-					<h:message style="color: red;" for="taskDescribtion" />
+					<h:message style="color: red;" for="taskDescription" />
 				</div>
 
 				<div>
