@@ -31,6 +31,32 @@
             </modules>
         </profile>
         
-    </profiles>
+		<profile>
+			<id>ftest-coverage</id>
+			<modules>
+				<module>coverage-classes</module>
+				<module>ds-passwd/functional-tests</module>
+				<module>mbeanTranslator/functional-tests</module>
+				<module>ds-task-management/functional-tests</module>
+				<module>ds-tickets/functional-tests</module>
+				<module>expense-tracker/functional-tests</module>
+				<module>jacoco-generate-report</module>
+			</modules>
 
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<systemPropertyVariables>
+								<arquillian.launch>jboss-jacoco</arquillian.launch>
+							</systemPropertyVariables>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
 </project>

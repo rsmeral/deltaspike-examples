@@ -12,6 +12,17 @@
         </configuration>-->
     </container>
 
+	<container qualifier="jboss-jacoco">
+		<configuration>
+			<!-- <property name="jbossHome">/path/to/jboss/as</property> -->
+			<property name="javaVmArguments">
+				-Xms512m -Xmx512m -XX:MaxPermSize=512m -Djava.net.preferIPv4Stack=true
+	            -Dorg.jboss.resolver.warning=true -Dfile.encoding=UTF-8 -Djavax.servlet.request.encoding=UTF-8
+            	-javaagent:/home/mjobanek/deltaspike/usecases-examples/deltaspike-examples/coverage-classes/jacocoagent.jar=append=true,destfile=/home/mjobanek/deltaspike/usecases-examples/deltaspike-examples/coverage-classes/target/jacoco.exec,excludes=
+           	</property>
+		</configuration>
+	</container>
+
     <!-- WebDriver extension -->
     <extension qualifier="webdriver">
         <property name="browser">firefox</property>
