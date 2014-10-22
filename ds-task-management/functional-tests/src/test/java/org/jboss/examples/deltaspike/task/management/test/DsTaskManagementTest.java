@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import org.apache.commons.io.IOUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.graphene.condition.element.WebElementConditionFactory;
 import org.jboss.arquillian.graphene.findby.ByJQuery;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.jboss.arquillian.junit.Arquillian;
@@ -68,7 +71,7 @@ public class DsTaskManagementTest {
     protected WebElement MY_TASKS_BUTTON;
 
     @FindByJQuery("input[value='Create New Task']")
-    protected WebElement NEW_TASK_BUTTON;
+    protected WebElement CREATE_TASK_BUTTON;
 
     @FindByJQuery("input[value='Show Web Log']")
     protected WebElement WEB_LOG_BUTTON;
@@ -109,20 +112,14 @@ public class DsTaskManagementTest {
     @FindByJQuery("input[value='Submit']")
     protected WebElement SUBMIT_BUTTON;
 
-    // @FindBy(id = "taskName")
-    // protected WebElement TASK_NAME;
-    //
-    // @FindBy(id = "taskUser")
-    // protected WebElement TASK_USER;
-    //
-    // @FindBy(id = "taskDescription")
-    // protected WebElement TASK_DESCRIPTION;
-    //
-    // @FindBy(id = "taskDeadline")
-    // protected WebElement TASK_DEADLINE;
-
     @FindByJQuery("#myTaskTable > tbody > tr")
     protected List<WebElement> MY_TASK_ROWS;
+
+    @FindByJQuery(".tasks-table > tbody > tr")
+    protected List<WebElement> PAGE_ACTION_ROWS;
+
+    private static List<PageAction> expectedActions = new ArrayList<PageAction>();
+    private Page lastVisitedPage;
 
     @Drone
     protected WebDriver browser;
@@ -155,20 +152,16 @@ public class DsTaskManagementTest {
         openBrowser();
 
         // have access
-        clickOn(HOME_BUTTON);
-        waitModel().until().element(HOME_PAGE_TITLE).is().visible();
+        goToHomePage();
 
         // doesn't hame access
-        clickOn(MY_TASKS_BUTTON);
-        userNotLoggedinWarning();
+        goToMyTasksPage();
 
         // doesn't hame access
-        clickOn(NEW_TASK_BUTTON);
-        userNotLoggedinWarning();
+        goToCreateTaskPage();
 
         // doesn't hame access
-        clickOn(WEB_LOG_BUTTON);
-        userNotLoggedinWarning();
+        goToWebLogPage();
     }
 
     /**
@@ -181,20 +174,16 @@ public class DsTaskManagementTest {
         login(user);
 
         // have access
-        clickOn(HOME_BUTTON);
-        waitModel().until().element(HOME_PAGE_TITLE).is().visible();
+        goToHomePage();
 
         // have access
-        clickOn(MY_TASKS_BUTTON);
-        waitModel().until().element(MY_TASKS_PAGE_TITLE).is().visible();
+        goToMyTasksPage();
 
         // doesn't hame access
-        clickOn(NEW_TASK_BUTTON);
-        accessDeniedWarning();
+        goToCreateTaskPage();
 
         // doesn't hame access
-        clickOn(WEB_LOG_BUTTON);
-        accessDeniedWarning();
+        goToWebLogPage();
 
         // logout and check the access
         logout();
@@ -211,20 +200,16 @@ public class DsTaskManagementTest {
         login(admin);
 
         // have access
-        clickOn(HOME_BUTTON);
-        waitModel().until().element(HOME_PAGE_TITLE).is().visible();
+        goToHomePage();
 
         // have access
-        clickOn(MY_TASKS_BUTTON);
-        waitModel().until().element(MY_TASKS_PAGE_TITLE).is().visible();
+        goToMyTasksPage();
 
         // have access
-        clickOn(NEW_TASK_BUTTON);
-        waitModel().until().element(CREATE_TASK_PAGE_TITLE).is().visible();
+        goToCreateTaskPage();
 
         // have access
-        clickOn(WEB_LOG_BUTTON);
-        waitModel().until().element(WEB_LOG_PAGE_TITLE).is().visible();
+        goToWebLogPage();
 
         // logout and check the access
         logout();
@@ -233,12 +218,14 @@ public class DsTaskManagementTest {
 
     /**
      * Tests the access control per view (the functionality of the scope @WindowScoped)
+     * TODO
      */
-    @Test
-    @InSequence(4)
+    // @Test
+    // @InSequence(4)
     public void multipleWindowTest() throws Exception {
         openBrowser();
         login(admin);
+
         String url = browser.getCurrentUrl();
         openBrowser();
         checkLoggedUser(admin[2]);
@@ -285,14 +272,16 @@ public class DsTaskManagementTest {
         login(admin);
 
         // create new task for user
-        clickOn(NEW_TASK_BUTTON);
-        waitModel().until().element(TASK_NAME_FIELD).is().visible();
+        goToCreateTaskPage();
+
         clearAndFillField(TASK_NAME_FIELD, "Cool task");
         TASK_USERS_OPTIONS.get(1).click();
         clearAndFillField(TASK_DESCRIPTION_FIELD, "Do something realy cool");
         clearAndFillField(TASK_DEADLINE_FIELD, "12/07/2014");
         clickOn(SUBMIT_BUTTON);
+        addActions(Page.TASK_CREATED);
 
+        removeLastAction();
     }
 
     // Test the data auditing of entities (concretely the @ModifiedOn)
@@ -302,13 +291,14 @@ public class DsTaskManagementTest {
         openBrowser();
         login(user);
 
-        clickOn(MY_TASKS_BUTTON);
-        waitModel().until().element(MY_TASKS_PAGE_TITLE).is().visible();
+        goToMyTasksPage();
+
         assertEquals("number of my tasks", 3, MY_TASK_ROWS.size());
 
         // finish the task
         clickOn(MY_TASK_ROWS.get(2).findElement(ByJQuery.selector("form > input[type='image']")));
         waitModel().until().element(MY_TASKS_PAGE_TITLE).is().visible();
+        addActions(Page.MY_TASKS);
 
         List<WebElement> createdTask = MY_TASK_ROWS.get(2).findElements(ByTagName.tagName("td"));
         assertEquals("task name", "Cool task", createdTask.get(0).getText());
@@ -317,6 +307,151 @@ public class DsTaskManagementTest {
         // and the main check :-)
         assertEquals("finished date", formatShortDate(new Date()), createdTask.get(3).getText());
 
+        removeLastAction();
+    }
+
+    // Checks if all of the four callback events on the page have been called and handled with the correct values and in correct
+    // order (@ViewControllerRef, @InitView, @PreRenderView, @PreViewAction, @PostRenderView)
+    // in addition, it checks automatically added values the auditUser and (approximately) the invocation time (values have been
+    // added by @CreatedOn and @ModifiedBy)
+    @Test
+    @InSequence(7)
+    public void checkWebLog() {
+        openBrowser();
+        login(admin);
+        goToWebLogPage();
+
+        removeLastAction();
+        removeLastAction();
+
+        assertEquals("number of page actions", expectedActions.size(), PAGE_ACTION_ROWS.size());
+
+        int actionsCount = expectedActions.size();
+        String warnMessage = "the difference between the expected: %s and the real: %s invocation time should be lower than 2sec";
+
+        for (int i = 0; i < actionsCount; i++) {
+            List<WebElement> actionItems = PAGE_ACTION_ROWS.get(actionsCount - i - 1).findElements(ByTagName.tagName("td"));
+            PageAction expectedAction = expectedActions.get(i);
+
+            assertEquals(expectedAction.getPage(), actionItems.get(0).getText());
+            assertEquals(expectedAction.getPageEvent().toString(), actionItems.get(1).getText());
+
+            long expectedTime = expectedAction.getCalled().getTime();
+            long actualTime = parseLongDate(actionItems.get(2).getText()).getTime();
+
+            assertTrue(
+                String.format(warnMessage, formatLongDate(expectedAction.getCalled()), actionItems.get(2).getText()),
+                Math.abs(actualTime - expectedTime) < 2000);
+
+            assertEquals(expectedAction.getAuditUser(), actionItems.get(3).getText());
+        }
+    }
+
+    private void goToHomePage() {
+        clickOn(HOME_BUTTON);
+        waitModel().until().element(HOME_PAGE_TITLE).is().visible();
+        addActions(Page.HOME);
+    }
+
+    private void goToMyTasksPage() {
+        String[] currentUser = getCurrentUser();
+        clickOn(MY_TASKS_BUTTON);
+        if (currentUser == null) {
+            userNotLoggedinWarning();
+        } else if (hasAccess(Page.MY_TASKS, currentUser)) {
+            waitModel().until().element(MY_TASKS_PAGE_TITLE).is().visible();
+        } else {
+            accessDeniedWarning();
+        }
+        addActions(Page.MY_TASKS);
+    };
+
+    private void goToCreateTaskPage() {
+        String[] currentUser = getCurrentUser();
+        clickOn(CREATE_TASK_BUTTON);
+
+        if (currentUser == null) {
+            userNotLoggedinWarning();
+        } else if (hasAccess(Page.CREATE_TASK, currentUser)) {
+            waitModel().until().element(CREATE_TASK_PAGE_TITLE).is().visible();
+        } else {
+            accessDeniedWarning();
+        }
+        addActions(Page.CREATE_TASK);
+    }
+
+    private void goToWebLogPage() {
+        String[] currentUser = getCurrentUser();
+        clickOn(WEB_LOG_BUTTON);
+
+        if (currentUser == null) {
+            userNotLoggedinWarning();
+        } else if (hasAccess(Page.WEB_LOG, currentUser)) {
+            waitModel().until().element(WEB_LOG_PAGE_TITLE).is().visible();
+        } else {
+            accessDeniedWarning();
+        }
+        addActions(Page.WEB_LOG);
+    }
+
+    private void addActions(Page page) {
+
+        String[] currentUser = getCurrentUser();
+
+        if (lastVisitedPage != page) {
+            expectedActions.add(new PageAction(page.toString(), currentUser, PageEvent.INIT_VIEW));
+        }
+        lastVisitedPage = page;
+
+        if (hasAccess(page, currentUser)) {
+            expectedActions.add(new PageAction(page.toString(), currentUser, PageEvent.PRE_RENDER_VIEW));
+            expectedActions.add(new PageAction(page.toString(), currentUser, PageEvent.POST_RENDER_VIEW));
+            expectedActions.add(new PageAction(page.toString(), currentUser, PageEvent.PRE_VIEW_ACTION));
+
+        } else if (currentUser != null) {
+            addActions(Page.ACCESS_DENIED);
+        }
+    }
+
+    private boolean hasAccess(Page page, String[] currentUser) {
+        switch (page) {
+            case HOME:
+                return true;
+
+            case MY_TASKS:
+                return currentUser != null;
+
+            case CREATE_TASK:
+                return currentUser == admin;
+
+            case TASK_CREATED:
+                return currentUser == admin;
+
+            case WEB_LOG:
+                return currentUser == admin;
+
+            case ACCESS_DENIED:
+                return true;
+
+            default:
+                return false;
+        }
+
+    }
+
+    private String[] getCurrentUser() {
+        if (new WebElementConditionFactory(CURRENT_USER_LABEL).isVisible().apply(browser)) {
+            if (CURRENT_USER_LABEL.getText().contains(user[2])) {
+                return user;
+            }
+            return admin;
+        } else {
+            return null;
+        }
+    }
+
+    private void removeLastAction() {
+        expectedActions.remove(expectedActions.size() - 1);
     }
 
     protected void clearAndFillField(WebElement field, String textToFill) {
@@ -334,6 +469,7 @@ public class DsTaskManagementTest {
 
         guardHttp(LOGIN_FORM_BUTTON).click();
         checkLoggedUser(userToLogin[2]);
+        addActions(Page.HOME);
     }
 
     protected void logout() {
@@ -419,5 +555,21 @@ public class DsTaskManagementTest {
         }
         SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss:SSS");
         return formater.format(date);
+    }
+
+    public Date parseLongDate(String date) {
+        if (date == null) {
+            return null;
+        }
+
+        SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss:SSS");
+
+        try {
+            return formater.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
