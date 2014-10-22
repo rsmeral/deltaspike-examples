@@ -122,6 +122,7 @@
 						<configuration>
 							<systemPropertyVariables>
 								<arquillian.launch>jboss-jacoco</arquillian.launch>
+								<base.project.directory>${basedir}</base.project.directory>
 							</systemPropertyVariables>
 						</configuration>
 					</plugin>
