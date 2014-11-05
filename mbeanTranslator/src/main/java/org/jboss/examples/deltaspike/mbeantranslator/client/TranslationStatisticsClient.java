@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.client;
+package org.jboss.examples.deltaspike.mbeantranslator.client;
 
 import java.lang.management.ManagementFactory;
 import java.util.logging.Level;
@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.management.*;
-import org.jboss.examples.deltaspike.mbeanTranslator.server.translator.TranslationStatistics;
+import org.jboss.examples.deltaspike.mbeantranslator.server.translator.TranslationStatistics;
 
 /**
  * A client for the TranslationStatistics MBean.

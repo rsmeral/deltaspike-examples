@@ -21,6 +21,7 @@
         <maven.compiler.source>1.6</maven.compiler.source>
         
         <testDeployment>${basedir}/../target/ds-expense-tracker.war</testDeployment>
+        <arq.extension.webdriver.browser>firefox</arq.extension.webdriver.browser>
     </properties>
 
     <repositories>
@@ -40,6 +41,7 @@
                     <systemPropertyVariables>
                         <dsVersion>${version.org.apache.deltaspike}</dsVersion>
                         <testDeployment>${testDeployment}</testDeployment>
+                        <arq.extension.webdriver.browser>${arq.extension.webdriver.browser}</arq.extension.webdriver.browser>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

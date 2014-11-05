@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.common;
+package org.jboss.examples.deltaspike.mbeantranslator.common;
 
 /**
  * @author Tomas Remes

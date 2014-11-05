@@ -1,9 +1,9 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.server.translator;
+package org.jboss.examples.deltaspike.mbeantranslator.server.translator;
 
 import javax.decorator.Decorator;
 import javax.decorator.Delegate;
 import javax.inject.Inject;
-import org.jboss.examples.deltaspike.mbeanTranslator.common.Language;
+import org.jboss.examples.deltaspike.mbeantranslator.common.Language;
 
 @Decorator
 public abstract class TranslatorStatisticsDecorator implements Translator {

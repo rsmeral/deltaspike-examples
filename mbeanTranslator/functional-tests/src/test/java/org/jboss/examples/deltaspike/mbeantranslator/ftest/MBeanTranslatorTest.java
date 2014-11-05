@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.dspasswd.ftest;
+package org.jboss.examples.deltaspike.mbeantranslator.ftest;
 
 import java.io.File;
 import java.net.URL;

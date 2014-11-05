@@ -1,13 +1,13 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.server.translator;
+package org.jboss.examples.deltaspike.mbeantranslator.server.translator;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.message.Message;
 import org.apache.deltaspike.core.api.message.MessageContext;
-import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.Custom;
-import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.CustomMessageInterpolator;
-import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.CustomLocaleResolver;
-import org.jboss.examples.deltaspike.mbeanTranslator.server.messages.InternationalMessages;
+import org.jboss.examples.deltaspike.mbeantranslator.server.messages.Custom;
+import org.jboss.examples.deltaspike.mbeantranslator.server.messages.CustomMessageInterpolator;
+import org.jboss.examples.deltaspike.mbeantranslator.server.messages.CustomLocaleResolver;
+import org.jboss.examples.deltaspike.mbeantranslator.server.messages.InternationalMessages;
 
 /**
  * @author Tomas Remes

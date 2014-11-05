@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jboss.examples.deltaspike.mbeanTranslator.server.translator;
+package org.jboss.examples.deltaspike.mbeantranslator.server.translator;
 
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.deltaspike.core.api.jmx.JmxManaged;
 import org.apache.deltaspike.core.api.jmx.MBean;
-import org.jboss.examples.deltaspike.mbeanTranslator.common.Language;
+import org.jboss.examples.deltaspike.mbeantranslator.common.Language;
 
 @ApplicationScoped
 @MBean(description = "Manages statistics of language translations.")

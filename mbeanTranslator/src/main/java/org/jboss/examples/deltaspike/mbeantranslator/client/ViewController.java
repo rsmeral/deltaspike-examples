@@ -1,10 +1,10 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.client;
+package org.jboss.examples.deltaspike.mbeantranslator.client;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import org.jboss.examples.deltaspike.mbeanTranslator.server.translator.Translator;
-import org.jboss.examples.deltaspike.mbeanTranslator.common.Language;
+import org.jboss.examples.deltaspike.mbeantranslator.server.translator.Translator;
+import org.jboss.examples.deltaspike.mbeantranslator.common.Language;
 
 /**
  * @author Tomas Remes

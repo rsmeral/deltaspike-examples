@@ -1,6 +1,6 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.server.messages;
+package org.jboss.examples.deltaspike.mbeantranslator.server.messages;
 
-import org.jboss.examples.deltaspike.mbeanTranslator.common.Language;
+import org.jboss.examples.deltaspike.mbeantranslator.common.Language;
 import javax.inject.Inject;
 import java.util.Locale;
 import org.apache.deltaspike.core.api.message.LocaleResolver;

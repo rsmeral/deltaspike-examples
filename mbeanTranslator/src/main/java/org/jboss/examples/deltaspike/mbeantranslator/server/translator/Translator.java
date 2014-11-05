@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.server.translator;
+package org.jboss.examples.deltaspike.mbeantranslator.server.translator;
 
 /**
  * @author rsmeral

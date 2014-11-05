@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.mbeanTranslator.server.messages;
+package org.jboss.examples.deltaspike.mbeantranslator.server.messages;
 
 import org.apache.deltaspike.core.api.message.MessageBundle;
 import org.apache.deltaspike.core.api.message.MessageTemplate;
