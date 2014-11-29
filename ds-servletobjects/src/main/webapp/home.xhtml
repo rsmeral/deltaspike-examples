@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <head>
+        <title>Hello</title>
+    </head>
+
+    <body>
+
+        <b><h:outputText id="message" value="#{greeter.slowGreet()}" rendered="#{not empty greeter.greeting and not empty greeter.name}"/></b>
+        <br />
+        <h:form>
+            <label for="greeting">Greeting</label><br />
+            <h:inputText value="#{greeter.greeting}" id="greeting"></h:inputText>
+            <br />
+            <label for="greeting">Name</label><br />
+            <h:inputText value="#{greeter.name}" id="name"></h:inputText>
+            <br />
+            <h:commandButton id="submit" value="Submit">
+                <f:param name="delay" value="1000" />
+            </h:commandButton>
+        </h:form>
+        <br/>
+        <br/>
+        Servlet object injection: <h:outputText id="injection" value="#{requestInfoBean.ok ? 'OK' : 'NOK'}" /><br/>
+        Previous request duration: <h:outputText id="duration" value="#{requestInfoBean.lastRequestDuration}" /> ms
+    </body>
+
+</html>
