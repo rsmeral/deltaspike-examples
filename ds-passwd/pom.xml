@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
-        <version.org.apache.deltaspike>1.0.3</version.org.apache.deltaspike>
+        <version.org.apache.deltaspike>1.1.0</version.org.apache.deltaspike>
 
         <version.compiler.plugin>3.1</version.compiler.plugin>
         <version.war.plugin>2.1.1</version.war.plugin>
