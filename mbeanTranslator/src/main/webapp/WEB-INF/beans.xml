@@ -4,6 +4,6 @@
       http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
     
     <decorators>
-        <class>org.jboss.examples.deltaspike.mbeanTranslator.server.translator.TranslatorStatisticsDecorator</class>
+        <class>org.jboss.examples.deltaspike.mbeantranslator.server.translator.TranslatorStatisticsDecorator</class>
     </decorators>
 </beans>

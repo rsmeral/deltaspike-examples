@@ -1,9 +1,8 @@
-DeltaSpike Template example
-===========================
+DeltaSpike Servlet Objects example
+==================================
 
-[short description]
+A couple of producers for implicit Servlet objects, like in the Seam 3 Servlet module.
 
 ## DeltaSpike features demonstrated
- * [feature 1]
- * ..
- * [feature n]
+* Servlet events CDI integration (`@Initialized`/`@Destroyed` `HttpServletRequest`/`HttpServletResponse`)
+* Injectable Servlet objects (`@Inject @DeltaSpike HttpServletRequest`/`ServletContext`)

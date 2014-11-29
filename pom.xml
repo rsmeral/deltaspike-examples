@@ -16,6 +16,7 @@
         <module>expense-tracker</module>
         <module>ds-tickets</module>
         <module>ds-task-management</module>
+        <module>ds-servletobjects</module>
     </modules>
         
     <profiles>
@@ -28,6 +29,7 @@
                 <module>expense-tracker/functional-tests</module>
                 <module>ds-task-management/functional-tests</module>
                 <module>ds-tickets/functional-tests</module>
+                <module>ds-servletobjects/functional-tests</module>
             </modules>
         </profile>
         
@@ -40,6 +42,7 @@
 				<module>ds-task-management/functional-tests</module>
 				<module>ds-tickets/functional-tests</module>
 				<module>expense-tracker/functional-tests</module>
+                <module>ds-servletobjects/functional-tests</module>
 				<module>jacoco-generate-report</module>
 			</modules>
 		</profile>
