@@ -8,5 +8,10 @@ public class AppConfig implements  PropertyFileConfig {
     public String getPropertyFileName() {
         return "app.properties";
     }
+
+	@Override
+	public boolean isOptional() {
+		return false;
+	}
     
 }
