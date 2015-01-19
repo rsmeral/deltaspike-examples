@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <head>
+        <title>Messenger</title>
+    </head>
+
+    <body>
+        <h2>Send a message</h2>
+        <h:form id="messageForm">
+            <label for="greeting">Message text</label><br />
+            <h:inputText value="#{messenger.message}" id="message"></h:inputText>
+            <br />
+            <h:commandButton id="send" value="Send" action="#{messenger.send()}"/>
+        </h:form>
+        <br/>
+
+        <h2>Message stats</h2>
+        <h:form id="statsForm">
+            <h:commandButton id="start" value="Start processing" action="#{statsController.startProcessing()}" rendered="#{not statsController.processing}"/>
+            <h:commandButton id="stop" value="Stop processing" action="#{statsController.stopProcessing()}" rendered="#{statsController.processing}"/>
+            <br />
+            <br />
+            <h:commandButton id="refresh" value="Refresh" />
+            <h:commandButton id="clear" value="Clear" action="#{statsController.reset()}"/>
+            <br />
+        </h:form>
+        <p>Messages sent</p>
+        <h:outputText value="#{statsRepository.getCount('message_word_count')}" id="count"></h:outputText>
+        <br />
+        <p>Average inter-arrival time</p>
+        <h:outputText value="#{statsRepository.getAverage('interarrival_time')}" id="inter-arrival-time"></h:outputText>
+        <br />
+        <p>Average message word count</p>
+        <h:outputText value="#{statsRepository.getAverage('message_word_count')}" id="message-word-count"></h:outputText>
+        <br />
+    </body>
+
+</html>
