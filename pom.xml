@@ -17,6 +17,7 @@
         <module>ds-tickets</module>
         <module>ds-task-management</module>
         <module>ds-servletobjects</module>
+        <module>ds-periodic-stats</module>
     </modules>
         
     <profiles>
@@ -30,6 +31,7 @@
                 <module>ds-task-management/functional-tests</module>
                 <module>ds-tickets/functional-tests</module>
                 <module>ds-servletobjects/functional-tests</module>
+                <module>ds-periodic-stats/functional-tests</module>
             </modules>
         </profile>
         
