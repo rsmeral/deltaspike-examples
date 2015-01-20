@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.template.test;
+package org.jboss.examples.deltaspike.periodicstats.test;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
