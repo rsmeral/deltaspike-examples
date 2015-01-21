@@ -21,6 +21,7 @@ public class TaskManagerImpl {
         if (task.getName() != null && task.getUser().getLogin() != null && task.getDeadline() != null
             && task.getDescription() != null) {
 
+            System.err.println("The deadline of the new task: " + task.getDeadline());
             taskRepository.save(task);
             return Pages.Protected.Admin.TaskCreated.class;
         } else {
