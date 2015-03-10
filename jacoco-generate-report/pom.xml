@@ -14,35 +14,30 @@
 	<name>JaCoCo generate report</name>
 	<description>Generates report from jacoco.exec</description>
 	
-	<profiles>
-		<profile>
-            <id>jacoco</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>generate-report</id>
-                                <phase>prepare-package</phase>
-                                <configuration>
-                                    <target name="generate-report">
-                                        <echo>Generating JaCoCo Report</echo>
-                                        <property name="src-dir" value="${basedir}/../coverage-classes/" />
-                                        <property name="target-dir" value="${project.build.directory}" />
-                                        <ant antfile="${basedir}/../coverage-classes/jacoco-report-ant-generator.xml" />
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-	</profiles>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <id>generate-report</id>
+                            <phase>prepare-package</phase>
+                            <configuration>
+                                <target name="generate-report">
+                                    <echo>Generating JaCoCo Report</echo>
+                                    <property name="src-dir" value="${basedir}/../coverage-classes/" />
+                                    <property name="target-dir" value="${project.build.directory}" />
+                                    <ant antfile="${basedir}/../coverage-classes/jacoco-report-ant-generator.xml" />
+                                </target>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
 </project>

@@ -24,3 +24,7 @@ tmp/
 
 #temporary files
 *~
+
+# do not ignore
+!jacocoagent.jar
+!jacocoant.jar
