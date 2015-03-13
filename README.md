@@ -43,14 +43,7 @@ To run the functional tests of all examples at once, run
 
 ## Jacoco
 
-Use the profile "ftest-coverage"
+Use the property "jacoco"
 
-	mvn clean package -Pftest-coverage
+	mvn clean package -Pftest -Djacoco
 
-then look into directory "jacoco-generate-report/target/" where is the generated jacoco report. For user friendly output go to:
-
-	jacoco-generate-report/target/jacoco-report/index.html
-
-If you are running one single test (not all tests together), the report is not automatically generated - after the ftest, you have to build also the project jacoco-generate-report
-
-	mvn clean package -f jacoco-generate-report/pom.xml

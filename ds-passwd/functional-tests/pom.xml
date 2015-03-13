@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jboss.examples.deltaspike</groupId>
     <artifactId>ds-passwd-ftest</artifactId>
     <version>0.1-SNAPSHOT</version>
-    
+
     <name>ds-passwd Functional Test</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
         <version.org.apache.deltaspike>1.2.1</version.org.apache.deltaspike>
-        
-        <version.surefire.plugin>2.10</version.surefire.plugin>
+
+        <version.surefire.plugin>2.18.1</version.surefire.plugin>
 
         <maven.compiler.target>1.6</maven.compiler.target>
         <maven.compiler.source>1.6</maven.compiler.source>
-        
+
         <testDeployment>${basedir}/../target/ds-passwd.war</testDeployment>
+        <jacoco.version>0.7.4.201502262128</jacoco.version>
     </properties>
 
     <repositories>
@@ -38,6 +39,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <testDeployment>${testDeployment}</testDeployment>
+                        <jacoco.agent>${jacoco.agent}</jacoco.agent>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -117,25 +119,35 @@
                 </dependency>
             </dependencies>
         </profile>
-        
-        <profile>
-			<id>ftest-coverage</id>
 
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<systemPropertyVariables>
-								<arquillian.launch>jboss-jacoco</arquillian.launch>
-								<base.project.directory>${basedir}</base.project.directory>
-							</systemPropertyVariables>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+        <profile>
+            <id>ftest-coverage</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>jacoco</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.version}</version>
+                        <configuration>
+                            <propertyName>jacoco.agent</propertyName>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
 </project>

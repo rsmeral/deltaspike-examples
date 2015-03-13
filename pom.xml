@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>org.jboss.examples.deltaspike</groupId>
     <artifactId>deltaspike-examples-aggregator</artifactId>
     <version>0.1-SNAPSHOT</version>
@@ -19,9 +19,8 @@
         <module>ds-servletobjects</module>
         <module>ds-periodic-stats</module>
     </modules>
-        
+
     <profiles>
-        
         <profile>
             <id>ftest</id>
             <modules>
@@ -34,20 +33,6 @@
                 <module>ds-periodic-stats/functional-tests</module>
             </modules>
         </profile>
-        
-		<profile>
-			<id>ftest-coverage</id>
-			<modules>
-				<module>coverage-classes</module>
-				<module>ds-passwd/functional-tests</module>
-				<module>mbeanTranslator/functional-tests</module>
-				<module>ds-task-management/functional-tests</module>
-				<module>ds-tickets/functional-tests</module>
-				<module>expense-tracker/functional-tests</module>
-                <module>ds-servletobjects/functional-tests</module>
-				<module>jacoco-generate-report</module>
-			</modules>
-		</profile>
-
-	</profiles>
+    </profiles>
+    
 </project>

@@ -1,27 +1,20 @@
 <?xml version="1.0"?>
 <arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://jboss.org/schema/arquillian"
-    xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+            xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
     <engine>
-       <property name="deploymentExportPath">target</property>
+        <property name="deploymentExportPath">target</property>
     </engine>
     
     <container qualifier="jboss" default="true">
-<!--        <configuration>
-            <property name="jbossHome">/path/to/jboss/as</property>
-        </configuration>-->
+        <!--        <configuration>
+                    <property name="jbossHome">/path/to/jboss/as</property>
+                </configuration>-->
+        <configuration>
+            <property name="serverConfig">standalone-full.xml</property>
+            <property name="javaVmArguments">-Xms128m -Xmx768m -XX:MaxPermSize=256m ${jacoco.agent}</property>
+        </configuration>
     </container>
-
-	<container qualifier="jboss-jacoco">
-		<configuration>
-			<!-- <property name="jbossHome">/path/to/jboss/as</property> -->
-			<property name="javaVmArguments">
-				-Xms512m -Xmx512m -XX:MaxPermSize=512m -Djava.net.preferIPv4Stack=true
-	            -Dorg.jboss.resolver.warning=true -Dfile.encoding=UTF-8 -Djavax.servlet.request.encoding=UTF-8
-            	-javaagent:${base.project.directory}/../../coverage-classes/jacocoagent.jar=append=true,destfile=${base.project.directory}/../../coverage-classes/target/jacoco.exec,excludes=
-           	</property>
-		</configuration>
-	</container>
 
     <!-- WebDriver extension -->
     <extension qualifier="webdriver">
