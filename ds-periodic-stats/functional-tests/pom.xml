@@ -13,13 +13,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
         
-        <version.surefire.plugin>2.10</version.surefire.plugin>
+        <version.surefire.plugin>2.18.1</version.surefire.plugin>
 
         <maven.compiler.target>1.6</maven.compiler.target>
         <maven.compiler.source>1.6</maven.compiler.source>
         
         <testDeployment>${basedir}/../target/ds-periodic-stats.war</testDeployment>
         <arq.extension.webdriver.browser>firefox</arq.extension.webdriver.browser>
+        <jacoco.version>0.7.4.201502262128</jacoco.version>
     </properties>
 
     <repositories>
@@ -38,6 +39,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <testDeployment>${testDeployment}</testDeployment>
+                        <jacoco.agent>${jacoco.agent}</jacoco.agent>
                         <arq.extension.webdriver.browser>${arq.extension.webdriver.browser}</arq.extension.webdriver.browser>
                     </systemPropertyVariables>
                 </configuration>
@@ -110,6 +112,34 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <id>ftest-coverage</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>jacoco</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.version}</version>
+                        <configuration>
+                            <propertyName>jacoco.agent</propertyName>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
