@@ -22,9 +22,9 @@ tmp/
 .metadata
 .classpath
 
+#idea
+.idea
+*.iml
+
 #temporary files
 *~
-
-# do not ignore
-!jacocoagent.jar
-!jacocoant.jar

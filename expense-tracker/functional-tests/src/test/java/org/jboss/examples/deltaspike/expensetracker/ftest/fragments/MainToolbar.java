@@ -3,11 +3,12 @@ package org.jboss.examples.deltaspike.expensetracker.ftest.fragments;
 import org.jboss.arquillian.graphene.GrapheneElement;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.richfaces.fragment.dropDownMenu.RichFacesDropDownMenu;
 
 public class MainToolbar {
 
     @FindBy(id = "toolbarForm:userMenu")
-    private UserMenu userMenu;
+    private RichFacesDropDownMenu userMenu;
     
     // because userMenu.advanced().getTopLevelElement().getText() doesn't work (.rf-ddm-lbl:eq(0) doesn't)
     @FindBy(id = "toolbarForm:userMenu_label")

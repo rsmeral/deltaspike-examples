@@ -4,35 +4,467 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jboss.examples.deltaspike</groupId>
-    <artifactId>deltaspike-examples-aggregator</artifactId>
+    <artifactId>deltaspike-examples-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>DeltaSpike Examples: Parent</name>
 
-    <name>DeltaSpike Examples: Aggregator</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+
+        <!-- plugins -->
+        <version.compiler.plugin>3.1</version.compiler.plugin>
+        <version.war.plugin>2.3</version.war.plugin>
+        <version.resources.plugin>2.6</version.resources.plugin>
+        <version.surefire.plugin>2.18.1</version.surefire.plugin>
+
+        <!-- BOMs -->
+        <version.jboss.bom.eap>6.3.3.GA</version.jboss.bom.eap>
+        <version.org.jboss.spec.jboss.javaee.6.0>3.0.2.Final</version.org.jboss.spec.jboss.javaee.6.0>
+
+        <!-- individual dependencies -->
+        <version.picketlink.javaee.bom>2.7.0.Final</version.picketlink.javaee.bom>
+        <version.richfaces>4.5.3.Final</version.richfaces>
+        <version.jacoco>0.7.4.201502262128</version.jacoco>
+        <version.org.jboss.arquillian>1.1.7.Final</version.org.jboss.arquillian>
+        <version.org.jboss.arquillian.extension.drone>2.0.0.Alpha4</version.org.jboss.arquillian.extension.drone>
+        <version.org.jboss.arquillian.graphene>2.0.3.Final</version.org.jboss.arquillian.graphene>
+        <version.org.jboss.arquillian.selenium.bom>2.43.1</version.org.jboss.arquillian.selenium.bom>
+        <version.org.jboss.as.arquillian.container>7.2.0.Final</version.org.jboss.as.arquillian.container>
+        <version.org.jboss.shrinkwrap.resolver>2.2.0-beta-1</version.org.jboss.shrinkwrap.resolver>
+        <version.junit>4.11</version.junit>
+
+        <version.org.apache.deltaspike>1.3.0</version.org.apache.deltaspike>
+
+        <!-- tests -->
+        <arq.extension.webdriver.browser>firefox</arq.extension.webdriver.browser>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>redhat-repository-techpreview</id>
+            <url>https://maven.repository.redhat.com/techpreview/all/</url>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.picketlink</groupId>
+                <artifactId>picketlink-javaee-6.0</artifactId>
+                <version>${version.picketlink.javaee.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.bom.eap</groupId>
+                <artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
+                <version>${version.jboss.bom.eap}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Java EE APIs -->
+
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-6.0</artifactId>
+                <version>${version.org.jboss.spec.jboss.javaee.6.0}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- DeltaSpike modules -->
+
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-bean-validation-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-bean-validation-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.cdictrl</groupId>
+                <artifactId>deltaspike-cdictrl-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.cdictrl</groupId>
+                <artifactId>deltaspike-cdictrl-weld</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-data-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-data-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jpa-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jpa-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jsf-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-partial-bean-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-partial-bean-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-scheduler-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-scheduler-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-servlet-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-servlet-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- test dependencies -->
+
+            <!-- Shrinkwrap resolver
+                 override which is only used if we need newer version than what is in ARQ bom -->
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.resolver</groupId>
+                <artifactId>shrinkwrap-resolver-bom</artifactId>
+                <version>${version.org.jboss.shrinkwrap.resolver}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Arquillian lets test you your applications in real environment -->
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.org.jboss.arquillian}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Arquillian Drone bindings for DefaultSelenium based browsers -->
+            <dependency>
+                <groupId>org.jboss.arquillian.selenium</groupId>
+                <artifactId>selenium-bom</artifactId>
+                <version>${version.org.jboss.arquillian.selenium.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Arquillian Drone adds support for visual testing of your
+                                 application -->
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-drone-bom</artifactId>
+                <version>${version.org.jboss.arquillian.extension.drone}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Arquillian Drone bindings for DefaultSelenium based browsers -->
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-drone-selenium-depchain</artifactId>
+                <version>${version.org.jboss.arquillian.extension.drone}</version>
+                <type>pom</type>
+            </dependency>
+
+            <!-- Arquillian Drone bindings for WebDriver based browsers -->
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-drone-webdriver-depchain</artifactId>
+                <version>${version.org.jboss.arquillian.extension.drone}</version>
+                <type>pom</type>
+            </dependency>
+
+            <!-- Arquillian Graphene2 is an enhanced tool based on WebDriver
+                             allowing you to test AJAX even more easily -->
+            <dependency>
+                <groupId>org.jboss.arquillian.graphene</groupId>
+                <artifactId>graphene-webdriver</artifactId>
+                <version>${version.org.jboss.arquillian.graphene}</version>
+                <type>pom</type>
+            </dependency>
+
+            <!-- Arquillian support for JBoss AS7 container -->
+            <!-- Note: Managed version of container allows Arquillian to
+                                 control startup and shutdown of the container -->
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-arquillian-container-managed</artifactId>
+                <version>${version.org.jboss.as.arquillian.container}</version>
+            </dependency>
+
+            <!-- Arquillian support for JBoss AS7 container -->
+            <!-- Note: Remote version of container allows Arquillian to connect
+                                 to already running container -->
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                <version>${version.org.jboss.as.arquillian.container}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${version.war.plugin}</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.compiler.plugin}</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <modules>
-        <module>ds-passwd</module>
-        <module>mbeanTranslator</module>
         <module>expense-tracker</module>
-        <module>ds-tickets</module>
-        <module>ds-task-management</module>
-        <module>ds-servletobjects</module>
-        <module>ds-periodic-stats</module>
+        <module>mbean-translator</module>
+        <module>passwd</module>
+        <module>periodic-stats</module>
+        <module>servlet-objects</module>
+        <module>task-management</module>
+        <module>tickets</module>
     </modules>
 
     <profiles>
+
         <profile>
             <id>ftest</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
             <modules>
-                <module>ds-passwd/functional-tests</module>
-                <module>mbeanTranslator/functional-tests</module>
                 <module>expense-tracker/functional-tests</module>
-                <module>ds-task-management/functional-tests</module>
-                <module>ds-tickets/functional-tests</module>
-                <module>ds-servletobjects/functional-tests</module>
-                <module>ds-periodic-stats/functional-tests</module>
+                <module>mbean-translator/functional-tests</module>
+                <module>passwd/functional-tests</module>
+                <module>periodic-stats/functional-tests</module>
+                <module>servlet-objects/functional-tests</module>
+                <module>task-management/functional-tests</module>
+                <module>tickets/functional-tests</module>
             </modules>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.arquillian.graphene</groupId>
+                    <artifactId>graphene-webdriver</artifactId>
+                    <scope>test</scope>
+                    <type>pom</type>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jboss.arquillian.junit</groupId>
+                    <artifactId>arquillian-junit-container</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${version.surefire.plugin}</version>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <dsVersion>${version.org.apache.deltaspike}</dsVersion>
+                                <testDeployment>${testDeployment}</testDeployment>
+                                <jacoco.agent>${jacoco.agent}</jacoco.agent>
+                                <arq.extension.webdriver.browser>${arq.extension.webdriver.browser}
+                                </arq.extension.webdriver.browser>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+
+        <profile>
+            <id>jacoco</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${version.jacoco}</version>
+                        <configuration>
+                            <propertyName>jacoco.agent</propertyName>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>arq-jbossas-managed</id>
+            <activation>
+                <property>
+                    <name>!remote</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>arq-jbossas-remote</id>
+            <activation>
+                <property>
+                    <name>remote</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
-    
+
 </project>

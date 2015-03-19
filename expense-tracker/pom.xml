@@ -3,72 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>org.jboss.examples.deltaspike</groupId>
-    <artifactId>ds-expense-tracker</artifactId>
-    <version>0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <parent>
+        <groupId>org.jboss.examples.deltaspike</groupId>
+        <artifactId>deltaspike-examples-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
     
+    <artifactId>expense-tracker</artifactId>
+    <packaging>war</packaging>
     <name>DeltaSpike Expense Tracker example</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.jboss.bom.wfk>2.6.0-redhat-1</version.jboss.bom.wfk>
-        <version.jboss.bom.eap>6.2.0-redhat-1</version.jboss.bom.eap>
-        <version.picketlink.javaee.bom>2.6.0.Final</version.picketlink.javaee.bom>
-                
-        <version.compiler.plugin>3.1</version.compiler.plugin>
-        <version.war.plugin>2.3</version.war.plugin>
-        <version.resources.plugin>2.6</version.resources.plugin>
-        
-        <maven.compiler.target>1.6</maven.compiler.target>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        
-        <version.org.apache.deltaspike>1.2.1</version.org.apache.deltaspike>
-    </properties>
-
-    <repositories>
-        <repository>
-            <id>redhat-repository-techpreview</id>
-            <url>https://maven.repository.redhat.com/techpreview/all/</url>
-        </repository>
-    </repositories>
-
-    <dependencyManagement>
-        <dependencies>
-            <!--            <dependency>
-                <groupId>org.jboss.bom.wfk</groupId>
-                <artifactId>jboss-javaee-6.0-with-deltaspike</artifactId>
-                <version>${version.jboss.bom.wfk}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>-->
-            
-            <dependency>
-                <groupId>org.jboss.bom.wfk</groupId>
-                <artifactId>jboss-javaee-6.0-with-richfaces</artifactId>
-                <version>${version.jboss.bom.wfk}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.jboss.bom.eap</groupId>
-                <artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
-                <version>${version.jboss.bom.eap}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.picketlink</groupId>
-                <artifactId>picketlink-javaee-6.0</artifactId>
-                <version>${version.picketlink.javaee.bom}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
 
@@ -103,42 +47,31 @@
             <scope>provided</scope>
         </dependency>
         
-        
         <!-- DeltaSpike modules -->
         
         <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-security-module-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-security-module-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <!-- This implementation module is compile instead of runtime-scoped 
@@ -146,80 +79,58 @@
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-data-module-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-bean-validation-module-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-bean-validation-module-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jpa-module-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jpa-module-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jsf-module-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-servlet-module-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-servlet-module-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.cdictrl</groupId>
             <artifactId>deltaspike-cdictrl-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.apache.deltaspike.cdictrl</groupId>
             <artifactId>deltaspike-cdictrl-weld</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
         </dependency>
-        
         
         <!-- PicketLink used as IDM framework -->
         
@@ -256,29 +167,21 @@
             <scope>provided</scope>
         </dependency>
         
-        
         <!-- RichFaces for UI components --> 
         
         <dependency>
-            <groupId>org.richfaces.ui</groupId>
-            <artifactId>richfaces-components-ui</artifactId>
+            <groupId>org.richfaces</groupId>
+            <artifactId>richfaces</artifactId>
+            <version>${version.richfaces}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.richfaces.core</groupId>
-            <artifactId>richfaces-core-impl</artifactId>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>${version.war.plugin}</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml> 
                     <webResources>
                         <resource>
                             <directory>src/main/webapp</directory>
@@ -288,16 +191,6 @@
                             </includes>
                         </resource>
                     </webResources>
-                </configuration>
-
-            </plugin>
-            
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.compiler.plugin}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -10,34 +10,19 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
+    <artifactId>passwd-ftest</artifactId>
+    <name>DeltaSpike passwd functional test</name>
+
     <properties>
-        <testDeployment>${basedir}/../target/expense-tracker.war</testDeployment>
+        <testDeployment>${basedir}/../target/passwd.war</testDeployment>
     </properties>
 
-    <artifactId>expense-tracker-ftest</artifactId>
-    <name>DeltaSpike Expense Tracker functional test</name>
-
     <dependencies>
-
-        <dependency>
-            <groupId>org.richfaces</groupId>
-            <artifactId>richfaces-page-fragments</artifactId>
-            <version>${version.richfaces}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.spec.javax.faces</groupId>
-            <artifactId>jboss-jsf-api_2.1_spec</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-api</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 </project>

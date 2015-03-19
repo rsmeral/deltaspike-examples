@@ -45,5 +45,5 @@ To run the functional tests of all examples at once, run
 
 Use the property "jacoco"
 
-	mvn clean package -Pftest -Djacoco
+	mvn clean package -Pftest -Pjacoco
 

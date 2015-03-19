@@ -1,11 +1,5 @@
 package org.jboss.examples.deltaspike.expensetracker.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.inject.Named;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jboss.examples.deltaspike.expensetracker.app.security.Authorizations;
 import org.jboss.examples.deltaspike.expensetracker.data.EmployeeRepository;
@@ -22,6 +16,14 @@ import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
+import org.picketlink.idm.query.IdentityQueryBuilder;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.jboss.examples.deltaspike.expensetracker.domain.model.EmployeeRole.ADMIN;
 
@@ -48,21 +50,24 @@ public class EmployeeService {
     private EmployeeRepository empRepo;
 
     public List<User> listUsers() {
-        IdentityQuery<User> query = idm.createIdentityQuery(User.class);
+        IdentityQuery<User> query = idm.getQueryBuilder().createIdentityQuery(User.class);
         return query.getResultList();
     }
 
     public User getUserForEmployee(Employee employee) {
-        return idm.createIdentityQuery(User.class).setParameter(new AttributeParameter(EMPLOYEE_ID_ATTRIBUTE), employee.getId()).getResultList().get(0);
+        IdentityQueryBuilder builder = idm.getQueryBuilder();
+        return builder.createIdentityQuery(User.class).where(builder.equal(new AttributeParameter(EMPLOYEE_ID_ATTRIBUTE), employee.getId())).getResultList().get(0);
     }
 
     public Employee getEmployeeByUsername(String username) {
-        Long employeeId = idm.createIdentityQuery(User.class).setParameter(User.LOGIN_NAME, username).getResultList().get(0).<Long>getAttribute(EMPLOYEE_ID_ATTRIBUTE).getValue();
+        IdentityQueryBuilder builder = idm.getQueryBuilder();
+        Long employeeId = builder.createIdentityQuery(User.class).where(builder.equal(User.LOGIN_NAME, username)).getResultList().get(0).<Long>getAttribute(EMPLOYEE_ID_ATTRIBUTE).getValue();
         return empRepo.findBy(employeeId);
     }
 
     public boolean isUsernameAvailable(String username) {
-        int resultCount = idm.createIdentityQuery(User.class).setParameter(User.LOGIN_NAME, username).getResultCount();
+        IdentityQueryBuilder builder = idm.getQueryBuilder();
+        int resultCount = builder.createIdentityQuery(User.class).where(builder.equal(User.LOGIN_NAME, username)).getResultCount();
         return resultCount == 0;
     }
 
