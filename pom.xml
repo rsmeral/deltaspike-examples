@@ -421,6 +421,9 @@
                         <version>${version.jacoco}</version>
                         <configuration>
                             <propertyName>jacoco.agent</propertyName>
+                            <excludes>
+                                <exclude>com.steadystate.css.*</exclude>
+                            </excludes>
                         </configuration>
                         <executions>
                             <execution>
