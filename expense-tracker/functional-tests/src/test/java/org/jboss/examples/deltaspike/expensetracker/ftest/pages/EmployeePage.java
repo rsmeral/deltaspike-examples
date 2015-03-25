@@ -6,6 +6,7 @@ import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.Location;
 import static org.jboss.examples.deltaspike.expensetracker.ftest.util.TestConstants.*;
 import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.PasswordForm;
+import org.jboss.examples.deltaspike.expensetracker.ftest.fragments.SelectManyCheckbox;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,7 +37,7 @@ public class EmployeePage extends TemplatePage {
 
     // Roles
     @FindBy(id = "employeeForm:roles")
-    private WebElement roles;
+    private SelectManyCheckbox roles;
 
     @FindBy(id = "employeeForm:rolesMessage")
     private RichFacesMessage rolesMsg;
@@ -84,35 +85,27 @@ public class EmployeePage extends TemplatePage {
         changePasswordForm.changePassword(password, confirmation);
     }
 
-    public void setUser(String username, String... roles) {
+    public void setUser(String username, String... rolesArg) {
         if (username != null) {
             this.username.clear();
             this.username.sendKeys(username);
         }
 
-        if (roles.length > 0) {
-            Select rolesSelect = new Select(this.roles);
-            rolesSelect.deselectAll();
-            Actions actions = new Actions(driver).keyDown(Keys.CONTROL);
-            for (String role : roles) {
-                for (WebElement option : rolesSelect.getOptions()) {
-                    if (option.getText().contains(role)) {
-                        actions.click(option);
-                    }
-                }
+        if (rolesArg.length > 0) {
+            roles.deselectAll();
+            for (String s : rolesArg) {
+                roles.selectByValue(s);
             }
-            actions.keyUp(Keys.CONTROL).perform();
         }
 
     }
 
-    public List<String> getRoles() {
-        Select rolesSelect = new Select(this.roles);
-        List<String> rolesList = new ArrayList<String>();
-        for (WebElement option : rolesSelect.getOptions()) {
-            rolesList.add(option.getText());
-        }
-        return rolesList;
+    public List<String> getAllRoles() {
+        return roles.getAllOptionsValues();
+    }
+
+    public List<String> getSelectedRoles() {
+        return roles.getSelectedOptionsValues();
     }
 
     public void setEmployeeDetails(String firstName, String lastName, String bankAccount, String email) {
@@ -181,7 +174,7 @@ public class EmployeePage extends TemplatePage {
         return username;
     }
 
-    public WebElement getRolesElement() {
+    public SelectManyCheckbox getRolesElement() {
         return roles;
     }
 

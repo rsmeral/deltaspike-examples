@@ -23,9 +23,9 @@
                     <rich:message for="username" id="usernameMessage" />
 
                     <h:outputLabel value="Roles:" for="roles"/>
-                    <h:selectManyListbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.admin}" >
+                    <h:selectManyCheckbox value="#{employeeController.roles}" label="Roles" id="roles" disabled="#{not idm.admin}" >
                         <f:selectItems value="#{roles}" />
-                    </h:selectManyListbox>
+                    </h:selectManyCheckbox>
                     <rich:message for="roles" id="rolesMessage" />
                 </h:panelGrid>
 
