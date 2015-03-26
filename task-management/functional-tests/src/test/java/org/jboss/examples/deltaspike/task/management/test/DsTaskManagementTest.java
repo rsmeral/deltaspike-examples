@@ -133,6 +133,7 @@ public class DsTaskManagementTest {
     private static final String TEST_DEPLOYMENT_PROPERTY = "testDeployment";
     private static final String TEST_DEPLOYMENT = System.getProperty(TEST_DEPLOYMENT_PROPERTY);
     private static final String USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:29.0) Gecko/20100101 Firefox/29.0";
+    private static final int DATE_DIFFERENCE_THRESHOLD = 60000;
 
     @Deployment(testable = false)
     public static WebArchive deployment() {
@@ -328,7 +329,7 @@ public class DsTaskManagementTest {
         assertEquals("number of page actions", expectedActions.size(), PAGE_ACTION_ROWS.size());
 
         int actionsCount = expectedActions.size();
-        String warnMessage = "the difference between the expected: %s and the real: %s invocation time should be lower than 2sec";
+        String warnMessage = "the difference between the expected: %s and the real: %s invocation time should be lower than 60 sec";
 
         for (int i = 0; i < actionsCount; i++) {
             List<WebElement> actionItems = PAGE_ACTION_ROWS.get(actionsCount - i - 1).findElements(ByTagName.tagName("td"));
@@ -342,7 +343,7 @@ public class DsTaskManagementTest {
 
             assertTrue(
                 String.format(warnMessage, formatLongDate(expectedAction.getCalled()), actionItems.get(2).getText()),
-                Math.abs(actualTime - expectedTime) < 2000);
+                Math.abs(actualTime - expectedTime) < DATE_DIFFERENCE_THRESHOLD);
 
             assertEquals(expectedAction.getAuditUser(), actionItems.get(3).getText());
         }
