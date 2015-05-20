@@ -1,4 +1,4 @@
-package org.jboss.examples.deltaspike.template.test;
+package org.jboss.examples.deltaspike.servletobjects.test;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 @RunAsClient
 @RunWith(Arquillian.class)
-public class GreeterTest {
+public class ServletObjectsTest {
 
     @FindBy(id = "message")
     WebElement MESSAGE;
